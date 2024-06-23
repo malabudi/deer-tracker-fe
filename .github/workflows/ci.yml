@@ -1,4 +1,4 @@
-name: Cointinuous Integration
+name: Frontend CI Pipeline
 
 # trigger the CI on push and PRs
 on:
