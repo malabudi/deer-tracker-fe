@@ -8,6 +8,7 @@ After cloning this repo, run the following commands
 npm install --global yarn
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 yarn install
+npx husky init
 ```
 
 ## Run the App Locally
@@ -37,3 +38,19 @@ ngrok http 3000
 On your phone join the link you see on the command prompt next to `Forwarding`
 
 Once you enter that link in your phone's browser you will be able to see local host
+
+## Linter
+
+### Running the linter
+Here is the command to run the linter:
+```bash
+yarn lint
+```
+
+Running the linter locally is not required since the pipeline will do this automatically for you.
+
+### Let linter format simple things in your code for you
+However if you want the lint to fix simple issues for you, run this command.
+```bash
+yarn lint:fix
+```
