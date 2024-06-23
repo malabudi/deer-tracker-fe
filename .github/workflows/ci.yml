@@ -27,3 +27,6 @@ jobs:
 
       - name: Run prettier format check
         run: yarn format
+
+      - name: Run build
+        run: yarn build
