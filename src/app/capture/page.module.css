@@ -1,0 +1,9 @@
+.cameraPosition {
+    position: fixed;
+    margin: auto;
+}
+
+.labelPosition {
+    position: fixed;
+    margin: 25% auto;
+}
