@@ -1,0 +1,32 @@
+name: Frontend CI Pipeline
+
+# trigger the CI on push and PRs
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Initialize Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.11.1'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run lint
+        run: yarn lint
+
+      - name: Run prettier format check
+        run: yarn format
+
+      - name: Run build
+        run: yarn build
