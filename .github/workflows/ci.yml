@@ -1,16 +1,28 @@
-# name: Cointinuous Integration
+name: Cointinuous Integration
 
-# # trigger the CI on push and PRs
-# on:
-#   push:
-#   pull_request:
+# trigger the CI on push and PRs
+on:
+  push:
+  pull_request:
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-last
-#     steps:
-#       # which github actions to use
-#       - uses: actions/checkout@v2
-#         with:
-#           fetch-depth: 0
-#       - name: Use Node.js
+jobs:
+  build:
+    runs-on: ubuntu-last
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.11.1'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run lint
+        run: yarn lint
+
+      - name: Run prettier format check
+        run: yarn format

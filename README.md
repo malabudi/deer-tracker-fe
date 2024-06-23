@@ -8,7 +8,6 @@ After cloning this repo, run the following commands
 npm install --global yarn
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 yarn install
-npx husky init
 ```
 
 ## Run the App Locally
