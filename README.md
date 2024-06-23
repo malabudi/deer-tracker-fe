@@ -28,6 +28,7 @@ Inside the terminal after you run ngrok.exe and enter this command
 ```bash
 ngrok config add-authtoken {CHECK #deer-local-setup IN DISCORD AND ADD AUTH TOKEN HERE}
 ```
+Do not include brackets in the command
 
 Run this command in the folder that has ngrok.exe
 By default its in the folder that you extracted the zip when you downloaded it

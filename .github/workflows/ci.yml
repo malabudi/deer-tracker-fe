@@ -1,0 +1,16 @@
+# name: Cointinuous Integration
+
+# # trigger the CI on push and PRs
+# on:
+#   push:
+#   pull_request:
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-last
+#     steps:
+#       # which github actions to use
+#       - uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 0
+#       - name: Use Node.js
