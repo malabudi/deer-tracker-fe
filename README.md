@@ -15,7 +15,6 @@ yarn install
 ### Run Local Host
 You must build and then run the app afterwards. Building well help run the app quicker by caching and synchronize files. Simple run these two commands when you want to run localhost
 ```bash
-yarn build
 yarn dev
 ```
 
