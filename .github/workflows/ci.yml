@@ -6,6 +6,20 @@ on:
   pull_request:
 
 jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run lint
+        run: yarn lint
+
+      - name: Run prettier format check
+        run: yarn format
+  
   build:
     runs-on: ubuntu-latest
     steps:
@@ -21,12 +35,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-
-      - name: Run lint
-        run: yarn lint
-
-      - name: Run prettier format check
-        run: yarn format
 
       - name: Run build
         run: yarn build
