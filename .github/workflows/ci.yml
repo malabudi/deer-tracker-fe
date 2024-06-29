@@ -6,8 +6,9 @@ on:
   pull_request:
 
 jobs:
-  initialize-pipeline:
+  code-quality:
     runs-on: ubuntu-latest
+    needs: initialize-pipeline
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,10 +23,6 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-  code-quality:
-    runs-on: ubuntu-latest
-    needs: initialize-pipeline
-    steps:
       - name: Run lint
         run: yarn lint
 
@@ -36,5 +33,18 @@ jobs:
     runs-on: ubuntu-latest
     needs: initialize-pipeline
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Initialize Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.11.1'
+
+      - name: Install dependencies
+        run: yarn install
+
       - name: Run build
         run: yarn build
