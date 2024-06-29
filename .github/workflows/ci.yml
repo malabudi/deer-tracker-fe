@@ -28,6 +28,9 @@ jobs:
   code-quality:
     runs-on: ubuntu-latest
     steps:
+      - name: Install dependencies
+        run: yarn install
+
       - name: Run lint
         run: yarn lint
 
