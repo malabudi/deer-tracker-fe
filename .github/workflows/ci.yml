@@ -33,9 +33,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install dependencies
-        run: yarn install
-
       - name: Run lint
         run: yarn lint
 
