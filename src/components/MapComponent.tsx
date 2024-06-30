@@ -14,6 +14,8 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationUpdate }) => {
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const [callCount, setCallCount] = useState<number>(0);
+
+  // eslint-disable-next-line no-undef
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Control flag to limit API calls in development
