@@ -1,10 +1,10 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function Settings() {
-    return (
-        <>
-            <h1>Settings</h1>
-            <Link href='/'>Go Back</Link>
-        </>
-    );
+  return (
+    <>
+      <h1>Settings</h1>
+      <Link href="/">Go Back</Link>
+    </>
+  );
 }
