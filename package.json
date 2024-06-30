@@ -12,6 +12,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.19.3",
     "@tensorflow-models/coco-ssd": "^2.2.3",
     "@tensorflow/tfjs": "^4.20.0",
     "eslint-config-prettier": "^9.1.0",
@@ -22,9 +23,10 @@
     "react-dom": "^18"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/node": "^20.14.9",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "eslint-plugin-prettier": "^5.1.3",

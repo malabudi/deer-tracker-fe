@@ -9,7 +9,11 @@ npm install --global yarn
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 yarn install
 ```
-
+## Googel Maps API Setup
+```bash
+npm install @react-google-maps/api
+npm install @types/react @types/react-dom
+```
 ## Run the App Locally
 
 ### Run Local Host
