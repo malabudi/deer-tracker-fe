@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
 const containerStyle = {
-  width: "100%",
-  height: "400px",
+  width: '100%',
+  height: '400px',
 };
 
 interface MapComponentProps {
@@ -17,10 +17,10 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationUpdate }) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Control flag to limit API calls in development
-  const isDevelopment = process.env.NODE_ENV === "development";
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
   //const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY; // this was my inital approch but its not working as expected
-  const apiKey = ""; //Comment when developing
+  const apiKey = ''; //Comment when developing
   //const apiKey = "AIzaSyCAwTonwIQ7T8AqFXgxk7ksCxol38ChLS8"; // uncomment when in developemnt
 
   const fetchLocation = useCallback(() => {
@@ -39,7 +39,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationUpdate }) => {
           }
         },
         (error) => {
-          console.error("Error fetching geolocation:", error);
+          console.error('Error fetching geolocation:', error);
         },
         {
           enableHighAccuracy: true,

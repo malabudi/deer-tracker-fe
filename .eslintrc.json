@@ -1,6 +1,7 @@
 {
-  "extends": ["eslint:recommended", "next", "next/core-web-vitals", "prettier"],
-  "plugins": ["prettier", "unused-imports"],
+  "extends": ["eslint:recommended", "next", "next/core-web-vitals", "prettier", "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended"],
+  "plugins": ["prettier", "@typescript-eslint", "unused-imports"],
   "rules": {
     // Prettier
     "prettier/prettier": "error",
