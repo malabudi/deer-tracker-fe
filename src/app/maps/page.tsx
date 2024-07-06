@@ -1,27 +1,42 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import MapComponent from '@/components/MapComponent';
+import getLocation from '@/hooks/useLocation';
 
 const Maps: React.FC = () => {
-  const [latitude, setLatitude] = useState<number | null>(null);
-  const [longitude, setLongitude] = useState<number | null>(null);
+  const {
+    latitude: currentLatitude,
+    longitude: currentLongitude,
+    callCount,
+  } = getLocation({ onLocationUpdate: () => {} });
 
-  const handleLocationUpdate = (lat: number, lng: number) => {
-    setLatitude(lat);
-    setLongitude(lng);
-  };
+  const apiKey = ' '; // (grab form discord) a story has been created to find a better approach
 
   return (
     <>
       <h1>Maps</h1>
       <h1>Google Maps API Integration</h1>
-      <MapComponent onLocationUpdate={handleLocationUpdate} />
+      <MapComponent
+        latitude={currentLatitude}
+        longitude={currentLongitude}
+        apiKey={apiKey}
+      />
       <div>
-        <h2>Current Location from Parent Component:</h2>
-        <p>Latitude: {latitude !== null ? latitude : 'Fetching...'}</p>
-        <p>Longitude: {longitude !== null ? longitude : 'Fetching...'}</p>
+        <h2>Current Location from Custom Hook:</h2>
+        <p>
+          Latitude: {currentLatitude !== null ? currentLatitude : 'Fetching...'}
+        </p>
+        <p>
+          Longitude:{' '}
+          {currentLongitude !== null ? currentLongitude : 'Fetching...'}
+        </p>
+        {process.env.NODE_ENV === 'development' && (
+          <div>
+            <h2>API Call Count: {callCount}</h2>
+          </div>
+        )}
       </div>
       <div>
         <Link href="/">Go Back</Link>

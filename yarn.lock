@@ -1180,7 +1180,7 @@
 
 "@react-google-maps/api@^2.19.3":
   version "2.19.3"
-  resolved "https://registry.npmjs.org/@react-google-maps/api/-/api-2.19.3.tgz"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/api/-/api-2.19.3.tgz#6bb307c6e9d06344badd77facb6dc9eaac5b9b32"
   integrity sha512-jiLqvuOt5lOowkLeq7d077AByTyJp+s6hZVlLhlq7SBacBD37aUNpXBz2OsazfeR6Aw4a+9RRhAEjEFvrR1f5A==
   dependencies:
     "@googlemaps/js-api-loader" "1.16.2"
@@ -1414,14 +1414,14 @@
 
 "@types/react-dom@^18.3.0":
   version "18.3.0"
-  resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-18.3.0.tgz"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.3.0.tgz#0cbc818755d87066ab6ca74fbedb2547d74a82b0"
   integrity sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==
   dependencies:
     "@types/react" "*"
 
 "@types/react@*", "@types/react@^18.3.3":
   version "18.3.3"
-  resolved "https://registry.npmjs.org/@types/react/-/react-18.3.3.tgz"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.3.3.tgz#9679020895318b0915d7a3ab004d92d33375c45f"
   integrity sha512-hti/R0pS0q1/xx+TsI73XIqk26eBsISZ2R0wUijXIngRK9R/e7Xw/cXVxQK7R5JjW+SV4zGcn5hXjudkN/pLIw==
   dependencies:
     "@types/prop-types" "*"
