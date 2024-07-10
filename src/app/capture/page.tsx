@@ -5,11 +5,6 @@ import { useCallback, useEffect, useRef } from 'react';
 import * as tf from '@tensorflow/tfjs';
 import styles from './page.module.css';
 import DeerCamera from '@/components/deer-camera/DeerCamera';
-import type { Viewport } from 'next';
-
-export const viewport: Viewport = {
-  themeColor: 'black',
-};
 
 export default function Capture() {
   // This line is where training models will be loaded
