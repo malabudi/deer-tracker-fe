@@ -4,13 +4,14 @@ import Link from 'next/link';
 import { useCallback, useEffect, useRef } from 'react';
 import * as tf from '@tensorflow/tfjs';
 import styles from './page.module.css';
+import DeerCamera from '@/components/deer-camera/DeerCamera';
 
 export default function Capture() {
-  const cocoSsd = require('@tensorflow-models/coco-ssd');
-
   // This line is where training models will be loaded
   // Loading the model comes with a Promise. Will proceed only when the promise is fulfilled.
-  const modelPromise = cocoSsd.load('mobilenet_v2');
+  const modelPromise = import('@tensorflow-models/coco-ssd').then(
+    (cocoSsd: any) => cocoSsd.load('lite_mobilenet_v2')
+  );
 
   // Define references to be used later
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -20,11 +21,13 @@ export default function Capture() {
   const detection = useCallback((video: HTMLVideoElement, model: any) => {
     // Ensure video is ready
     if (video.readyState === 4) {
-      model.detect(video).then((predictions: any) => {
-        drawBBox(predictions);
-      });
+      setTimeout(() => {
+        model.detect(video).then((predictions: any) => {
+          drawBBox(predictions);
+        });
 
-      requestAnimationFrame(() => detection(video, model));
+        requestAnimationFrame(() => detection(video, model));
+      }, 100);
     }
   }, []);
 
@@ -41,7 +44,7 @@ export default function Capture() {
       const scaleY = (canvasRef.current?.height ?? 0) / videoHeight;
 
       ctx.strokeStyle = 'red';
-      ctx.lineWidth = 4;
+      ctx.lineWidth = 2;
       ctx.textBaseline = 'bottom';
       ctx.font = '12px sans-serif';
 
@@ -118,18 +121,7 @@ export default function Capture() {
   return (
     <div className={styles.pageWrapper}>
       <h1>Capture My Drive</h1>
-
-      <div className={styles.container}>
-        <video
-          ref={videoRef}
-          className={styles.cameraPosition}
-          autoPlay
-          playsInline
-          muted
-        />
-        <canvas ref={canvasRef} className={styles.labelPosition} />
-      </div>
-
+      <DeerCamera videoRef={videoRef} canvasRef={canvasRef} />
       <Link href="/">Go Back</Link>
     </div>
   );
