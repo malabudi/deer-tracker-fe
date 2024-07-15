@@ -1,67 +1,75 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import * as tf from '@tensorflow/tfjs';
 import styles from './page.module.css';
+import DeerCamera from '@/components/deer-camera/DeerCamera';
 
 export default function Capture() {
-  const cocoSsd = require('@tensorflow-models/coco-ssd');
-
   // This line is where training models will be loaded
   // Loading the model comes with a Promise. Will proceed only when the promise is fulfilled.
-  const modelPromise = cocoSsd.load('mobilenet_v2');
+  const modelPromise = import('@tensorflow-models/coco-ssd').then(
+    (cocoSsd: any) => cocoSsd.load('lite_mobilenet_v2')
+  );
 
   // Define references to be used later
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Viewport dimensions
-  const [viewportWidth, setViewportWidth] = useState(0);
-  const [viewportHeight, setViewportHeight] = useState(0);
-
   // Utilities functions
   const detection = useCallback((video: HTMLVideoElement, model: any) => {
+    // Ensure video is ready
     if (video.readyState === 4) {
-      // Ensure video is ready
-      model.detect(video).then((predictions: any) => {
-        drawBBox(predictions);
-      });
-      requestAnimationFrame(() => detection(video, model));
+      setTimeout(() => {
+        model.detect(video).then((predictions: any) => {
+          drawBBox(predictions);
+        });
+
+        requestAnimationFrame(() => detection(video, model));
+      }, 100);
     }
   }, []);
 
   const drawBBox = (predictions: any) => {
     const ctx = canvasRef.current?.getContext('2d') ?? null;
-    ctx?.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
     if (ctx) {
+      ctx?.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+      // Grab the scale of x and y depending on viewport
+      const videoWidth = videoRef.current?.videoWidth ?? 0;
+      const videoHeight = videoRef.current?.videoHeight ?? 0;
+      const scaleX = (canvasRef.current?.width ?? 0) / videoWidth;
+      const scaleY = (canvasRef.current?.height ?? 0) / videoHeight;
+
       ctx.strokeStyle = 'red';
-      ctx.lineWidth = 4;
+      ctx.lineWidth = 2;
       ctx.textBaseline = 'bottom';
       ctx.font = '12px sans-serif';
 
       predictions.forEach((prediction: any) => {
-        const predText =
-          prediction.class + ' ' + (prediction.score * 100).toFixed(2);
+        const [x, y, width, height] = prediction.bbox;
+
+        const scaledX = x * scaleX;
+        const scaledY = y * scaleY;
+        const scaledWidth = width * scaleX;
+        const scaledHeight = height * scaleY;
+
+        const predText = `${prediction.class} ${(prediction.score * 100).toFixed(2)}%`;
         const textWidth = ctx.measureText(predText).width;
         const textHeight = parseInt(ctx.font, 10);
 
-        ctx.strokeRect(
-          prediction.bbox[0],
-          prediction.bbox[1],
-          prediction.bbox[2],
-          prediction.bbox[3]
-        );
+        ctx.strokeRect(scaledX, scaledY, scaledWidth, scaledHeight);
         ctx.fillStyle = '#F00';
         ctx.fillRect(
-          prediction.bbox[0] - ctx.lineWidth / 2,
-          prediction.bbox[1],
+          scaledX - ctx.lineWidth / 2,
+          scaledY,
           textWidth + ctx.lineWidth,
           -textHeight
         );
         ctx.fillStyle = '#FFF';
-        ctx.fillText(predText, prediction.bbox[0], prediction.bbox[1]);
+        ctx.fillText(predText, scaledX, scaledY);
       });
     } else {
       console.error('Canvas context is not available.');
@@ -69,12 +77,10 @@ export default function Capture() {
   };
 
   useEffect(() => {
+    if (!videoRef.current || !canvasRef.current) return;
+
     // Set TensorFlow.js backend
     tf.setBackend('webgl').then(() => {
-      // update viewport dimensions
-      setViewportWidth(window.innerWidth);
-      setViewportHeight(window.innerHeight);
-
       // Define the constraints for the mediaDevices
       const constraints = {
         audio: false,
@@ -94,6 +100,7 @@ export default function Capture() {
             }
           })
           .catch((err) => {
+            // TODO: Display some message to the UI to activiate camera
             console.log(err + ' => you must activate your camera.');
           });
 
@@ -106,32 +113,16 @@ export default function Capture() {
           })
           .catch((error) => console.error(error));
       } else {
-        alert(
-          "Your browser doesn't support this function. You may consider to install Google Chrome instead."
-        );
+        alert("Your browser doesn't support this function.");
       }
     });
   }, [detection, modelPromise]);
 
   return (
-    <>
+    <div className={styles.pageWrapper}>
       <h1>Capture My Drive</h1>
-      <video
-        ref={videoRef}
-        className={styles.cameraPosition}
-        autoPlay
-        playsInline
-        muted
-        width={viewportWidth}
-        height={viewportHeight}
-      />
-      <canvas
-        ref={canvasRef}
-        className={styles.labelPosition}
-        width={viewportWidth}
-        height={viewportHeight}
-      />
+      <DeerCamera videoRef={videoRef} canvasRef={canvasRef} />
       <Link href="/">Go Back</Link>
-    </>
+    </div>
   );
 }

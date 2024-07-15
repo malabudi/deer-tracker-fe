@@ -1,9 +1,7 @@
-.cameraPosition {
-  position: fixed;
-  margin: auto;
-}
-
-.labelPosition {
-  position: fixed;
-  margin: 25% auto;
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }

@@ -24,11 +24,12 @@ jobs:
 
       - name: Run lint
         run: yarn lint
-
+        
       - name: Run prettier format check
         run: yarn format
 
   build:
+    needs: code-quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
