@@ -3,7 +3,7 @@
   "plugins": ["prettier", "@typescript-eslint", "unused-imports"],
   "rules": {
     // Prettier
-    "prettier/prettier": "error",
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
 
     // Unused Imports
     "no-unused-vars": "off",
