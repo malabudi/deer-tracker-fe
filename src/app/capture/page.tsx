@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { useCallback, useEffect, useRef } from 'react';
 import * as tf from '@tensorflow/tfjs';
 import styles from './page.module.css';
 import DeerCamera from '@/components/deer-camera/DeerCamera';
+import BottomNav from '@/components/bottom-nav/BottomNav';
 
 export default function Capture() {
   // This line is where training models will be loaded
@@ -122,7 +122,7 @@ export default function Capture() {
     <div className={styles.pageWrapper}>
       <h1>Capture My Drive</h1>
       <DeerCamera videoRef={videoRef} canvasRef={canvasRef} />
-      <Link href="/">Go Back</Link>
+      <BottomNav />
     </div>
   );
 }

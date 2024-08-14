@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import MapComponent from '@/components/MapComponent';
 import getLocation from '@/hooks/useLocation';
+import BottomNav from '@/components/bottom-nav/BottomNav';
 
 const Maps: React.FC = () => {
   const {
@@ -38,9 +38,7 @@ const Maps: React.FC = () => {
           </div>
         )}
       </div>
-      <div>
-        <Link href="/">Go Back</Link>
-      </div>
+      <BottomNav />
     </>
   );
 };

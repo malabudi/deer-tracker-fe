@@ -1,10 +1,10 @@
-import Link from 'next/link';
+import BottomNav from '@/components/bottom-nav/BottomNav';
 
 export default function Settings() {
   return (
     <>
       <h1>Settings</h1>
-      <Link href="/">Go Back</Link>
+      <BottomNav />
     </>
   );
 }
