@@ -1,12 +1,15 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import * as tf from '@tensorflow/tfjs';
 import styles from './page.module.css';
 import DeerCamera from '@/components/deer-camera/DeerCamera';
 import BottomNav from '@/components/bottom-nav/BottomNav';
+import Loader from '@/components/loader/Loader';
 
 export default function Capture() {
+  const [loading, setLoading] = useState(true);
+
   // This line is where training models will be loaded
   // Loading the model comes with a Promise. Will proceed only when the promise is fulfilled.
   const modelPromise = import('@tensorflow-models/coco-ssd').then(
@@ -109,6 +112,7 @@ export default function Capture() {
           .then((values) => {
             if (videoRef.current) {
               detection(videoRef.current, values[0]);
+              setLoading(false);
             }
           })
           .catch((error) => console.error(error));
@@ -120,7 +124,7 @@ export default function Capture() {
 
   return (
     <div className={styles.pageWrapper}>
-      <h1>Capture My Drive</h1>
+      {loading && <Loader />}
       <DeerCamera videoRef={videoRef} canvasRef={canvasRef} />
       <BottomNav />
     </div>

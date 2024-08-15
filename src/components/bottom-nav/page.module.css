@@ -19,7 +19,7 @@
 
 .inactiveIcon {
     filter: invert(90%) sepia(4%) saturate(3248%) hue-rotate(205deg) brightness(91%) contrast(93%); /*light purple for svg*/
-    transition: 0.2s ease-in;
+    transition: 0.2s ease-out;
 }
 
 .inactiveIcon:hover {

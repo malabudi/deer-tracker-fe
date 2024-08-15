@@ -3,7 +3,7 @@ import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
 const containerStyle = {
   width: '100%',
-  height: '400px',
+  minHeight: '90vh',
 };
 
 interface MapComponentProps {
@@ -12,11 +12,7 @@ interface MapComponentProps {
   apiKey: string;
 }
 
-const MapComponent: React.FC<MapComponentProps> = ({
-  latitude,
-  longitude,
-  apiKey,
-}) => {
+const Map: React.FC<MapComponentProps> = ({ latitude, longitude, apiKey }) => {
   if (!apiKey) {
     return <div>Error: Google Maps API key is not defined</div>;
   }
@@ -32,4 +28,4 @@ const MapComponent: React.FC<MapComponentProps> = ({
   );
 };
 
-export default MapComponent;
+export default Map;
