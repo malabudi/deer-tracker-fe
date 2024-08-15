@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import MapComponent from '@/components/MapComponent';
+import Map from '@/components/map/Map';
 import getLocation from '@/hooks/useLocation';
 import BottomNav from '@/components/bottom-nav/BottomNav';
 
@@ -9,22 +9,21 @@ const Maps: React.FC = () => {
   const {
     latitude: currentLatitude,
     longitude: currentLongitude,
-    callCount,
+    //callCount,
   } = getLocation({ onLocationUpdate: () => {} });
 
   const apiKey = ' '; // (grab form discord) a story has been created to find a better approach
 
   return (
     <>
-      <h1>Maps</h1>
-      <h1>Google Maps API Integration</h1>
-      <MapComponent
+      <Map
         latitude={currentLatitude}
         longitude={currentLongitude}
         apiKey={apiKey}
       />
+      {/* DEBUG
       <div>
-        <h2>Current Location from Custom Hook:</h2>
+        <h2>Current Location:</h2>
         <p>
           Latitude: {currentLatitude !== null ? currentLatitude : 'Fetching...'}
         </p>
@@ -38,6 +37,7 @@ const Maps: React.FC = () => {
           </div>
         )}
       </div>
+      */}
       <BottomNav />
     </>
   );
