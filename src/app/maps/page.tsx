@@ -9,7 +9,7 @@ const Maps: React.FC = () => {
   const {
     latitude: currentLatitude,
     longitude: currentLongitude,
-    callCount,
+    //callCount,
   } = getLocation({ onLocationUpdate: () => {} });
 
   const apiKey = ' '; // (grab form discord) a story has been created to find a better approach
