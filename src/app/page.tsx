@@ -1,5 +1,7 @@
+'use client';
 import styles from './page.module.css';
 import Link from 'next/link';
+import CreateSightingButton from '@/DeerSighting/deersighting';
 
 export default function Home() {
   return (
@@ -17,6 +19,10 @@ export default function Home() {
       <div>
         <h1>Settings</h1>
         <Link href="settings">Settings</Link>
+      </div>
+      <div>
+        <h1>button to test sending deer location to flask</h1>
+        <CreateSightingButton />
       </div>
     </main>
   );
