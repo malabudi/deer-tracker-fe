@@ -4,16 +4,12 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import useNavigation from '@/hooks/useNavigation';
-//import useScroll from '@/hooks/useScroll';
 import styles from './page.module.css';
 import cameraIcon from '@/assets/Camera.svg';
 import mapIcon from '@/assets/Map.svg';
 import settingsIcon from '@/assets/Gear.svg';
 
 const BottomNav = () => {
-  //const scrollDirection = useScroll(); // Use the custom hook
-  //const navClass = scrollDirection === 'up' ? '' : 'opacity-25 duration-500';
-
   const { isCameraActive, isMapsActive, isSettingsActive } = useNavigation();
 
   return (
