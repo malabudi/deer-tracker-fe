@@ -1,7 +1,7 @@
 'use client';
 import styles from './page.module.css';
 import Link from 'next/link';
-import CreateSightingButton from '@/DeerSighting/deersighting';
+import CreateSightingButton from '@/components/DeerSighting/deersighting';
 
 export default function Home() {
   return (

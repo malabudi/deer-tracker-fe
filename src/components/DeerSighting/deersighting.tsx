@@ -1,9 +1,7 @@
 import React from 'react';
 import useLocation from '@/hooks/useLocation';
-import {
-  createDeerSighting,
-  DeerSighting,
-} from '@/DeerSighting/deersightinglocation';
+import { createDeerSighting } from '@/hooks/useDeerSighting';
+import { DeerSighting } from '@/interfaces/DeerSighting';
 
 const CreateSightingButton: React.FC = () => {
   const { latitude, longitude } = useLocation({

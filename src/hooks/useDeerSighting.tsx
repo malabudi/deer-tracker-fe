@@ -1,12 +1,5 @@
 import { API_PATH } from '@/utils/constants';
-
-export interface DeerSighting {
-  longitude: number;
-  latitude: number;
-  timestamp: string;
-  image: null;
-}
-
+import { DeerSighting } from '@/interfaces/DeerSighting';
 export const createDeerSighting = async (newSighting: DeerSighting) => {
   const response = await fetch(`${API_PATH}/deer_sightings`, {
     method: 'POST',
