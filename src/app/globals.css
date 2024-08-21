@@ -52,7 +52,6 @@ a {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f0f0f0;
   text-align: center;
 }
 
@@ -64,7 +63,7 @@ a {
 .not-found-container h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #333;
+  color: #6c6a6a;
 }
 
 .not-found-container p {
