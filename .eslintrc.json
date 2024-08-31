@@ -16,6 +16,6 @@
         "args": "after-used",
         "argsIgnorePattern": "^_"
       }
-    ]
+    ], "react/no-unescaped-entities": 0
   }
 }
