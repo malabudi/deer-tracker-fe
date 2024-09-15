@@ -4,8 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import * as tf from '@tensorflow/tfjs';
 import styles from './page.module.css';
 import DeerCamera from '@/components/deer-camera/DeerCamera';
-import BottomNav from '@/components/bottom-nav/BottomNav';
 import Loader from '@/components/loader/Loader';
+import BottomNav from '@/components/bottom-nav/BottomNav';
 
 export default function Capture() {
   const [loading, setLoading] = useState(true);
@@ -19,20 +19,37 @@ export default function Capture() {
   // Define references to be used later
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Utilities functions
-  const detection = useCallback((video: HTMLVideoElement, model: any) => {
-    // Ensure video is ready
-    if (video.readyState === 4) {
-      setTimeout(() => {
-        model.detect(video).then((predictions: any) => {
-          drawBBox(predictions);
-        });
-
-        requestAnimationFrame(() => detection(video, model));
-      }, 100);
+  const playDetectionSound = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current
+        .play()
+        .catch((error) => console.error('Audio playback error:', error));
     }
   }, []);
+
+  // Utilities functions
+  const detection = useCallback(
+    (video: HTMLVideoElement, model: any) => {
+      // Ensure video is ready
+      if (video.readyState === 4) {
+        setTimeout(() => {
+          model.detect(video).then((predictions: any) => {
+            // Play sound when an object is detected
+            if (predictions.length > 0) {
+              playDetectionSound();
+            }
+
+            drawBBox(predictions);
+          });
+
+          requestAnimationFrame(() => detection(video, model));
+        }, 100);
+      }
+    },
+    [playDetectionSound]
+  );
 
   const drawBBox = (predictions: any) => {
     const ctx = canvasRef.current?.getContext('2d') ?? null;
@@ -81,6 +98,11 @@ export default function Capture() {
 
   useEffect(() => {
     if (!videoRef.current || !canvasRef.current) return;
+
+    audioRef.current = new Audio(
+      'https://66e37eaa4d733664b5abd9ad--boisterous-crisp-b60fea.netlify.app/Detected.mp3'
+    );
+    audioRef.current.volume = 1;
 
     // Set TensorFlow.js backend
     tf.setBackend('webgl').then(() => {
