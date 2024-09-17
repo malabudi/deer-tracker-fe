@@ -9,15 +9,11 @@ const TestUseLogin: React.FC = () => {
   const [email, setEmail] = useState('email08@te978sting.com'); // Default valid email
   const [password, setPassword] = useState('teste4test'); // Default valid password
 
-  // Function to handle login, triggered by a button click
   const handleLogin = () => {
     login(email, password);
   };
 
-  useEffect(() => {
-    // Optional: Automatically attempt login on component mount
-    // login(email, password);
-  }, [login]);
+  useEffect(() => {}, [login]);
 
   return (
     <div>

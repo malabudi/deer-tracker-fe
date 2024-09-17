@@ -1,4 +1,3 @@
-// src/hooks/useLogin.ts
 import { useState } from 'react';
 import { User } from '@/interfaces/User';
 import { API_PATH } from '@/utils/constants';
