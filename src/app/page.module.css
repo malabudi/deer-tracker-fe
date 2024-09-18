@@ -36,6 +36,14 @@
   border: none;
 }
 
+.loginbtton {
+  background: #b077ff;
+  text-align: center;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
 .signbttncontainer {
   display: flex;
   justify-content: center;
@@ -50,14 +58,6 @@
 }
 
 .signupbtton {
-  width: 324px;
-  height: 48px;
-  background: #0c0811;
-  font-family: Cascadia Mono;
-  color: #ffffff;
-  font-size: 28px;
-  font-weight: 400;
-  line-height: 27.89px;
   text-align: center;
   border-radius: 5px;
   border: 2px solid #b077ff;
