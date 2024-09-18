@@ -27,6 +27,7 @@ export default function Home() {
           onClick={() => console.log('su Button clicked!')}
         />
       </div>
+      <BottomNav />
     </main>
   );
 }
