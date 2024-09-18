@@ -6,9 +6,37 @@ import styles from './page.module.css';
 import DeerCamera from '@/components/deer-camera/DeerCamera';
 import Loader from '@/components/loader/Loader';
 import BottomNav from '@/components/bottom-nav/BottomNav';
+import { cooldownTime } from '@/utils/constants';
+import useLocation from '@/hooks/useLocation';
+import { useMutation } from '@tanstack/react-query';
+import { createDeerSighting } from '@/hooks/apis/useDeerSighting';
 
 export default function Capture() {
   const [loading, setLoading] = useState(true);
+
+  const useCreateDeerSighting = useMutation({
+    mutationFn: createDeerSighting,
+    onSuccess: (res) => {
+      console.log('Deer Saved to System');
+      console.log(res);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  const userLocation = useLocation();
+
+  const SaveDeer = useCallback(() => {
+    if (userLocation) {
+      const curDate = new Date().toDateString();
+      useCreateDeerSighting.mutate({
+        longitude: userLocation.longitude,
+        latitude: userLocation.latitude,
+        timestamp: curDate,
+      });
+    }
+  }, [userLocation, useCreateDeerSighting]);
 
   // This line is where training models will be loaded
   // Loading the model comes with a Promise. Will proceed only when the promise is fulfilled.
@@ -20,6 +48,10 @@ export default function Capture() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // True = on cooldown, dont save
+  // False = not on cooldown, can save
+  const saveCooldownRef = useRef(false);
 
   const playDetectionSound = useCallback(() => {
     if (audioRef.current) {
@@ -39,6 +71,18 @@ export default function Capture() {
             // Play sound when an object is detected
             if (predictions.length > 0) {
               playDetectionSound();
+
+              // Set flag for any function during detection to trigger once and not loop
+              if (!saveCooldownRef.current) {
+                console.log('Detected: ', predictions);
+
+                SaveDeer();
+                saveCooldownRef.current = true; // Set true to avoid spamming API requests
+
+                setTimeout(() => {
+                  saveCooldownRef.current = false;
+                }, cooldownTime);
+              }
             }
 
             drawBBox(predictions);
@@ -48,7 +92,7 @@ export default function Capture() {
         }, 100);
       }
     },
-    [playDetectionSound]
+    [SaveDeer, playDetectionSound]
   );
 
   const drawBBox = (predictions: any) => {

@@ -1,61 +1,35 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
-interface UseLocationProps {
-  onLocationUpdate: (latitude: number, longitude: number) => void;
-}
+const useLocation = () => {
+  const [userLocation, setUserLocation] = useState<{
+    latitude: number | null;
+    longitude: number | null;
+  } | null>(null);
 
-const useLocation = ({ onLocationUpdate }: UseLocationProps) => {
-  const [latitude, setLatitude] = useState<number | null>(null);
-  const [longitude, setLongitude] = useState<number | null>(null);
-  const [callCount, setCallCount] = useState<number>(0);
-
-  // eslint-disable-next-line no-undef
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  const isDevelopment = process.env.NODE_ENV === 'development';
-
-  const fetchLocation = useCallback(() => {
-    if (
-      navigator.geolocation &&
-      (!isDevelopment || (isDevelopment && callCount < 10))
-    ) {
+  useEffect(() => {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setLatitude(latitude);
-          setLongitude(longitude);
-          onLocationUpdate(latitude, longitude);
-          if (isDevelopment) {
-            setCallCount((prevCount) => prevCount + 1);
-          }
+          setUserLocation({ latitude, longitude });
         },
         (error) => {
-          console.error('Error fetching geolocation:', error);
+          console.error('Error getting user location:', error);
+          setUserLocation({ latitude: null, longitude: null });
         },
         {
           enableHighAccuracy: true,
-          timeout: 5000,
+          timeout: 10000,
           maximumAge: 0,
         }
       );
+    } else {
+      console.log('Geolocation not supported on this browser.');
+      setUserLocation({ latitude: null, longitude: null });
     }
+  }, []);
 
-    if (isDevelopment && callCount >= 10 && intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-  }, [callCount, isDevelopment, onLocationUpdate]);
-
-  useEffect(() => {
-    intervalRef.current = setInterval(fetchLocation, 10000); // Fetch location every 10 seconds
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [fetchLocation]);
-
-  return { latitude, longitude, callCount };
+  return userLocation;
 };
 
 export default useLocation;
