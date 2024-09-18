@@ -9,6 +9,7 @@ export default function Home() {
     <main className={styles.mainpageContainer}>
       <div className={styles.headerconatiner}>
         <h1 className={styles.welcomecontainer}>Welcome to Deer Tracker!</h1>
+        <h1 className={styles.welcomecontainer}>Welcome to Deer Tracker!</h1>
       </div>
 
       <div className={styles.lgnbttncontainer}>
