@@ -40,8 +40,20 @@ a {
   text-decoration: none;
 }
 
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
+}
+
+button{
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 27.89px;
+  height: 48px;
+  width: 324px;
+  background: #0c0811;
+  font-family: Cascadia Mono;
+  color: #ffffff;
 }

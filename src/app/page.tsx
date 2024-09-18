@@ -1,19 +1,28 @@
-import BottomNav from '@/components/bottom-nav/BottomNav';
+'use client';
 import styles from './page.module.css';
+import ActiveButton from '@/components/button/ActiveButton';
+import InactiveButton from '@/components/button/InactiveButton';
 
 export default function Home() {
   return (
     <main className={styles.mainpageContainer}>
       <div className={styles.headerconatiner}>
-        <header className={styles.h1}>Welcome to Deer Tracker!</header>
+        <h1 className={styles.welcomecontainer}>Welcome to Deer Tracker!</h1>
       </div>
+
       <div className={styles.lgnbttncontainer}>
-        <button className={styles.loginbtton}>login</button>
+        <ActiveButton
+          text="Log in"
+          onClick={() => console.log('ln Button clicked!')}
+        />
       </div>
       <div className={styles.signbttncontainer}>
-        <button className={styles.signupbtton}>sign up</button>
+        <InactiveButton
+          text="Sign up"
+          onClick={() => console.log('su Button clicked!')}
+        />
       </div>
-      <BottomNav />
+      {/*<BottomNav />*/}
     </main>
   );
 }
