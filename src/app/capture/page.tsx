@@ -52,6 +52,30 @@ export default function Capture() {
     }
   }, [userLocation, useCreateDeerSighting]);
 
+  const useCreateDeerSighting = useMutation({
+    mutationFn: createDeerSighting,
+    onSuccess: (res) => {
+      console.log('Deer Saved to System');
+      console.log(res);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  const userLocation = useLocation();
+
+  const SaveDeer = useCallback(() => {
+    if (userLocation) {
+      const curDate = new Date().toDateString();
+      useCreateDeerSighting.mutate({
+        longitude: userLocation.longitude,
+        latitude: userLocation.latitude,
+        timestamp: curDate,
+      });
+    }
+  }, [userLocation, useCreateDeerSighting]);
+
   // This line is where training models will be loaded
   // Loading the model comes with a Promise. Will proceed only when the promise is fulfilled.
   const modelPromise = import('@tensorflow-models/coco-ssd').then(
