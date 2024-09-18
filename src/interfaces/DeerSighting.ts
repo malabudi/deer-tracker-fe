@@ -1,6 +1,5 @@
 export interface DeerSighting {
-  longitude: number;
-  latitude: number;
+  longitude: number | null | undefined;
+  latitude: number | null | undefined;
   timestamp: string;
-  image: null;
 }
