@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useState } from 'react';
 
 const useLocation = () => {
   const [userLocation, setUserLocation] = useState<{
@@ -6,7 +6,7 @@ const useLocation = () => {
     longitude: number | null;
   } | null>(null);
 
-  useEffect(() => {
+  const fetchLocation = useCallback(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -29,7 +29,7 @@ const useLocation = () => {
     }
   }, []);
 
-  return userLocation;
+  return { userLocation, fetchLocation };
 };
 
 export default useLocation;

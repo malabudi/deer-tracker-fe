@@ -13,6 +13,7 @@ import { createDeerSighting } from '@/hooks/apis/useDeerSighting';
 
 export default function Capture() {
   const [loading, setLoading] = useState(true);
+  const { userLocation, fetchLocation } = useLocation();
 
   const useCreateDeerSighting = useMutation({
     mutationFn: createDeerSighting,
@@ -25,18 +26,20 @@ export default function Capture() {
     },
   });
 
-  const userLocation = useLocation();
-
   const SaveDeer = useCallback(() => {
-    if (userLocation) {
+    fetchLocation();
+
+    // Only save if lat and long is non null
+    if (userLocation?.latitude && userLocation?.longitude) {
       const curDate = new Date().toDateString();
+
       useCreateDeerSighting.mutate({
         longitude: userLocation.longitude,
         latitude: userLocation.latitude,
         timestamp: curDate,
       });
     }
-  }, [userLocation, useCreateDeerSighting]);
+  }, [fetchLocation, userLocation, useCreateDeerSighting]);
 
   // This line is where training models will be loaded
   // Loading the model comes with a Promise. Will proceed only when the promise is fulfilled.
