@@ -1,15 +1,14 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Map from '@/components/map/Map';
+import useLocation from '@/hooks/useLocation';
 import useLocation from '@/hooks/useLocation';
 import BottomNav from '@/components/bottom-nav/BottomNav';
 
-export default function Maps() {
+const Maps: React.FC = () => {
   const { userLocation, fetchLocation } = useLocation();
-  useEffect(() => {
-    fetchLocation();
-  }, [fetchLocation]);
+  fetchLocation();
 
   const apiKey = ' '; // (grab form discord) a story has been created to find a better approach
 
@@ -25,4 +24,6 @@ export default function Maps() {
       <BottomNav />
     </>
   );
-}
+};
+
+export default Maps;
