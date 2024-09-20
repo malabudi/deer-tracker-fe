@@ -51,6 +51,7 @@ a {
 
 button {
   font-size: 28px;
+
   font-family: var(--font-mono);
 }
 .not-found-container {
