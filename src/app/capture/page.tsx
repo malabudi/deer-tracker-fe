@@ -26,9 +26,21 @@ export default function Capture() {
     },
   });
 
+  useEffect(() => {
+    console.log('Updated userLocation:', userLocation);
+    console.log(userLocation?.latitude);
+    console.log(userLocation?.longitude);
+  }, [userLocation]);
+
   const SaveDeer = useCallback(() => {
     if (userLocation?.latitude && userLocation?.longitude) {
       const curDate = new Date().toDateString();
+      console.log(
+        'Saving Sighting:',
+        curDate,
+        userLocation.longitude,
+        userLocation.latitude
+      );
 
       useCreateDeerSighting.mutate({
         longitude: userLocation.longitude,
@@ -38,7 +50,7 @@ export default function Capture() {
     } else {
       console.log('Location is invalid');
     }
-  }, [fetchLocation, userLocation, useCreateDeerSighting]);
+  }, [userLocation, useCreateDeerSighting]);
 
   // This line is where training models will be loaded
   // Loading the model comes with a Promise. Will proceed only when the promise is fulfilled.
@@ -139,6 +151,10 @@ export default function Capture() {
       console.error('Canvas context is not available.');
     }
   };
+
+  useEffect(() => {
+    fetchLocation();
+  }, [fetchLocation]);
 
   useEffect(() => {
     if (!videoRef.current || !canvasRef.current) return;
