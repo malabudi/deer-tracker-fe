@@ -2,11 +2,12 @@
 
 import React from 'react';
 import Map from '@/components/map/Map';
-import getLocation from '@/hooks/useLocation';
+import useLocation from '@/hooks/useLocation';
 import BottomNav from '@/components/bottom-nav/BottomNav';
 
 const Maps: React.FC = () => {
-  const userLocation = getLocation();
+  const { userLocation, fetchLocation } = useLocation();
+  fetchLocation();
 
   const apiKey = ' '; // (grab form discord) a story has been created to find a better approach
 
