@@ -32,6 +32,12 @@ export default function Capture() {
     console.log(userLocation?.longitude);
   }, [userLocation]);
 
+  useEffect(() => {
+    console.log('Updated userLocation:', userLocation);
+    console.log(userLocation?.latitude);
+    console.log(userLocation?.longitude);
+  }, [userLocation]);
+
   const SaveDeer = useCallback(() => {
     if (userLocation?.latitude && userLocation?.longitude) {
       const curDate = new Date().toDateString();
