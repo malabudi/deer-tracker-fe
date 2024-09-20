@@ -51,6 +51,7 @@ export default function Capture() {
       console.log('Location is invalid');
     }
   }, [userLocation, useCreateDeerSighting]);
+  const { userLocation, fetchLocation } = useLocation();
 
   const useCreateDeerSighting = useMutation({
     mutationFn: createDeerSighting,
@@ -73,6 +74,8 @@ export default function Capture() {
         latitude: userLocation.latitude,
         timestamp: curDate,
       });
+    } else {
+      console.log('Location is invalid');
     }
   }, [userLocation, useCreateDeerSighting]);
 
