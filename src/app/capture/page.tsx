@@ -38,7 +38,7 @@ export default function Capture() {
     } else {
       console.log('Location is invalid');
     }
-  }, [userLocation, useCreateDeerSighting]);
+  }, [fetchLocation, userLocation, useCreateDeerSighting]);
 
   // This line is where training models will be loaded
   // Loading the model comes with a Promise. Will proceed only when the promise is fulfilled.
