@@ -1,12 +1,12 @@
 import React from 'react';
-import styles from '@/app/page.module.css';
+import styles from '@/components/Inactive-Button/page.module.css';
 interface InactiveButtonProps {
   onClick?: () => void;
   text: string;
 }
 const InactiveButton = ({ onClick, text }: InactiveButtonProps) => {
   return (
-    <button className={styles.signupbtton} onClick={onClick}>
+    <button className={styles.signUpBtn} onClick={onClick}>
       {text}
     </button>
   );

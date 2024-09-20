@@ -5,13 +5,13 @@
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
-  --foreground-color: #B077FF;
-  --background-color: #EAE5F0;
+  --foreground-color: #b077ff;
+  --background-color: #eae5f0;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background-color: #1B1228;
+    --background-color: #1b1228;
   }
 }
 
@@ -40,20 +40,12 @@ a {
   text-decoration: none;
 }
 
-
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
 }
 
-button{
+button {
   font-size: 28px;
-  font-weight: 400;
-  line-height: 27.89px;
-  height: 48px;
-  width: 324px;
-  background: #0c0811;
-  font-family: Cascadia Mono;
-  color: #ffffff;
 }

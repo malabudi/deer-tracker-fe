@@ -12,8 +12,8 @@
 .welcomecontainer {
   width: 353px;
   height: 92px;
-  top: 233px;
-  left: 19px;
+  margin-top: 1px;
+  maring-left: 19px;
   gap: 0px;
   opacity: 0px;
   font-family: Cascadia Mono;
@@ -45,14 +45,6 @@
   border: none;
 }
 
-.loginbtton {
-  background: #b077ff;
-  text-align: center;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-}
-
 .signbttncontainer {
   display: flex;
   justify-content: center;
@@ -64,14 +56,6 @@
   gap: 10px;
   opacity: 1;
   border: none;
-}
-
-.signupbtton {
-
-  text-align: center;
-  border-radius: 5px;
-  border: 2px solid #b077ff;
-  cursor: pointer;
 }
 
 /* Mobile */

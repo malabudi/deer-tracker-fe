@@ -1,0 +1,11 @@
+.ActiveButton {
+  height: 48px;
+  width: 324px;
+  background: #b077ff;
+  text-align: center;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-family: Cascadia Mono;
+  color: #ffffff;
+}

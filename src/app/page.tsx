@@ -1,7 +1,8 @@
 'use client';
 import styles from './page.module.css';
-import ActiveButton from '@/components/button/ActiveButton';
-import InactiveButton from '@/components/button/InactiveButton';
+import { logIn, signUp } from '@/utils/constants';
+import ActiveButton from '@/components/Active-Button/ActiveButton';
+import InactiveButton from '@/components/Inactive-Button/InactiveButton';
 
 export default function Home() {
   return (
@@ -12,13 +13,13 @@ export default function Home() {
 
       <div className={styles.lgnbttncontainer}>
         <ActiveButton
-          text="Log in"
+          text={logIn}
           onClick={() => console.log('ln Button clicked!')}
         />
       </div>
       <div className={styles.signbttncontainer}>
         <InactiveButton
-          text="Sign up"
+          text={signUp}
           onClick={() => console.log('su Button clicked!')}
         />
       </div>
