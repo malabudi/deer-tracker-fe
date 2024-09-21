@@ -10,13 +10,6 @@
 }
 
 .welcomecontainer {
-  width: 353px;
-  height: 92px;
-  margin-top: 1px;
-  maring-left: 19px;
-  gap: 0px;
-  opacity: 0px;
-  font-family: Cascadia Mono;
   font-size: 50px;
   font-weight: 400;
   line-height: 46.48px;
@@ -32,30 +25,12 @@
   margin-top: 250px;
 }
 
-.lgnbttncontainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 100px;
-  width: 324px;
-  height: 48px;
-  padding: 1px;
-  gap: 10px;
-  opacity: 1;
-  border: none;
-}
-
+.lgnbttncontainer,
 .signbttncontainer {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 50px;
-  width: 324px;
-  height: 48px;
-  padding: 1px;
-  gap: 10px;
-  opacity: 1;
-  border: none;
 }
 
 /* Mobile */
