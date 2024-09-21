@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
 const containerStyle = {
   width: '100%',
@@ -13,19 +13,24 @@ interface MapComponentProps {
 }
 
 const Map: React.FC<MapComponentProps> = ({ latitude, longitude, apiKey }) => {
-  if (!apiKey) {
-    return <div>Error: Google Maps API key is not defined</div>;
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: apiKey,
+  });
+
+  if (loadError) {
+    return <div>Error loading Google Maps API: {loadError.message}</div>;
+  }
+
+  if (!isLoaded) {
+    return <div>Loading Google Maps...</div>;
   }
 
   return (
-    <LoadScript googleMapsApiKey={apiKey}>
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={{ lat: latitude || 0, lng: longitude || 0 }}
-        zoom={18}
-      ></GoogleMap>
-    </LoadScript>
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={{ lat: latitude || 0, lng: longitude || 0 }}
+      zoom={18}
+    ></GoogleMap>
   );
 };
-
 export default Map;
