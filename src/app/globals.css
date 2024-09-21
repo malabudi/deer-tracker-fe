@@ -19,7 +19,8 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: --font-mono;
+  font-family: var(--font-mono);
+  color: #ffffff;
 }
 
 html,
@@ -29,8 +30,8 @@ body {
 }
 
 body {
-  color: --foreground-color;
-  background: --background-color;
+  color: var(--foreground-color);
+  background: var(--background-color);
 
   margin: 0;
   padding: 0;
@@ -50,7 +51,7 @@ a {
 
 button {
   font-size: 28px;
-  font-family: --font-mono;
+  font-family: var(--font-mono);
 }
 .not-found-container {
   display: flex;
