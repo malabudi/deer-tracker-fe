@@ -1,23 +1,39 @@
 'use client';
 
 import React, { useState } from 'react';
-import useCreateUser from '@/hooks/useCreateUser'; // Adjust the path as needed
+import useCreateUser from '@/hooks/useCreateUser';
 
 const TestUseCreateUser: React.FC = () => {
-  const { userId, error, loading, success, createUser } = useCreateUser();
+  const { createUser } = useCreateUser(); // Hook without state management
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  // Handle user creation
-  const handleCreateUser = () => {
-    createUser({
-      username,
-      email,
-      password,
-      phone_number: phoneNumber,
-    });
+  const [loading, setLoading] = useState<boolean>(false); // Local loading state
+  const [error, setError] = useState<string | null>(null); // Local error state
+  const [success, setSuccess] = useState<string | null>(null); // Local success state
+  const [userId, setUserId] = useState<string | null>(null); // Store userId locally
+
+  const handleCreateUser = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      const data = await createUser({
+        username,
+        email,
+        password,
+        phone_number: phoneNumber,
+      });
+      setUserId(data.id); // Store the returned user ID
+      setSuccess('User added successfully!');
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -67,7 +83,7 @@ const TestUseCreateUser: React.FC = () => {
       {error && <p style={{ color: 'red' }}>Error: {error}</p>}
       {success && <p style={{ color: 'green' }}>{success}</p>}
 
-      {userId && ( // Show user ID if available
+      {userId && (
         <div>
           <h3>User Information:</h3>
           <p>User ID: {userId}</p>
