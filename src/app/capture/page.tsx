@@ -27,7 +27,7 @@ export default function Capture() {
   });
 
   const SaveDeer = useCallback(() => {
-    if (userLocation) {
+    if (userLocation?.latitude && userLocation?.longitude) {
       const curDate = new Date().toDateString();
 
       useCreateDeerSighting.mutate({
