@@ -7,13 +7,13 @@ import DeerCamera from '@/components/deer-camera/DeerCamera';
 import Loader from '@/components/loader/Loader';
 import BottomNav from '@/components/bottom-nav/BottomNav';
 import { cooldownTime } from '@/utils/constants';
-import useLocation from '@/hooks/useLocation';
 import { useMutation } from '@tanstack/react-query';
 import { createDeerSighting } from '@/hooks/apis/useDeerSighting';
+import { useLocationContext } from '@/context/LocationContext';
 
 export default function Capture() {
   const [loading, setLoading] = useState(true);
-  const { userLocation, fetchLocation } = useLocation();
+  const { userLocation } = useLocationContext();
 
   const useCreateDeerSighting = useMutation({
     mutationFn: createDeerSighting,
@@ -26,21 +26,9 @@ export default function Capture() {
     },
   });
 
-  useEffect(() => {
-    console.log('Updated userLocation:', userLocation);
-    console.log(userLocation?.latitude);
-    console.log(userLocation?.longitude);
-  }, [userLocation]);
-
   const SaveDeer = useCallback(() => {
     if (userLocation?.latitude && userLocation?.longitude) {
       const curDate = new Date().toDateString();
-      console.log(
-        'Saving Sighting:',
-        curDate,
-        userLocation.longitude,
-        userLocation.latitude
-      );
 
       useCreateDeerSighting.mutate({
         longitude: userLocation.longitude,
@@ -88,8 +76,6 @@ export default function Capture() {
 
               // Set flag for any function during detection to trigger once and not loop
               if (!saveCooldownRef.current) {
-                console.log('Detected: ', predictions);
-
                 SaveDeer();
                 saveCooldownRef.current = true; // Set true to avoid spamming API requests
 
@@ -153,10 +139,6 @@ export default function Capture() {
       console.error('Canvas context is not available.');
     }
   };
-
-  useEffect(() => {
-    fetchLocation();
-  }, [fetchLocation]);
 
   useEffect(() => {
     if (!videoRef.current || !canvasRef.current) return;

@@ -1,15 +1,12 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Map from '@/components/map/Map';
-import useLocation from '@/hooks/useLocation';
 import BottomNav from '@/components/bottom-nav/BottomNav';
+import { useLocationContext } from '@/context/LocationContext';
 
 export default function Maps() {
-  const { userLocation, fetchLocation } = useLocation();
-  useEffect(() => {
-    fetchLocation();
-  }, [fetchLocation]);
+  const { userLocation } = useLocationContext();
 
   const apiKey = ' '; // (grab form discord) a story has been created to find a better approach
 
