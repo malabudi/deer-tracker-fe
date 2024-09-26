@@ -19,6 +19,8 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  font-family: var(--font-mono);
+  color: #ffffff;
 }
 
 html,
@@ -28,8 +30,9 @@ body {
 }
 
 body {
-  color: --foreground-color;
-  background: --background-color;
+  color: var(--foreground-color);
+  background: var(--background-color);
+
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -48,4 +51,42 @@ a {
 
 button {
   font-size: 28px;
+  font-family: var(--font-mono);
+}
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.not-found-container h1 {
+  font-size: 5rem;
+  color: #b077ff;
+}
+
+.not-found-container h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #6c6a6a;
+}
+
+.not-found-container p {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.not-found-container a {
+  padding: 0.75rem 1.5rem;
+  background-color: #b077ff;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.not-found-container a:hover {
+  background-color: #661ccd;
 }

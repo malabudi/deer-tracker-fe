@@ -3,6 +3,7 @@ import styles from './page.module.css';
 import { logIn, signUp } from '@/utils/constants';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
 import InactiveButton from '@/components/Inactive-Button/InactiveButton';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -12,10 +13,12 @@ export default function Home() {
       </div>
 
       <div className={styles.lgnbttncontainer}>
-        <ActiveButton
-          text={logIn}
-          onClick={() => console.log('ln Button clicked!')}
-        />
+        <Link href="/Login" passHref>
+          <ActiveButton
+            text={logIn}
+            onClick={() => console.log('ln Button clicked!')}
+          />
+        </Link>
       </div>
       <div className={styles.signbttncontainer}>
         <InactiveButton
