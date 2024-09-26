@@ -1,0 +1,12 @@
+.InputField {
+  width: 324px;
+  height: 50px;
+  text-align: left;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 2px solid #e0e0e0;
+}
+.InputField:focus {
+  border-color: #b077ff;
+  outline: none;
+}
