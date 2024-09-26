@@ -22,16 +22,11 @@
 }
 
 .welcomeBackcontainer {
-  width: 353px;
-  height: 45px;
-  margin-top: 150px;
-  maring-left: 19px;
+  margin: 100px;
   text-align: center;
-  color: #ffffff;
-  margin-bottom: 100px;
 }
-.mainpageContainer {
-  background: #1b1228;
+
+.loginPageContainer {
   display: flex;
   flex-direction: column;
   align-items: center;

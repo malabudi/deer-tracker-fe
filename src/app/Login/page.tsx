@@ -12,7 +12,6 @@ const isValidEmail = (email: string) => {
 
 const LoginPage: React.FC = () => {
   // State for email and password
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -21,13 +20,6 @@ const LoginPage: React.FC = () => {
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
-
-    // Validate email on change
-    if (!isValidEmail(value)) {
-      setEmailError('Please enter a valid email address.');
-    } else {
-      setEmailError(null);
-    }
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,13 +31,11 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
 
     // Check validation on submit
-    if (!isValidEmail(email)) {
-      setEmailError('Please enter a valid email address.');
-    }
+    emailRegex.test(email);
   };
 
   return (
-    <main className={styles.mainpageContainer}>
+    <main className={styles.loginPageContainer}>
       <div className={styles.headerconatiner}>
         <h1 className={styles.welcomeBackcontainer}>Welcome Back!</h1>
       </div>
@@ -70,8 +60,6 @@ const LoginPage: React.FC = () => {
             onChange={handlePasswordChange}
             placeholder="Enter password"
           />
-
-          {/* Show password error */}
         </div>
 
         {/* Buttons for Login and Signup */}
