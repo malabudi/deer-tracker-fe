@@ -24,6 +24,10 @@
 .welcomeBackcontainer {
   margin: 100px;
   text-align: center;
+  font-size: 50px;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 100px;
 }
 
 .loginPageContainer {

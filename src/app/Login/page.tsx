@@ -6,15 +6,10 @@ import InputField from '@/components/Input-textbox/textbox';
 import styles from './page.module.css';
 import { emailRegex } from '@/utils/constants';
 
-const isValidEmail = (email: string) => {
-  return emailRegex.test(email);
-};
-
 const LoginPage: React.FC = () => {
   // State for email and password
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState<string | null>(null);
 
   // Handlers for input changes
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +44,6 @@ const LoginPage: React.FC = () => {
             onChange={handleEmailChange}
             placeholder="Enter email"
           />
-          {emailError && <p className={styles.Err}>{emailError}</p>}{' '}
         </div>
 
         <div className={styles.PasswordContainer}>

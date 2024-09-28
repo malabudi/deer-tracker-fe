@@ -12,7 +12,6 @@
 .welcomecontainer {
   font-size: 50px;
   text-align: center;
-  color: #ffffff;
   margin-bottom: 100px;
 }
 
@@ -22,38 +21,12 @@
   align-items: center;
   margin-top: 250px;
 }
-
-.lgnbttncontainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 100px;
-  width: 324px;
-  height: 48px;
-  padding: 1px;
-  gap: 10px;
-  opacity: 1;
-  border: none;
-}
-
+.lgnbttncontainer,
 .signbttncontainer {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
-  width: 324px;
-  height: 48px;
-  padding: 1px;
-  gap: 10px;
-  opacity: 1;
-  border: none;
-}
-
-.signupbtton {
-  text-align: center;
-  border-radius: 5px;
-  border: 2px solid #b077ff;
-  cursor: pointer;
+  margin-top: 100px;
 }
 
 /* Mobile */
