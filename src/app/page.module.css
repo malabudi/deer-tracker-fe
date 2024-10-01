@@ -10,7 +10,7 @@
 }
 
 .welcomecontainer {
-  font-size: 50px;
+  font-size: 3rem;
   text-align: center;
   margin-bottom: 100px;
 }
@@ -19,14 +19,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 250px;
+  margin-top: 6rem;
 }
 .lgnbttncontainer,
 .signbttncontainer {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
+  margin-top: 4rem;
 }
 
 /* Mobile */
@@ -39,5 +39,19 @@
 
   to {
     transform: rotate(0deg);
+  }
+}
+@media (min-width: 300px) and (max-width: 420px) {
+  .welcomecontainer {
+    margin: 1rem;
+    font-size: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 5rem;
+  }
+
+  .headerconatiner,
+  .lgnbttncontainer,
+  .signbttncontainer {
+    margin-top: 3rem;
   }
 }

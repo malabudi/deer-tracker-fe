@@ -1,0 +1,25 @@
+.InputField {
+  padding: 1rem 8rem;
+  text-align: left;
+  display: flex;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 2px solid #e0e0e0;
+}
+.InputField:focus {
+  border-color: #b077ff;
+  outline: none;
+}
+@media (min-width: 340px) and (max-width: 1000px) {
+  .InputField {
+    padding: 10px 90px;
+    text-align: left;
+    border-radius: 5px;
+    padding-left: 10px;
+    border: 2px solid #e0e0e0;
+  }
+  .InputField:focus {
+    border-color: #b077ff;
+    outline: none;
+  }
+}

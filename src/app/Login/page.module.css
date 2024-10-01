@@ -1,17 +1,21 @@
+.loginPageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
 .EmailContainer {
   align-items: center;
-  width: 324px;
-  height: 48px;
-  margin-bottom: 80px;
+  margin-bottom: 2rem;
 }
 .PasswordContainer {
   align-items: center;
-  width: 324px;
-  height: 48px;
-  margin-bottom: 140px;
+  margin-bottom: 4rem;
 }
 .label {
-  margin-bottom: 10px;
+  margin-bottom: 0.1rem;
   display: flex;
 }
 .span {
@@ -22,35 +26,108 @@
 }
 
 .welcomeBackcontainer {
-  margin: 100px;
-  text-align: center;
-  font-size: 50px;
-  text-align: center;
-  color: #ffffff;
-  margin-bottom: 100px;
+  margin: 3rem;
+  font-size: 3rem;
+  margin-bottom: 3rem;
 }
-
-.loginPageContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
-}
-
 .lgnbttncontainer,
 .signbttncontainer {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 1rem;
 }
 
 .Err {
   color: #e74c3c;
   font-size: 14px;
-  margin-top: 5px;
+  margin-top: 1rem;
   font-weight: bold;
   display: flex;
   align-items: center;
+}
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.Err.shake {
+  animation: shake 0.2s ease; /* Adjust duration and timing as needed */
+}
+
+@media (min-width: 300px) and (max-width: 380px) {
+  .loginPageContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .welcomeBackcontainer {
+    margin: 2rem;
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+  }
+  .EmailContainer {
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .PasswordContainer {
+    align-items: center;
+    margin-bottom: 120px;
+  }
+
+  .lgnbttncontainer,
+  .signbttncontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .loginPageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+  .welcomeBackcontainer {
+    text-align: center;
+    font-size: 40px;
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 10px;
+    margin-top: 150px;
+  }
+  .EmailContainer {
+    align-items: center;
+    width: 324px;
+    height: 48px;
+    margin-bottom: 100px;
+    margin-top: 100px;
+  }
+  .PasswordContainer {
+    align-items: center;
+    width: 324px;
+    height: 48px;
+    margin-bottom: 150px;
+  }
 }

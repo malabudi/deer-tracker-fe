@@ -1,12 +1,29 @@
 .ActiveButton {
-  padding: 15px 142px;
+  padding: 0.7rem 7.4rem;
   background: #b077ff;
   text-align: center;
   border-radius: 5px;
+  margin-top: 1rem;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 .ActiveButton:hover {
   background-color: #c69eff;
+}
+
+@media (min-width: 300px) and (max-width: 1000px) {
+  .ActiveButton {
+    padding: 12px 110px;
+    background: #b077ff;
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    top: 1 rem;
+    transition: background-color 0.3s ease;
+  }
+  .ActiveButton:hover {
+    background-color: #c69eff;
+  }
 }

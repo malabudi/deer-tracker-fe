@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@/components/Input-textbox/page.module.css';
+import styles from '@/components/textbox/page.module.css';
 
 interface InputFieldProps {
   value: string;
