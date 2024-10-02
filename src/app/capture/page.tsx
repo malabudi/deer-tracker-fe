@@ -18,11 +18,10 @@ export default function Capture() {
   const useCreateDeerSighting = useMutation({
     mutationFn: createDeerSighting,
     onSuccess: (res) => {
-      console.log('Deer Saved to System');
       console.log(res);
     },
     onError: (err) => {
-      console.log(err);
+      console.error(err);
     },
   });
 
@@ -36,7 +35,7 @@ export default function Capture() {
         timestamp: curDate,
       });
     } else {
-      console.log('Location is invalid');
+      console.error('Location is invalid');
     }
   }, [userLocation, useCreateDeerSighting]);
 

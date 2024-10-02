@@ -7,16 +7,7 @@ import {
   useCallback,
   useEffect,
 } from 'react';
-
-interface Location {
-  latitude: number | null;
-  longitude: number | null;
-}
-
-interface LocationContextType {
-  userLocation: Location | null;
-  fetchLocation: () => void;
-}
+import { Location, LocationContextType } from '@/interfaces/Location';
 
 const LocationContext = createContext<LocationContextType | undefined>(
   undefined

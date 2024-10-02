@@ -11,8 +11,7 @@ export const createDeerSighting = async (newSighting: DeerSighting) => {
   });
 
   if (!response.ok) {
-    console.log('error response:');
-    console.log(response.json());
+    console.error(response.json());
     throw new Error('Failed to create deer sighting');
   }
 
