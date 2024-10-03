@@ -7,80 +7,62 @@ import styles from './page.module.css';
 import { emailRegex } from '@/utils/constants';
 
 const LoginPage: React.FC = () => {
-  // State for email and password
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailerror, EsetError] = useState(' ');
-  const [passerror, PsetError] = useState(' ');
+  const [emailError, EsetError] = useState(' ');
+  const [passError, PsetError] = useState(' ');
   const [shakeEmail, setShakeEmail] = useState(false);
   const [shakePassword, setShakePassword] = useState(false);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
-    if (!value) {
-      EsetError('Email cannot be empty.');
-    } else if (!emailRegex.test(value)) {
-      EsetError('Invalid email address.');
-    } else {
-      EsetError(''); // Clear error if valid
-    }
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPassword(value);
-    if (!value) {
-      PsetError('Password cannot be empty.');
-    } else {
-      PsetError(''); // Clear error if valid
-    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Reset error messages
+
     EsetError('');
     PsetError('');
     setShakeEmail(false);
     setShakePassword(false);
 
-    let valid = true; // To track overall validity
+    let valid = true;
 
     if (!email) {
       EsetError('Email cannot be empty.');
-      setShakeEmail(true); // Trigger shake for email
+      setShakeEmail(true);
       valid = false;
     } else if (!emailRegex.test(email)) {
       EsetError('Invalid email address.');
-      setShakeEmail(true); // Trigger shake for email
+      setShakeEmail(true);
       valid = false;
     }
 
     if (!password) {
       PsetError('Password cannot be empty.');
-      setShakePassword(true); // Trigger shake for password
-
+      setShakePassword(true);
       valid = false;
     }
+
     if (!valid) {
-      // Reset shake state after animation duration
       setTimeout(() => {
         setShakeEmail(false);
         setShakePassword(false);
-      }, 100); // Match this duration with your CSS animation duration
+      }, 100);
       return;
     }
   };
 
   return (
     <main className={styles.loginPageContainer}>
-      <meta
-        name="viewport"
-        content="width=device-width, height=device-height, initial-scale=1"
-      ></meta>
       <div className={styles.headerconatiner}>
-        <h1 className={styles.welcomeBackcontainer}>Welcome Back!</h1>
+        <h1 className={styles.welcomeBack}>Welcome Back!</h1>
       </div>
       {/* Email and Password Input Fields */}
       <form onSubmit={handleSubmit} noValidate>
@@ -91,12 +73,10 @@ const LoginPage: React.FC = () => {
             value={email}
             onChange={handleEmailChange}
             placeholder="Enter email"
+            label="Password"
+            errorMessage={emailError}
+            shake={shakeEmail}
           />
-          {emailerror && (
-            <div className={`${styles.Err} ${shakeEmail ? styles.shake : ''}`}>
-              {emailerror}
-            </div>
-          )}
         </div>
 
         <div className={styles.PasswordContainer}>
@@ -106,14 +86,10 @@ const LoginPage: React.FC = () => {
             value={password}
             onChange={handlePasswordChange}
             placeholder="Enter password"
+            label="Password"
+            errorMessage={passError}
+            shake={shakePassword}
           />
-          {passerror && (
-            <div
-              className={`${styles.Err} ${shakePassword ? styles.shake : ''}`}
-            >
-              {passerror}
-            </div>
-          )}
         </div>
 
         {/* Buttons for Login and Signup */}

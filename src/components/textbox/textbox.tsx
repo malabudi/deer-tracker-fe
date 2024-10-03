@@ -8,6 +8,8 @@ interface InputFieldProps {
   type?: string;
   label?: string;
   disabled?: boolean;
+  errorMessage?: string; // New prop for error message
+  shake?: boolean; // New prop for shake animation
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -17,18 +19,24 @@ const InputField: React.FC<InputFieldProps> = ({
   type = 'text',
   label,
   disabled = false,
+  errorMessage = '', // Default to empty string
+  shake = false, // Default to false
 }) => {
   return (
     <div>
-      {label && <label>{label}</label>}
       <input
-        className={styles.InputField}
+        className={`${styles.InputField} ${shake ? styles.shake : ''}`} // Apply shake class if needed
         type={type}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
         disabled={disabled}
       />
+      {errorMessage && (
+        <div className={`${styles.Err} ${shake ? styles.shake : ''}`}>
+          {errorMessage}
+        </div>
+      )}
     </div>
   );
 };

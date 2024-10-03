@@ -10,6 +10,35 @@
   border-color: #b077ff;
   outline: none;
 }
+.Err {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 1rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.Err.shake {
+  animation: shake 0.2s ease; /* Adjust duration and timing as needed */
+}
 @media (min-width: 340px) and (max-width: 1000px) {
   .InputField {
     padding: 10px 90px;

@@ -9,10 +9,6 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <main className={styles.mainpageContainer}>
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-      ></meta>
       <div className={styles.headerconatiner}>
         <h1 className={styles.welcomecontainer}>Welcome to Deer Tracker!</h1>
       </div>
