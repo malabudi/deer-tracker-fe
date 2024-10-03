@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Map from '@/components/map/Map';
 import getLocation from '@/hooks/useLocation';
 import BottomNav from '@/components/bottom-nav/BottomNav';
+import useGetSightingsByLocation from '@/hooks/useGetSightingsByLocation';
 
 const Maps: React.FC = () => {
   const {
@@ -13,6 +14,15 @@ const Maps: React.FC = () => {
   } = getLocation({ onLocationUpdate: () => {} });
 
   const apiKey = ' '; // (grab form discord) a story has been created to find a better approach
+
+  // Hook for fetching deer sightings
+  const { getSightingsByLocation } = useGetSightingsByLocation();
+
+  // Testing fetching sightings with given coordinates (longitude, latitude, radius)
+  useEffect(() => {
+    // For testing purposes, calling the function with fixed coordinates.
+    getSightingsByLocation(-73.985428, 40.748817, 1); //Sould CONSOLE.LOG two locations, same response as this POSTMAN URL: http://localhost:5000/api/get_sightings_by_locationAndRadius?longitude=-73.985428&latitude=40.748817&radius=1
+  }, [getSightingsByLocation]);
 
   return (
     <>
