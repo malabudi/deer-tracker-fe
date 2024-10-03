@@ -17,7 +17,6 @@ const InputField: React.FC<InputFieldProps> = ({
   onChange,
   placeholder = '',
   type = 'text',
-  label,
   disabled = false,
   errorMessage = '', // Default to empty string
   shake = false, // Default to false

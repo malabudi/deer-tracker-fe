@@ -14,8 +14,8 @@
   align-items: center;
   margin-bottom: 4rem;
 }
-.label {
-  margin-bottom: 0.1rem;
+.TextBoxLabel {
+  margin-bottom: 0.2rem;
   display: flex;
 }
 .span {

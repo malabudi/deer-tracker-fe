@@ -67,7 +67,7 @@ const LoginPage: React.FC = () => {
       {/* Email and Password Input Fields */}
       <form onSubmit={handleSubmit} noValidate>
         <div className={styles.EmailContainer}>
-          <label className={styles.label}>Email</label>
+          <label className={styles.TextBoxLabel}>Email</label>
           <InputField
             type="email"
             value={email}
@@ -80,7 +80,7 @@ const LoginPage: React.FC = () => {
         </div>
 
         <div className={styles.PasswordContainer}>
-          <label className={styles.label}>Password</label>
+          <label className={styles.TextBoxLabel}>Password</label>
           <InputField
             type="password"
             value={password}
@@ -94,18 +94,12 @@ const LoginPage: React.FC = () => {
 
         {/* Buttons for Login and Signup */}
         <div className={styles.lgnbttncontainer}>
-          <ActiveButton
-            text="Log in"
-            onClick={() => console.log('Login button clicked!')}
-          />
+          <ActiveButton text="Log in" />
         </div>
         <span className={styles.span}>or</span>
 
         <div className={styles.signbttncontainer}>
-          <InactiveButton
-            text="Sign up"
-            onClick={() => console.log('Signup button clicked!')}
-          />
+          <InactiveButton text="Sign up" />
         </div>
       </form>
     </main>
