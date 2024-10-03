@@ -1,12 +1,20 @@
 .signUpBtn {
-  padding: 14px 135px;
-  text-align: center;
-  border-radius: 5px;
-  border: 2px solid #b077ff;
+  padding: 0.6rem 7rem;
+  border: 1px solid #b077ff;
   cursor: pointer;
+  margin-bottom: 1rem;
   background: #0c0811;
   transition: background-color 0.3s ease;
 }
 .signUpBtn:hover {
   background-color: #1a1a1a;
+}
+
+@media (min-width: 300px) and (max-width: 1000px) {
+  .signUpBtn {
+    padding: 10px 100px;
+    text-align: center;
+    border-radius: 5px;
+    border: 2px solid #b077ff;
+  }
 }

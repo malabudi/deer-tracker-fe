@@ -10,9 +10,8 @@
 }
 
 .welcomecontainer {
-  font-size: 50px;
+  font-size: 3rem;
   text-align: center;
-  color: #ffffff;
   margin-bottom: 100px;
 }
 
@@ -20,15 +19,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 250px;
+  margin-top: 6rem;
 }
-
 .lgnbttncontainer,
 .signbttncontainer {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 4rem;
 }
 
 /* Mobile */
@@ -41,5 +39,16 @@
 
   to {
     transform: rotate(0deg);
+  }
+}
+@media (min-width: 300px) and (max-width: 420px) {
+  .welcomecontainer {
+    margin: 3rem, 1rem, 5rem, 1rem;
+  }
+
+  .headerconatiner,
+  .lgnbttncontainer,
+  .signbttncontainer {
+    margin-top: 3rem;
   }
 }
