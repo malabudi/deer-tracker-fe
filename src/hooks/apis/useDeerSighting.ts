@@ -1,5 +1,6 @@
 import { API_PATH } from '@/utils/constants';
 import { DeerSighting } from '@/interfaces/DeerSighting';
+
 export const createDeerSighting = async (newSighting: DeerSighting) => {
   const response = await fetch(`${API_PATH}/deer_sightings`, {
     method: 'POST',
@@ -10,6 +11,7 @@ export const createDeerSighting = async (newSighting: DeerSighting) => {
   });
 
   if (!response.ok) {
+    console.error(response.json());
     throw new Error('Failed to create deer sighting');
   }
 

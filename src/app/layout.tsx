@@ -2,6 +2,8 @@ import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import React from 'react';
+import { ReactQueryProvider } from './react-query-provider';
+import { LocationProvider } from '@/context/LocationContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -32,12 +34,16 @@ export const viewport: Viewport = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <LocationProvider>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </LocationProvider>
+      </body>
     </html>
   );
 }
