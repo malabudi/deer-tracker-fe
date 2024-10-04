@@ -18,7 +18,7 @@ const InputField: React.FC<InputFieldProps> = ({
   placeholder = '',
   type = 'text',
   disabled = false,
-  errorMessage = '', // Default to empty string
+  errorMessage = [], // Default to empty string
   shake = false, // Default to false
 }) => {
   return (
@@ -32,7 +32,10 @@ const InputField: React.FC<InputFieldProps> = ({
         disabled={disabled}
       />
       {errorMessage && (
-        <div className={`${styles.Err} ${shake ? styles.shake : ''}`}>
+        <div
+          className={`${styles.Err} ${shake ? styles.shake : ''}`}
+          style={{ whiteSpace: 'pre-line' }}
+        >
           {errorMessage}
         </div>
       )}

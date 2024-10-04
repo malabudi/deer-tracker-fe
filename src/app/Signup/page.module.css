@@ -1,0 +1,134 @@
+.SignUpPageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.EmailContainer {
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.PasswordContainer {
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.ConfirmPasswordContainer {
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.TextBoxLabel {
+  margin-bottom: 0.2rem;
+  display: flex;
+}
+.span {
+  display: flex;
+  justify-content: center;
+}
+
+.CreateAccount {
+  margin: 3rem;
+  font-size: 3rem;
+  margin-bottom: 3rem;
+  margin-top: 2rem;
+}
+.lgnbttncontainer,
+.signbttncontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 300px) and (max-width: 380px) {
+  .SignUpPageContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+  }
+  .CreateAccount {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    margin-top: 5rem;
+  }
+  .EmailContainer {
+    align-items: center;
+  }
+  .PasswordContainer {
+    align-items: center;
+  }
+  .ConfirmPasswordContainer {
+    align-items: center;
+  }
+  .span {
+    margin-top: 1px;
+  }
+
+  .lgnbttncontainer {
+    margin-bottom: 3rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .SignUpPageContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+  }
+  .CreateAccount {
+    text-align: center;
+    font-size: 3rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+    margin-top: 2rem;
+  }
+  .EmailContainer {
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+  }
+  .PasswordContainer {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+  }
+  .ConfirmPasswordContainer {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+  }
+  .signbttncontainer {
+    margin-top: 4rem;
+  }
+}
+
+@media (min-width: 390px) and (max-width: 430px) {
+  .SignUpPageContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+  }
+  .CreateAccount {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+    margin-top: 2rem;
+  }
+  .EmailContainer {
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+  }
+  .PasswordContainer {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+  }
+  .ConfirmPasswordContainer {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+  }
+  .signbttncontainer {
+    margin-top: 4rem;
+  }
+}

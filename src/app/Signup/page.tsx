@@ -4,16 +4,25 @@ import ActiveButton from '@/components/Active-Button/ActiveButton';
 import InactiveButton from '@/components/Inactive-Button/InactiveButton';
 import InputField from '@/components/textbox/textbox';
 import styles from './page.module.css';
-import { emailRegex } from '@/utils/constants';
+import {
+  emailRegex,
+  minLengthRegex,
+  containsLetterRegex,
+  containsNumberRegex,
+  containsSpecialCharRegex,
+} from '@/utils/constants';
 import Link from 'next/link';
 
-const LoginPage: React.FC = () => {
+const SignupPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmpassword, setconfirmPassword] = useState('');
   const [emailError, EsetError] = useState(' ');
   const [passError, PsetError] = useState(' ');
+  const [ConfirmpassError, confirmPsetError] = useState(' ');
   const [shakeEmail, setShakeEmail] = useState(false);
   const [shakePassword, setShakePassword] = useState(false);
+  const [shakeConfirmPass, setShakeConfirmPassword] = useState(false);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -24,17 +33,26 @@ const LoginPage: React.FC = () => {
     const value = e.target.value;
     setPassword(value);
   };
+  const handleConfirmPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    setconfirmPassword(value);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     EsetError('');
     PsetError('');
+    confirmPsetError('');
     setShakeEmail(false);
     setShakePassword(false);
+    setShakeConfirmPassword(false);
 
     let valid = true;
 
+    // Validate email
     if (!email) {
       EsetError('Email cannot be empty.');
       setShakeEmail(true);
@@ -45,9 +63,41 @@ const LoginPage: React.FC = () => {
       valid = false;
     }
 
+    // Validate password
     if (!password) {
       PsetError('Password cannot be empty.');
       setShakePassword(true);
+      valid = false;
+    } else {
+      let errors = [];
+
+      if (!minLengthRegex.test(password)) {
+        errors.push('* must contain min. 8 characters');
+      }
+      if (!containsLetterRegex.test(password)) {
+        errors.push('* must contain min. 1 letter');
+      }
+      if (!containsNumberRegex.test(password)) {
+        errors.push('* must contain min. 1 number');
+      }
+      if (!containsSpecialCharRegex.test(password)) {
+        errors.push('* must contain min. 1 special character');
+      }
+      if (errors.length > 0) {
+        PsetError(errors.join('\n'));
+        setShakePassword(true);
+        valid = false;
+      }
+    }
+
+    // Validate confirm password
+    if (!confirmpassword) {
+      confirmPsetError('Please confirm password.');
+      setShakeConfirmPassword(true);
+      valid = false;
+    } else if (password !== confirmpassword) {
+      confirmPsetError('Passwords does not match.');
+      setShakeConfirmPassword(true);
       valid = false;
     }
 
@@ -55,15 +105,16 @@ const LoginPage: React.FC = () => {
       setTimeout(() => {
         setShakeEmail(false);
         setShakePassword(false);
+        setShakeConfirmPassword(false);
       }, 100);
       return;
     }
   };
 
   return (
-    <main className={styles.loginPageContainer}>
+    <main className={styles.SignUpPageContainer}>
       <div className={styles.headerconatiner}>
-        <h1 className={styles.welcomeBack}>Welcome Back!</h1>
+        <h1 className={styles.CreateAccount}>Create Account</h1>
       </div>
       {/* Email and Password Input Fields */}
       <form onSubmit={handleSubmit} noValidate>
@@ -93,15 +144,28 @@ const LoginPage: React.FC = () => {
           />
         </div>
 
+        <div className={styles.ConfirmPasswordContainer}>
+          <label className={styles.TextBoxLabel}>Confirm Password</label>
+          <InputField
+            type="password"
+            value={confirmpassword}
+            onChange={handleConfirmPasswordChange}
+            placeholder="confirm password"
+            label="Password"
+            errorMessage={ConfirmpassError}
+            shake={shakeConfirmPass}
+          />
+        </div>
+
         {/* Buttons for Login and Signup */}
-        <div className={styles.lgnbttncontainer}>
-          <ActiveButton text="Log in" />
+        <div className={styles.signbttncontainer}>
+          <InactiveButton text="Sign up" />
         </div>
         <span className={styles.span}>or</span>
 
-        <div className={styles.signbttncontainer}>
-          <Link href="/Signup" passHref>
-            <InactiveButton text="Sign up" />
+        <div className={styles.lgnbttncontainer}>
+          <Link href="/Login" passHref>
+            <ActiveButton text="Log in" />
           </Link>
         </div>
       </form>
@@ -109,4 +173,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;

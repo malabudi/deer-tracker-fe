@@ -1,6 +1,5 @@
 'use client';
 import styles from './page.module.css';
-
 import { logIn, signUp } from '@/utils/constants';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
 import InactiveButton from '@/components/Inactive-Button/InactiveButton';
@@ -22,10 +21,12 @@ export default function Home() {
         </Link>
       </div>
       <div className={styles.signbttncontainer}>
-        <InactiveButton
-          text={signUp}
-          onClick={() => console.log('su Button clicked!')}
-        />
+        <Link href="/Signup" passHref>
+          <InactiveButton
+            text={signUp}
+            onClick={() => console.log('su Button clicked!')}
+          />
+        </Link>
       </div>
     </main>
   );
