@@ -12,7 +12,6 @@ interface InputFieldProps {
   disabled?: boolean;
   errorMessage?: string; // New prop for error message
   shake?: boolean; // New prop for shake animation
-  errorType?: string; // New prop for error type
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -23,7 +22,6 @@ const InputField: React.FC<InputFieldProps> = ({
   disabled = false,
   errorMessage = [], // Default to empty string
   shake = false, // Default to false
-  errorType = '', // Default to empty string
 }) => {
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
 

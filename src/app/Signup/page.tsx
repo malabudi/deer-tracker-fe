@@ -134,7 +134,6 @@ const SignupPage: React.FC = () => {
             label="Password"
             errorMessage={emailError}
             shake={shakeEmail}
-            errorType="email" // Add errorType for confirm password field
           />
         </div>
 
@@ -148,7 +147,6 @@ const SignupPage: React.FC = () => {
             label="Password"
             errorMessage={passError}
             shake={shakePassword}
-            errorType="password" // Add errorType for confirm password field
           />
         </div>
 
