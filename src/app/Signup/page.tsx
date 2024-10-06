@@ -7,7 +7,8 @@ import styles from './page.module.css';
 import {
   emailRegex,
   minLengthRegex,
-  containsLetterRegex,
+  containsLowerLetterRegex,
+  containsUpperLetterRegex,
   containsNumberRegex,
   containsSpecialCharRegex,
 } from '@/utils/constants';
@@ -32,6 +33,31 @@ const SignupPage: React.FC = () => {
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPassword(value);
+
+    let errors = [];
+
+    if (!minLengthRegex.test(value)) {
+      errors.push('* must contain min. 8 characters');
+    }
+    if (!containsUpperLetterRegex.test(value)) {
+      errors.push('* must contain min. 1 upper case');
+    }
+    if (!containsLowerLetterRegex.test(value)) {
+      errors.push('* must contain min. 1 lower case');
+    }
+    if (!containsNumberRegex.test(value)) {
+      errors.push('* must contain min. 1 number');
+    }
+    if (!containsSpecialCharRegex.test(value)) {
+      errors.push('* must contain min. 1 special character');
+    }
+    if (errors.length > 0) {
+      PsetError(errors.join('\n'));
+      setShakePassword(true);
+    } else {
+      PsetError('');
+      setShakePassword(false);
+    }
   };
   const handleConfirmPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -68,26 +94,6 @@ const SignupPage: React.FC = () => {
       PsetError('Password cannot be empty.');
       setShakePassword(true);
       valid = false;
-    } else {
-      let errors = [];
-
-      if (!minLengthRegex.test(password)) {
-        errors.push('* must contain min. 8 characters');
-      }
-      if (!containsLetterRegex.test(password)) {
-        errors.push('* must contain min. 1 letter');
-      }
-      if (!containsNumberRegex.test(password)) {
-        errors.push('* must contain min. 1 number');
-      }
-      if (!containsSpecialCharRegex.test(password)) {
-        errors.push('* must contain min. 1 special character');
-      }
-      if (errors.length > 0) {
-        PsetError(errors.join('\n'));
-        setShakePassword(true);
-        valid = false;
-      }
     }
 
     // Validate confirm password
@@ -128,6 +134,7 @@ const SignupPage: React.FC = () => {
             label="Password"
             errorMessage={emailError}
             shake={shakeEmail}
+            errorType="email" // Add errorType for confirm password field
           />
         </div>
 
@@ -141,6 +148,7 @@ const SignupPage: React.FC = () => {
             label="Password"
             errorMessage={passError}
             shake={shakePassword}
+            errorType="password" // Add errorType for confirm password field
           />
         </div>
 

@@ -61,7 +61,7 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <main className={styles.loginPageContainer}>
+    <div className={styles.loginPageContainer}>
       <div className={styles.headerconatiner}>
         <h1 className={styles.welcomeBack}>Welcome Back!</h1>
       </div>
@@ -105,7 +105,7 @@ const LoginPage: React.FC = () => {
           </Link>
         </div>
       </form>
-    </main>
+    </div>
   );
 };
 

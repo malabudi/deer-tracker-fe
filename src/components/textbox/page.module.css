@@ -5,19 +5,46 @@
   border-radius: 5px;
   padding-left: 15px;
   border: 2px solid #e0e0e0;
+  position: relative;
 }
 .InputField:focus {
   border-color: #b077ff;
   outline: none;
 }
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.inputContainer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.toggleVisibilityButton {
+  position: absolute;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  margin-left: 17.6rem;
+}
+
 .Err {
   color: #e74c3c;
   font-size: 14px;
-  margin-top: 1rem;
+  margin-top: 0.25rem;
   font-weight: bold;
   display: flex;
   align-items: center;
 }
+
 @keyframes shake {
   0% {
     transform: translateX(0);
@@ -37,18 +64,15 @@
 }
 
 .Err.shake {
-  animation: shake 0.2s ease; /* Adjust duration and timing as needed */
+  animation: shake 0.2s ease;
 }
+
 @media (min-width: 340px) and (max-width: 1000px) {
   .InputField {
     padding: 10px 90px;
-    text-align: left;
-    border-radius: 5px;
     padding-left: 10px;
-    border: 2px solid #e0e0e0;
   }
-  .InputField:focus {
-    border-color: #b077ff;
-    outline: none;
+  .toggleVisibilityButton {
+    margin-left: 14rem;
   }
 }

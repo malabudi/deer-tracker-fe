@@ -41,17 +41,11 @@
 }
 
 @media (min-width: 300px) and (max-width: 380px) {
-  .SignUpPageContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100vh;
-  }
   .CreateAccount {
     text-align: center;
     font-size: 1.8rem;
     margin-bottom: 1rem;
-    margin-top: 5rem;
+    margin-top: 2rem;
   }
   .EmailContainer {
     align-items: center;
@@ -72,16 +66,9 @@
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
-  .SignUpPageContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100vh;
-  }
   .CreateAccount {
     text-align: center;
     font-size: 3rem;
-    color: #ffffff;
     margin-bottom: 10px;
     margin-top: 2rem;
   }
@@ -90,12 +77,10 @@
     margin-top: 4rem;
   }
   .PasswordContainer {
-    margin-bottom: 2rem;
-    margin-top: 2rem;
+    margin: 2rem 0;
   }
   .ConfirmPasswordContainer {
-    margin-bottom: 2rem;
-    margin-top: 2rem;
+    margin: 2rem 0;
   }
   .signbttncontainer {
     margin-top: 4rem;
@@ -103,32 +88,29 @@
 }
 
 @media (min-width: 390px) and (max-width: 430px) {
-  .SignUpPageContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100vh;
-  }
   .CreateAccount {
     text-align: center;
     font-size: 2.5rem;
-    color: #ffffff;
     margin-bottom: 10px;
     margin-top: 2rem;
   }
   .EmailContainer {
-    margin-bottom: 2rem;
-    margin-top: 4rem;
+    margin: 2rem 0;
   }
   .PasswordContainer {
-    margin-bottom: 2rem;
-    margin-top: 2rem;
+    margin: 2rem 0;
   }
   .ConfirmPasswordContainer {
-    margin-bottom: 2rem;
-    margin-top: 2rem;
+    margin: 2rem 0;
   }
   .signbttncontainer {
     margin-top: 4rem;
+  }
+}
+
+/* for surface duo only, yeah i guess its special like that :/ */
+@media (width: 540px) {
+  .CreateAccount {
+    text-align: center;
   }
 }

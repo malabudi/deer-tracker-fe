@@ -4,7 +4,8 @@ export const signUp = 'Sign up';
 export const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 //new user password validation
 export const minLengthRegex = /.{8,}/;
-export const containsLetterRegex = /[A-Za-z]/;
+export const containsUpperLetterRegex = /[A-Z]/;
+export const containsLowerLetterRegex = /[a-z]/;
 export const containsNumberRegex = /\d/;
 export const containsSpecialCharRegex = /[@$!%*#?&]/;
 
