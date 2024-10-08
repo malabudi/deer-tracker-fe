@@ -6,6 +6,7 @@
   padding-left: 15px;
   border: 2px solid #e0e0e0;
   position: relative;
+  width: 100%;
 }
 .InputField:focus {
   border-color: #b077ff;
@@ -34,6 +35,7 @@
   padding: 0;
   outline: none;
   margin-left: 17.6rem;
+  right: 0.5rem;
 }
 
 .Err {

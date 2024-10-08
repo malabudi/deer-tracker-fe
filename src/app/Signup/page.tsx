@@ -33,31 +33,6 @@ const SignupPage: React.FC = () => {
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPassword(value);
-
-    let errors = [];
-
-    if (!minLengthRegex.test(value)) {
-      errors.push('* must contain min. 8 characters');
-    }
-    if (!containsUpperLetterRegex.test(value)) {
-      errors.push('* must contain min. 1 upper case');
-    }
-    if (!containsLowerLetterRegex.test(value)) {
-      errors.push('* must contain min. 1 lower case');
-    }
-    if (!containsNumberRegex.test(value)) {
-      errors.push('* must contain min. 1 number');
-    }
-    if (!containsSpecialCharRegex.test(value)) {
-      errors.push('* must contain min. 1 special character');
-    }
-    if (errors.length > 0) {
-      PsetError(errors.join('\n'));
-      setShakePassword(true);
-    } else {
-      PsetError('');
-      setShakePassword(false);
-    }
   };
   const handleConfirmPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -105,6 +80,30 @@ const SignupPage: React.FC = () => {
       confirmPsetError('Passwords does not match.');
       setShakeConfirmPassword(true);
       valid = false;
+    }
+    let errors = [];
+
+    if (!minLengthRegex.test(password)) {
+      errors.push('* must contain min. 8 characters');
+    }
+    if (!containsUpperLetterRegex.test(password)) {
+      errors.push('* must contain min. 1 upper case');
+    }
+    if (!containsLowerLetterRegex.test(password)) {
+      errors.push('* must contain min. 1 lower case');
+    }
+    if (!containsNumberRegex.test(password)) {
+      errors.push('* must contain min. 1 number');
+    }
+    if (!containsSpecialCharRegex.test(password)) {
+      errors.push('* must contain min. 1 special character');
+    }
+    if (errors.length > 0) {
+      PsetError(errors.join('\n'));
+      setShakePassword(true);
+    } else {
+      PsetError('');
+      setShakePassword(false);
     }
 
     if (!valid) {
