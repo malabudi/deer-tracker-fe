@@ -1,19 +1,27 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import * as tf from '@tensorflow/tfjs';
 import styles from './page.module.css';
 import DeerCamera from '@/components/deer-camera/DeerCamera';
 import Loader from '@/components/loader/Loader';
 import BottomNav from '@/components/bottom-nav/BottomNav';
-import { cooldownTime } from '@/utils/constants';
+import { API_PATH, cooldownTime } from '@/utils/constants';
 import { useMutation } from '@tanstack/react-query';
 import { createDeerSighting } from '@/hooks/apis/useDeerSighting';
 import { useLocationContext } from '@/context/LocationContext';
+import axios from 'axios';
 
 export default function Capture() {
   const [loading, setLoading] = useState(true);
   const { userLocation } = useLocationContext();
+
+  // Define references to be used later
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // True = on cooldown, dont save
+  const saveCooldownRef = useRef(false);
 
   const useCreateDeerSighting = useMutation({
     mutationFn: createDeerSighting,
@@ -39,21 +47,6 @@ export default function Capture() {
     }
   }, [userLocation, useCreateDeerSighting]);
 
-  // This line is where training models will be loaded
-  // Loading the model comes with a Promise. Will proceed only when the promise is fulfilled.
-  const modelPromise = import('@tensorflow-models/coco-ssd').then(
-    (cocoSsd: any) => cocoSsd.load('lite_mobilenet_v2')
-  );
-
-  // Define references to be used later
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  // True = on cooldown, dont save
-  // False = not on cooldown, can save
-  const saveCooldownRef = useRef(false);
-
   const playDetectionSound = useCallback(() => {
     if (audioRef.current) {
       audioRef.current
@@ -62,80 +55,62 @@ export default function Capture() {
     }
   }, []);
 
-  // Utilities functions
-  const detection = useCallback(
-    (video: HTMLVideoElement, model: any) => {
-      // Ensure video is ready
-      if (video.readyState === 4) {
-        setTimeout(() => {
-          model.detect(video).then((predictions: any) => {
-            // Play sound when an object is detected
-            if (predictions.length > 0) {
-              playDetectionSound();
+  const detectDeer = useCallback(
+    async (base64Image: any) => {
+      try {
+        const response = await axios.post(`${API_PATH}/detect`, {
+          image: base64Image,
+        });
 
-              // Set flag for any function during detection to trigger once and not loop
-              if (!saveCooldownRef.current) {
-                SaveDeer();
-                saveCooldownRef.current = true; // Set true to avoid spamming API requests
+        const predictions = response.data;
+        console.log(predictions);
 
-                setTimeout(() => {
-                  saveCooldownRef.current = false;
-                }, cooldownTime);
-              }
-            }
+        // Process predictions
+        if (predictions && predictions.predictions.length > 0) {
+          // Play sound on detection
+          playDetectionSound();
 
-            drawBBox(predictions);
-          });
+          // Save deer sighting
+          if (!saveCooldownRef.current) {
+            SaveDeer();
+            saveCooldownRef.current = true;
+            setTimeout(() => {
+              saveCooldownRef.current = false;
+            }, cooldownTime);
+          }
 
-          requestAnimationFrame(() => detection(video, model));
-        }, 100);
+          // Draw bounding boxes, etc. based on predictions
+          drawPredictions(predictions);
+        }
+      } catch (err: any) {
+        console.error(
+          'Error during detection:',
+          err.response?.data || err.message
+        );
       }
     },
     [SaveDeer, playDetectionSound]
   );
 
-  const drawBBox = (predictions: any) => {
-    const ctx = canvasRef.current?.getContext('2d') ?? null;
-
+  const drawPredictions = (predictions: any) => {
+    const ctx = canvasRef.current?.getContext('2d');
     if (ctx) {
-      ctx?.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      predictions.predictions.forEach((prediction: any) => {
+        const { bbox, class: className, confidence } = prediction; // Adjust based on actual response structure
 
-      // Grab the scale of x and y depending on viewport
-      const videoWidth = videoRef.current?.videoWidth ?? 0;
-      const videoHeight = videoRef.current?.videoHeight ?? 0;
-      const scaleX = (canvasRef.current?.width ?? 0) / videoWidth;
-      const scaleY = (canvasRef.current?.height ?? 0) / videoHeight;
-
-      ctx.strokeStyle = 'red';
-      ctx.lineWidth = 2;
-      ctx.textBaseline = 'bottom';
-      ctx.font = '12px sans-serif';
-
-      predictions.forEach((prediction: any) => {
-        const [x, y, width, height] = prediction.bbox;
-
-        const scaledX = x * scaleX;
-        const scaledY = y * scaleY;
-        const scaledWidth = width * scaleX;
-        const scaledHeight = height * scaleY;
-
-        const predText = `${prediction.class} ${(prediction.score * 100).toFixed(2)}%`;
-        const textWidth = ctx.measureText(predText).width;
-        const textHeight = parseInt(ctx.font, 10);
-
-        ctx.strokeRect(scaledX, scaledY, scaledWidth, scaledHeight);
-        ctx.fillStyle = '#F00';
-        ctx.fillRect(
-          scaledX - ctx.lineWidth / 2,
-          scaledY,
-          textWidth + ctx.lineWidth,
-          -textHeight
+        // Draw bounding box and label
+        const [x, y, width, height] = bbox; // Ensure bbox structure matches what Roboflow returns
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, width, height);
+        ctx.fillStyle = 'red';
+        ctx.fillText(
+          `${className} (${(confidence * 100).toFixed(2)}%)`,
+          x,
+          y > 10 ? y - 5 : 10
         );
-        ctx.fillStyle = '#FFF';
-        ctx.fillText(predText, scaledX, scaledY);
       });
-    } else {
-      console.error('Canvas context is not available.');
     }
   };
 
@@ -147,45 +122,60 @@ export default function Capture() {
     );
     audioRef.current.volume = 1;
 
-    // Set TensorFlow.js backend
-    tf.setBackend('webgl').then(() => {
-      // Define the constraints for the mediaDevices
-      const constraints = {
-        audio: false,
-        video: { facingMode: 'environment' },
-      };
+    const constraints = {
+      audio: false,
+      video: { facingMode: 'environment' },
+    };
 
-      // Check user's browser media capabilities
-      if (navigator.mediaDevices.getUserMedia) {
-        const camPromise = navigator.mediaDevices
-          .getUserMedia(constraints)
-          .then((stream) => {
+    // Check user's browser media capabilities
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then((stream) => {
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+            videoRef.current.play();
+          }
+
+          // Detect deer frame by frame within the camera
+          const detectFrame = () => {
             if (videoRef.current) {
-              videoRef.current.srcObject = stream;
-              return new Promise(
-                (resolve) => (videoRef.current!.onloadedmetadata = resolve)
+              // Capture frame from video
+              const canvas = document.createElement('canvas');
+              canvas.width = videoRef.current.videoWidth;
+              canvas.height = videoRef.current.videoHeight;
+              const ctx = canvas.getContext('2d');
+
+              ctx?.drawImage(
+                videoRef.current,
+                0,
+                0,
+                canvas.width,
+                canvas.height
               );
-            }
-          })
-          .catch((err) => {
-            // TODO: Display some message to the UI to activiate camera
-            console.log(err + ' => you must activate your camera.');
-          });
 
-        // Start detection once both the model and the camera are ready.
-        Promise.all([modelPromise, camPromise])
-          .then((values) => {
-            if (videoRef.current) {
-              detection(videoRef.current, values[0]);
-              setLoading(false);
+              // grab image and let detectDeer convert fully to Base64
+              const imageData = canvas.toDataURL('image/jpeg', 1.0);
+              const base64Image = imageData.split(',')[1];
+
+              if (base64Image) detectDeer(base64Image);
             }
-          })
-          .catch((error) => console.error(error));
-      } else {
-        alert("Your browser doesn't support this function.");
-      }
-    });
-  }, [detection, modelPromise]);
+
+            requestAnimationFrame(detectFrame);
+          };
+
+          detectFrame(); // Start frame detection
+        })
+        .catch((err) => {
+          console.error('Error accessing camera:', err);
+          alert('Error accessing camera: You need to allow camera access.');
+        });
+    } else {
+      alert("Your browser doesn't support camera access.");
+    }
+
+    setLoading(false); // Set loading to false once video starts
+  }, [detectDeer]);
 
   return (
     <div className={styles.pageWrapper}>

@@ -14,7 +14,7 @@ export default function Home() {
       </div>
 
       <div className={styles.lgnbttncontainer}>
-        <Link href="/Login" passHref>
+        <Link href="/login" passHref>
           <ActiveButton
             text={logIn}
             onClick={() => console.log('ln Button clicked!')}

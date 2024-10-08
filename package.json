@@ -17,6 +17,7 @@
     "@tanstack/react-query-devtools": "^5.56.2",
     "@tensorflow-models/coco-ssd": "^2.2.3",
     "@tensorflow/tfjs": "^4.20.0",
+    "axios": "^1.7.7",
     "eslint-config-prettier": "^9.1.0",
     "install": "^0.13.0",
     "lint-staged": "^15.2.7",
