@@ -33,7 +33,7 @@ export const options: NextAuthOptions = {
             if (!signupRes.ok) {
               const errorMessage = await signupRes.text();
               console.error('Signup API error:', errorMessage);
-              throw new Error('Failed to sign up - ' + errorMessage);
+              throw new Error('Failed to sign up');
             }
 
             const newUser = await signupRes.json();
@@ -53,7 +53,9 @@ export const options: NextAuthOptions = {
             });
 
             if (!loginRes.ok) {
-              return null;
+              const errorMessage = await loginRes.text();
+              console.error('Signup API error:', errorMessage);
+              throw new Error('Failed to log in');
             }
 
             const user = await loginRes.json();
