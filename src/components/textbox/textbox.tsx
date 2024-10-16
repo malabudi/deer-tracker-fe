@@ -19,6 +19,7 @@ const InputField: React.FC<InputFieldProps> = ({
   onChange,
   placeholder = '',
   type = 'text',
+  label,
   disabled = false,
   errorMessage = [], // Default to empty string
   shake = false, // Default to false
@@ -37,6 +38,7 @@ const InputField: React.FC<InputFieldProps> = ({
       {' '}
       {/* Wrapper for input and button */}
       <div className={styles.inputContainer}>
+        <label className={styles.TextBoxLabel}>{label}</label>
         <input
           className={`${styles.InputField} ${shake ? styles.shake : ''}`}
           type={inputType}

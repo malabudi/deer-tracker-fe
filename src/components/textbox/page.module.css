@@ -1,5 +1,5 @@
 .InputField {
-  padding: 1rem 8rem;
+  padding: 1rem 0;
   text-align: left;
   display: flex;
   border-radius: 5px;
@@ -7,7 +7,14 @@
   border: 2px solid #e0e0e0;
   position: relative;
   width: 100%;
+  font-size: 1rem;
 }
+
+.TextBoxLabel {
+  margin-bottom: 0.2rem;
+  display: flex;
+}
+
 .InputField:focus {
   border-color: #b077ff;
   outline: none;
@@ -24,7 +31,8 @@
   position: relative;
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: left;
+  flex-direction: column;
 }
 
 .toggleVisibilityButton {
@@ -32,10 +40,9 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 0;
   outline: none;
-  margin-left: 17.6rem;
-  right: 0.5rem;
+  margin-left: 87%;
+  margin-top: 2.2rem;
 }
 
 .Err {
@@ -76,5 +83,10 @@
   }
   .toggleVisibilityButton {
     margin-left: 14rem;
+  }
+
+  .toggleVisibilityButton {
+    margin-left: 87%;
+    margin-top: 1.6rem;
   }
 }

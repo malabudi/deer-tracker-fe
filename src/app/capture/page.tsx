@@ -9,7 +9,7 @@ import BottomNav from '@/components/bottom-nav/BottomNav';
 import { cooldownTime } from '@/utils/constants';
 import { useMutation } from '@tanstack/react-query';
 import { createDeerSighting } from '@/hooks/apis/useDeerSighting';
-import { useLocationContext } from '@/context/LocationContext';
+import { useLocationContext } from '@/context/LocationProvider';
 
 export default function Capture() {
   const [loading, setLoading] = useState(true);
