@@ -23,7 +23,7 @@ const getSightingsByLocation = async (
       throw new Error(data.error || 'Something went wrong');
     }
 
-    console.log('Sightings fetched successfully:', data);
+    console.log('Sightings fetched successfully from Backend:', data);
     return data;
   } catch (err: any) {
     console.error('Error fetching sightings:', err.message);
