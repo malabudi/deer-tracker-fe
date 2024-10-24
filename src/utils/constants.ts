@@ -11,3 +11,6 @@ export const containsSpecialCharRegex = /[@$!%*#?&]/;
 
 // cooldown time to save deer in ms (1000ms = 1s)
 export const cooldownTime = 60000;
+
+// cooldown for ever box highlight
+export const detectCooldown = 5000;

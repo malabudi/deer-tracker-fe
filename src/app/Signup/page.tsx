@@ -13,8 +13,9 @@ import {
   containsSpecialCharRegex,
 } from '@/utils/constants';
 import Link from 'next/link';
-import { useSession, signIn } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useRedirectIfAuthed } from '@/hooks/useRedirect';
 
 const SignupPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -26,15 +27,10 @@ const SignupPage: React.FC = () => {
   const [shakeEmail, setShakeEmail] = useState(false);
   const [shakePassword, setShakePassword] = useState(false);
   const [shakeConfirmPass, setShakeConfirmPassword] = useState(false);
-
-  const { data: session } = useSession();
   const router = useRouter();
 
   // if user is already authenticated, redirect to settings page
-  if (session) {
-    router.push('/settings');
-    return null;
-  }
+  useRedirectIfAuthed('/settings');
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
