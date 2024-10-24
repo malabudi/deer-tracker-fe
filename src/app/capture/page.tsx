@@ -119,8 +119,6 @@ export default function Capture() {
       });
 
       const predictions = response.data;
-      console.log('detection response:');
-      console.log(predictions);
 
       // Process predictions
       if (predictions && predictions.predictions.length > 0) {
