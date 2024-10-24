@@ -4,8 +4,11 @@ import { logIn, signUp } from '@/utils/constants';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
 import InactiveButton from '@/components/Inactive-Button/InactiveButton';
 import Link from 'next/link';
+import { useRedirectIfAuthed } from '@/hooks/useRedirect';
 
 export default function Home() {
+  useRedirectIfAuthed('/settings');
+
   return (
     <main className={styles.mainpageContainer}>
       <div className={styles.headerconatiner}>

@@ -5,11 +5,12 @@ import styles from './page.module.css';
 import DeerCamera from '@/components/deer-camera/DeerCamera';
 import Loader from '@/components/loader/Loader';
 import BottomNav from '@/components/bottom-nav/BottomNav';
-import { API_PATH, cooldownTime } from '@/utils/constants';
+import { API_PATH, cooldownTime, detectCooldown } from '@/utils/constants';
 import { useMutation } from '@tanstack/react-query';
 import { createDeerSighting } from '@/hooks/apis/useDeerSighting';
-import { useLocationContext } from '@/context/LocationContext';
+import { useLocationContext } from '@/context/LocationProvider';
 import axios from 'axios';
+import { throttle } from 'lodash';
 
 export default function Capture() {
   const [loading, setLoading] = useState(true);
@@ -20,7 +21,7 @@ export default function Capture() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // True = on cooldown, dont save
+  // Cooldowns
   const saveCooldownRef = useRef(false);
 
   const useCreateDeerSighting = useMutation({
@@ -55,64 +56,117 @@ export default function Capture() {
     }
   }, []);
 
-  const detectDeer = useCallback(
-    async (base64Image: any) => {
-      try {
-        const response = await axios.post(`${API_PATH}/detect`, {
-          image: base64Image,
-        });
-
-        const predictions = response.data;
-        console.log(predictions);
-
-        // Process predictions
-        if (predictions && predictions.predictions.length > 0) {
-          // Play sound on detection
-          playDetectionSound();
-
-          // Save deer sighting
-          if (!saveCooldownRef.current) {
-            SaveDeer();
-            saveCooldownRef.current = true;
-            setTimeout(() => {
-              saveCooldownRef.current = false;
-            }, cooldownTime);
-          }
-
-          // Draw bounding boxes, etc. based on predictions
-          drawPredictions(predictions);
-        }
-      } catch (err: any) {
-        console.error(
-          'Error during detection:',
-          err.response?.data || err.message
-        );
-      }
-    },
-    [SaveDeer, playDetectionSound]
-  );
-
   const drawPredictions = (predictions: any) => {
-    const ctx = canvasRef.current?.getContext('2d');
+    const ctx = canvasRef.current?.getContext('2d') ?? null;
+
     if (ctx) {
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+      // Grab the scale of x and y depending on viewport
+      const videoWidth = videoRef.current?.videoWidth ?? 0;
+      const videoHeight = videoRef.current?.videoHeight ?? 0;
+      const scaleX = (canvasRef.current?.width ?? 0) / videoWidth;
+      const scaleY = (canvasRef.current?.height ?? 0) / videoHeight;
+
+      ctx.strokeStyle = 'red';
+      ctx.lineWidth = 2;
+      ctx.textBaseline = 'bottom';
+      ctx.font = '12px sans-serif';
+
       predictions.predictions.forEach((prediction: any) => {
-        const { bbox, class: className, confidence } = prediction; // Adjust based on actual response structure
+        // parse each prediction element for the box dimensions
+        const {
+          class: className,
+          confidence,
+          x,
+          y,
+          width,
+          height,
+        } = prediction;
+
+        // Scale position and dimension of the box
+        const scaledX = x * scaleX;
+        const scaledY = y * scaleY;
+        const scaledWidth = width * scaleX;
+        const scaledHeight = height * scaleY;
+
+        // Prediction text/accuracy mainly used for debuggging, this will be hidden in prod
+        const predText = `${className} ${(confidence * 100).toFixed(2)}%`;
+        const textWidth = ctx.measureText(predText).width;
+        const textHeight = parseInt(ctx.font, 10);
 
         // Draw bounding box and label
-        const [x, y, width, height] = bbox; // Ensure bbox structure matches what Roboflow returns
-        ctx.strokeStyle = 'red';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(x, y, width, height);
-        ctx.fillStyle = 'red';
-        ctx.fillText(
-          `${className} (${(confidence * 100).toFixed(2)}%)`,
-          x,
-          y > 10 ? y - 5 : 10
+        ctx.strokeRect(scaledX, scaledY, scaledWidth, scaledHeight);
+        ctx.fillStyle = '#F00';
+        ctx.fillRect(
+          scaledX - ctx.lineWidth / 2,
+          scaledY,
+          textWidth + ctx.lineWidth,
+          -textHeight
         );
+        ctx.fillStyle = '#FFF';
+        ctx.fillText(predText, scaledX, scaledY);
       });
+    } else {
+      console.error('Canvas context is not available.');
     }
   };
+
+  const detectDeer = throttle(async (base64Image: any) => {
+    try {
+      const response = await axios.post(`${API_PATH}/detect`, {
+        image: base64Image,
+      });
+
+      const predictions = response.data;
+      console.log('detection response:');
+      console.log(predictions);
+
+      // Process predictions
+      if (predictions && predictions.predictions.length > 0) {
+        playDetectionSound();
+
+        // Save deer sighting
+        if (!saveCooldownRef.current) {
+          SaveDeer();
+
+          // save cooldown
+          saveCooldownRef.current = true;
+          setTimeout(() => {
+            saveCooldownRef.current = false;
+          }, cooldownTime);
+        }
+
+        // Draw box based on predictions
+        drawPredictions(predictions);
+      }
+    } catch (err: any) {
+      console.error(
+        'Error during detection:',
+        err.response?.data || err.message
+      );
+    }
+  }, detectCooldown);
+
+  const detectFrame = useCallback(() => {
+    if (videoRef.current) {
+      // Capture frame from video
+      const canvas = document.createElement('canvas');
+      canvas.width = videoRef.current.videoWidth;
+      canvas.height = videoRef.current.videoHeight;
+      const ctx = canvas.getContext('2d');
+
+      ctx?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+
+      // grab image and let detectDeer convert fully to Base64
+      const imageData = canvas.toDataURL('image/jpeg', 1.0);
+      const base64Image = imageData.split(',')[1];
+
+      if (base64Image) detectDeer(base64Image);
+    }
+
+    requestAnimationFrame(detectFrame);
+  }, [detectDeer]);
 
   useEffect(() => {
     if (!videoRef.current || !canvasRef.current) return;
@@ -137,34 +191,8 @@ export default function Capture() {
             videoRef.current.play();
           }
 
-          // Detect deer frame by frame within the camera
-          const detectFrame = () => {
-            if (videoRef.current) {
-              // Capture frame from video
-              const canvas = document.createElement('canvas');
-              canvas.width = videoRef.current.videoWidth;
-              canvas.height = videoRef.current.videoHeight;
-              const ctx = canvas.getContext('2d');
-
-              ctx?.drawImage(
-                videoRef.current,
-                0,
-                0,
-                canvas.width,
-                canvas.height
-              );
-
-              // grab image and let detectDeer convert fully to Base64
-              const imageData = canvas.toDataURL('image/jpeg', 1.0);
-              const base64Image = imageData.split(',')[1];
-
-              if (base64Image) detectDeer(base64Image);
-            }
-
-            requestAnimationFrame(detectFrame);
-          };
-
-          detectFrame(); // Start frame detection
+          // Call detect deer frame by frame within the camera
+          detectFrame();
         })
         .catch((err) => {
           console.error('Error accessing camera:', err);
@@ -175,7 +203,7 @@ export default function Capture() {
     }
 
     setLoading(false); // Set loading to false once video starts
-  }, [detectDeer]);
+  }, [detectDeer, detectFrame]);
 
   return (
     <div className={styles.pageWrapper}>

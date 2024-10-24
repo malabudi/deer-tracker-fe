@@ -64,16 +64,5 @@ However if you want the lint to fix simple issues for you, run this command.
 yarn lint:fix
 ```
 
-## How to create and import your own deer model
-
-Follow these steps below to export your own model
-
-1. To create a model visit [here](https://teachablemachine.withgoogle.com/train/image)
-
-2. Rename the first class to "Deer", and the second to "Background"
-
-3. Upload all images in the "new" folder to the deer class, and all images in the "background" folder to the background class. Link to [repo](https://github.com/malabudi/DeerPics)
-
-4. Train the model (Only adjust the number of Epochs and make sure the trend for loss is negative, while accuracy is postive, start at 10 Epochs) 
-
-5. Export the Tensorflow.js model and download the zip file. Move the contents of the three files within the zip into the deer-model folder
+## Envrionment Variables
+Please refer to our private chat for what environment variables should be stored.
