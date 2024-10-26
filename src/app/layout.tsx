@@ -3,7 +3,8 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import React from 'react';
 import { ReactQueryProvider } from './react-query-provider';
-import { LocationProvider } from '@/context/LocationContext';
+import { LocationProvider } from '@/context/LocationProvider';
+import AuthProvider from '@/context/AuthProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -40,9 +41,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <LocationProvider>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
-        </LocationProvider>
+        <AuthProvider>
+          <LocationProvider>
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+          </LocationProvider>
+        </AuthProvider>
       </body>
     </html>
   );

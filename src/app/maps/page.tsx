@@ -3,10 +3,10 @@
 import React from 'react';
 import Map from '@/components/map/Map';
 import BottomNav from '@/components/bottom-nav/BottomNav';
-import { useLocationContext } from '@/context/LocationContext';
 import { useQuery } from '@tanstack/react-query';
 import getSightingsByLocation from '@/hooks/getSightingsByLocation';
 import Loader from '@/components/loader/Loader';
+import { useLocationContext } from '@/context/LocationProvider';
 
 export default function Maps() {
   const { userLocation } = useLocationContext();

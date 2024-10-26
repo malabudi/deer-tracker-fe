@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '@/components/textbox/page.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 interface InputFieldProps {
   value: string;
@@ -17,22 +19,52 @@ const InputField: React.FC<InputFieldProps> = ({
   onChange,
   placeholder = '',
   type = 'text',
+  label,
   disabled = false,
-  errorMessage = '', // Default to empty string
+  errorMessage = [], // Default to empty string
   shake = false, // Default to false
 }) => {
+  const [isPasswordVisible, setPasswordVisibility] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisibility(!isPasswordVisible);
+  };
+
+  // Determine the input type dynamically
+  const inputType = type === 'password' && isPasswordVisible ? 'text' : type;
+
   return (
-    <div>
-      <input
-        className={`${styles.InputField} ${shake ? styles.shake : ''}`} // Apply shake class if needed
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        disabled={disabled}
-      />
+    <div className={styles.inputWrapper}>
+      {' '}
+      {/* Wrapper for input and button */}
+      <div className={styles.inputContainer}>
+        <label className={styles.TextBoxLabel}>{label}</label>
+        <input
+          className={`${styles.InputField} ${shake ? styles.shake : ''}`}
+          type={inputType}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          disabled={disabled}
+        />
+        {type === 'password' && (
+          <button
+            type="button"
+            className={styles.toggleVisibilityButton}
+            onClick={togglePasswordVisibility}
+          >
+            <FontAwesomeIcon
+              icon={!isPasswordVisible ? faEyeSlash : faEye}
+              size="sm"
+            />
+          </button>
+        )}
+      </div>
       {errorMessage && (
-        <div className={`${styles.Err} ${shake ? styles.shake : ''}`}>
+        <div
+          className={`${styles.Err} ${shake ? styles.shake : ''}`}
+          style={{ whiteSpace: 'pre-line' }}
+        >
           {errorMessage}
         </div>
       )}

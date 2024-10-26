@@ -1,0 +1,57 @@
+.RadioButtonInput {
+  display: none;
+}
+
+.RadioButton {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #b077ff;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.RadioButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: black;
+  transition: background-color 0.3s ease;
+}
+
+input[type='radio']:checked + .RadioButton::before {
+  background-color: #b077ff;
+}
+
+.radioWrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.labelText {
+  font-size: 1rem;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.RadioButtonLabel {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.RadioButtonContainer {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
