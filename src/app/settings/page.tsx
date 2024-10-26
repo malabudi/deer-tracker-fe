@@ -4,17 +4,21 @@ import BottomNav from '@/components/bottom-nav/BottomNav';
 import styles from './page.module.css';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
 import RadioButton from '@/components/Radio-Button/RadioButton';
-import ToggleSwitch from '@/components/Toggle-Button/ToggleButton';
+import { signOut } from 'next-auth/react';
+
 export default function Settings() {
   const [selectedTheme, setSelectedTheme] = useState('');
-  const [isToggled, setIsToggled] = useState(false);
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedTheme(event.target.value);
   };
-  const handleToggle = () => {
-    setIsToggled(!isToggled);
+
+  const handleSignOut = () => {
+    signOut({
+      callbackUrl: '/', // Redirect to homepage after sign out
+    });
   };
+
   return (
     <>
       <div className={styles.settingpageContainer}>
@@ -25,7 +29,7 @@ export default function Settings() {
             <ActiveButton text="Edit Account" />
           </div>
           <div className={styles.LogoutContainer}>
-            <ActiveButton text="Log out" />
+            <ActiveButton text="Log out" onClick={handleSignOut} />
           </div>
           <hr className={styles.lineSpliter}></hr>
           <h2 className={styles.SectionLabel}>Theme</h2>
@@ -45,9 +49,6 @@ export default function Settings() {
               onChange={handleThemeChange}
             />
           </div>
-          <hr className={styles.lineSpliter}></hr>
-          <h2 className={styles.SectionLabel}>Notifications</h2>
-          <ToggleSwitch isOn={isToggled} handleToggle={handleToggle} />
         </div>
       </div>
       <BottomNav />
