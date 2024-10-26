@@ -8,19 +8,14 @@ import { signOut } from 'next-auth/react';
 
 export default function Settings() {
   const [selectedTheme, setSelectedTheme] = useState('');
-  //const [isToggled, setIsToggled] = useState(false);
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedTheme(event.target.value);
   };
 
-  /*const handleToggle = () => {
-    setIsToggled(!isToggled);
-  };*/
-
   const handleSignOut = () => {
     signOut({
-      callbackUrl: '/', // Optional: redirect to homepage after sign out
+      callbackUrl: '/', // Redirect to homepage after sign out
     });
   };
 
@@ -54,12 +49,6 @@ export default function Settings() {
               onChange={handleThemeChange}
             />
           </div>
-          {/* Notifications (WIP) */}
-          {/*
-          <hr className={styles.lineSpliter}></hr>
-          <h2 className={styles.SectionLabel}>Notifications</h2>
-          <ToggleSwitch isOn={isToggled} handleToggle={handleToggle} />
-          */}
         </div>
       </div>
       <BottomNav />
