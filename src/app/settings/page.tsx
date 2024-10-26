@@ -6,6 +6,8 @@ import ActiveButton from '@/components/Active-Button/ActiveButton';
 import RadioButton from '@/components/Radio-Button/RadioButton';
 import { signOut } from 'next-auth/react';
 
+import Link from 'next/link';
+
 export default function Settings() {
   const [selectedTheme, setSelectedTheme] = useState('');
 
@@ -26,7 +28,9 @@ export default function Settings() {
         <div>
           <h2 className={styles.SectionLabel}>Account</h2>
           <div className={styles.EditAccountContainer}>
-            <ActiveButton text="Edit Account" />
+            <Link href="settings/edit-email" passHref>
+              <ActiveButton text="Edit Account" />
+            </Link>
           </div>
           <div className={styles.LogoutContainer}>
             <ActiveButton text="Log out" onClick={handleSignOut} />
