@@ -1,0 +1,107 @@
+.editaccountconatiner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
+.editAccounth1 {
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.inputfieldContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto;
+  width: 100%;
+  max-width: 400px;
+}
+
+.inputfieldContainer input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.8rem;
+}
+
+.savebttnContainer,
+.changeEmailContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.2rem auto;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 8rem;
+}
+
+.changeEmailContainer button {
+  width: 100%;
+  height: 100%;
+  max-width: 400px;
+  padding: 0.5rem;
+}
+
+.savebttnContainer button {
+  width: 100%;
+  height: 100%;
+  max-width: 400px;
+  padding: 0.5rem;
+  background-color: #b0b0b0;
+  cursor: not-allowed;
+}
+
+.savebttnContainer.active button {
+  background-color: #b077ff;
+  color: white;
+  cursor: pointer;
+}
+.savebttnContainer.active:hover button {
+  background-color: #c69eff;
+}
+
+.backButtonContainer {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.backButtonImage {
+  width: 50px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.backButtonImage:hover {
+  transform: scale(1.1);
+}
+
+@media (max-width: 600px) {
+  .backButtonContainer {
+    top: 0.3rem;
+    left: 0.3rem;
+  }
+
+  .backButtonImage {
+    width: 40px;
+  }
+}
+
+@media (max-width: 400px) {
+  .backButtonContainer {
+    top: 0.2rem;
+    left: 0.2rem;
+  }
+
+  .backButtonImage {
+    width: 30px;
+  }
+}
