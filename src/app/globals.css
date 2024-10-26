@@ -9,10 +9,14 @@
   --background-color: #eae5f0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background-color: #1b1228;
-  }
+.dark-mode {
+  --foreground-color: #b077ff;
+  --background-color: #1b1228;
+}
+
+.light-mode {
+  --foreground-color: #b077ff;
+  --background-color: #eae5f0;
 }
 
 * {
@@ -52,6 +56,33 @@ button {
   font-size: 28px;
   font-family: var(--font-mono);
 }
+
+.toggle-switch {
+  position: relative;
+  width: 50px;
+  height: 25px;
+  background-color: #ccc;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.switch {
+  position: absolute;
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  background-color: #fff;
+  transition: 0.3s;
+}
+
+.light {
+  left: 2px;
+}
+
+.dark {
+  left: 25px;
+}
+
 .not-found-container {
   display: flex;
   flex-direction: column;
