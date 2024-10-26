@@ -6,6 +6,7 @@ import BottomNav from '@/components/bottom-nav/BottomNav';
 import { useLocationContext } from '@/context/LocationContext';
 import { useQuery } from '@tanstack/react-query';
 import getSightingsByLocation from '@/hooks/getSightingsByLocation';
+import Loader from '@/components/loader/Loader';
 
 export default function Maps() {
   const { userLocation } = useLocationContext();
@@ -40,8 +41,11 @@ export default function Maps() {
 
   return (
     <>
-      {isLoading && <div>Loading...</div>}
-
+      {isLoading && (
+        <div>
+          <Loader />
+        </div>
+      )}
       {userLocation && (
         <Map
           latitude={userLocation?.latitude}
