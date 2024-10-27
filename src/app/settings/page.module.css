@@ -1,9 +1,11 @@
+.pageWrapper {
+  position: relative;
+  height: 100vh;
+}
+
 .settings {
   text-align: center;
-  margin: 1.5rem;
-  font-size: 1.8rem;
-  margin-bottom: 2rem;
-  margin-top: 2rem;
+  margin: 2rem 0;
 }
 
 .settingpageContainer {
@@ -11,15 +13,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: auto;
-  padding: 1rem;
+  width: 100%;
+}
+
+.settingsWrapper {
+  min-width: 30%;
+  height: 75%;
 }
 
 .SectionLabel {
   align-items: left;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
-  font-size: 0.9rem;
 }
 
 .EditAccountContainer,
@@ -35,7 +40,7 @@
 }
 
 .LogoutContainer button:hover {
-  background-color: #dc4953;
+  background-color: #fb5a65;
 }
 
 .lineSpliter {
@@ -55,5 +60,9 @@
   .LogoutContainer button {
     padding: 0.5rem 3.5rem;
     font-size: 1.2rem;
+  }
+
+  .settingsWrapper {
+    width: 80%;
   }
 }

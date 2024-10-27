@@ -1,16 +1,17 @@
 import Link from 'next/link';
-import BottomNav from '@/components/bottom-nav/BottomNav';
 import './globals.css';
+import ActiveButton from '@/components/Active-Button/ActiveButton';
 
 export default function NotFound() {
   return (
     <>
-      <BottomNav />
       <div className="not-found-container">
-        <h1>404</h1>
-        <h2>Page Not Found</h2>
-        <p>Sorry, the page you are looking for doesn't exist.</p>
-        <Link href="/">Go back to Home</Link>
+        <h1>Oops!</h1>
+        <h2>404 - Page Not Found</h2>
+        <p>Sorry, the page you requested could not be found</p>
+        <Link href="/signup" passHref>
+          <ActiveButton text="Let's take you back" />
+        </Link>
       </div>
     </>
   );
