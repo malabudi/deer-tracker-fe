@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import getSightingsByLocation from '@/hooks/getSightingsByLocation';
 import Loader from '@/components/loader/Loader';
 import { useLocationContext } from '@/context/LocationProvider';
+import styles from './page.module.css';
 
 export default function Maps() {
   const { userLocation } = useLocationContext();
@@ -40,7 +41,7 @@ export default function Maps() {
   }
 
   return (
-    <>
+    <div className={styles.pageWrapper}>
       {isLoading && (
         <div>
           <Loader />
@@ -55,6 +56,6 @@ export default function Maps() {
         />
       )}
       <BottomNav />
-    </>
+    </div>
   );
 }
