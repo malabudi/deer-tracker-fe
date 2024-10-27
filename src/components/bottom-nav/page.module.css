@@ -6,22 +6,17 @@
     align-items: center;
     background-color: #0C0811;
     padding: 1% 0;
-    position: fixed;
+    position: absolute;
     bottom: 0;
-    left: 0;
     z-index: 1;
     overflow: hidden;
 }
 
-.activeIcon {
+.activeIcon, .inactiveIcon:hover {
     filter: invert(44%) sepia(87%) saturate(1040%) hue-rotate(228deg) brightness(104%) contrast(105%); /*purple for svg*/
 }
 
 .inactiveIcon {
     filter: invert(90%) sepia(4%) saturate(3248%) hue-rotate(205deg) brightness(91%) contrast(93%); /*light purple for svg*/
     transition: 0.2s ease-out;
-}
-
-.inactiveIcon:hover {
-    filter: invert(44%) sepia(87%) saturate(1040%) hue-rotate(228deg) brightness(104%) contrast(105%);
 }

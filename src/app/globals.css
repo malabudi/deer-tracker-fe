@@ -4,23 +4,16 @@
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
-
   --foreground-color: #b077ff;
   --background-color: #eae5f0;
+  --text-color: #1c1c1c;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background-color: #1b1228;
+    --text-color: #fff;
   }
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  font-family: var(--font-mono);
-  color: #ffffff;
 }
 
 html,
@@ -30,7 +23,7 @@ body {
 }
 
 body {
-  color: var(--foreground-color);
+  color: var(--text-color);
   background: var(--background-color);
   margin: 0;
   padding: 0;
@@ -51,7 +44,10 @@ a {
 button {
   font-size: 28px;
   font-family: var(--font-mono);
+  color: #fff;
+  background-color: var(--foreground-color);
 }
+
 .not-found-container {
   display: flex;
   flex-direction: column;
@@ -63,26 +59,28 @@ button {
 
 .not-found-container h1 {
   font-size: 5rem;
-  color: #b077ff;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 1);
 }
 
 .not-found-container h2 {
   font-size: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
 }
 
 .not-found-container p {
-  margin-bottom: 2rem;
+  margin: 1rem;
+  font-size: 1.2rem;
 }
 
-.not-found-container a {
-  padding: 0.75rem 1.5rem;
-  background-color: #b077ff;
-  border-radius: 5px;
-  text-decoration: none;
-  transition: background-color 0.3s;
+.not-found-container button {
+  margin-top: 2rem;
+  padding: 0.75rem 2rem;
 }
 
-.not-found-container a:hover {
-  background-color: #c69eff;
+@media (min-width: 300px) {
+  .not-found-container button {
+    padding: 0.5rem 1rem;
+  }
 }

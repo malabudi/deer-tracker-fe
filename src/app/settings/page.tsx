@@ -22,10 +22,10 @@ export default function Settings() {
   };
 
   return (
-    <>
+    <div className={styles.pageWrapper}>
       <div className={styles.settingpageContainer}>
         <h1 className={styles.settings}>Settings</h1>
-        <div>
+        <div className={styles.settingsWrapper}>
           <h2 className={styles.SectionLabel}>Account</h2>
           <div className={styles.EditAccountContainer}>
             <Link href="settings/edit-account" passHref>
@@ -56,6 +56,6 @@ export default function Settings() {
         </div>
       </div>
       <BottomNav />
-    </>
+    </div>
   );
 }
