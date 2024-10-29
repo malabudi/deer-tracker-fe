@@ -12,11 +12,11 @@ import styles from './page.module.css';
 export default function Maps() {
   const { userLocation } = useLocationContext();
 
-  const apiKey = ''; // (grab form discord) a story has been created to find a better approach
+  const apiKey = '';
 
   const longitude = userLocation?.longitude;
   const latitude = userLocation?.latitude;
-  const radius = 5; // Set desired radius for fetching sigthings here
+  const radius = 5; // Set desired radius for fetching sightings here
 
   const canFetch =
     typeof longitude === 'number' && typeof latitude === 'number';

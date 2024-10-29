@@ -71,7 +71,7 @@ const SignupPage: React.FC = () => {
 
     // Validate confirm password
     if (!confirmpassword) {
-      confirmPsetError('Please confirm password.');
+      confirmPsetError('Please re-enter your password.');
       setShakeConfirmPassword(true);
       isValid = false;
     } else if (password !== confirmpassword) {
@@ -144,6 +144,7 @@ const SignupPage: React.FC = () => {
       });
 
       if (result?.error) {
+        console.log(result);
         confirmPsetError('Unable to create account, please try again later');
         setShakeConfirmPassword(true);
       } else {
@@ -157,61 +158,50 @@ const SignupPage: React.FC = () => {
   };
 
   return (
-    <main className={styles.SignUpPageContainer}>
-      <div className={styles.headerconatiner}>
-        <h1 className={styles.CreateAccount}>Create Account</h1>
-      </div>
-      <form onSubmit={handleSubmit} noValidate>
+    <div className={styles.SignUpPageContainer}>
+      <h1 className={styles.CreateAccount}>Create Account</h1>
+      <form onSubmit={handleSubmit} noValidate className={styles.formContainer}>
         {/* hidden field needed for authentication action */}
         <input type="hidden" name="action" value="signup" />
-        <div className={styles.EmailContainer}>
-          <InputField
-            type="email"
-            value={email}
-            onChange={handleEmailChange}
-            placeholder="Enter email"
-            label="Email"
-            errorMessage={emailError}
-            shake={shakeEmail}
-          />
-        </div>
+        <InputField
+          type="email"
+          value={email}
+          onChange={handleEmailChange}
+          placeholder="Enter email"
+          label="Email"
+          errorMessage={emailError}
+          shake={shakeEmail}
+        />
 
-        <div className={styles.PasswordContainer}>
-          <InputField
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-            placeholder="Enter password"
-            label="Password"
-            errorMessage={passError}
-            shake={shakePassword}
-          />
-        </div>
+        <InputField
+          type="password"
+          value={password}
+          onChange={handlePasswordChange}
+          placeholder="Enter password"
+          label="Password"
+          errorMessage={passError}
+          shake={shakePassword}
+        />
 
-        <div className={styles.ConfirmPasswordContainer}>
-          <InputField
-            type="password"
-            value={confirmpassword}
-            onChange={handleConfirmPasswordChange}
-            placeholder="Re-Enter password"
-            label="Confirm Password"
-            errorMessage={ConfirmpassError}
-            shake={shakeConfirmPass}
-          />
-        </div>
+        <InputField
+          type="password"
+          value={confirmpassword}
+          onChange={handleConfirmPasswordChange}
+          placeholder="Re-Enter password"
+          label="Confirm Password"
+          errorMessage={ConfirmpassError}
+          shake={shakeConfirmPass}
+        />
 
-        <div className={styles.signbttncontainer}>
-          <InactiveButton text="Sign up" />
-        </div>
-        <span className={styles.span}>or</span>
-
-        <div className={styles.lgnbttncontainer}>
+        <div className={styles.btnContainer}>
+          <ActiveButton text="Sign up" />
+          <span className={styles.span}>or</span>
           <Link href="/login" passHref>
-            <ActiveButton text="Log in" />
+            <InactiveButton text="Log in" />
           </Link>
         </div>
       </form>
-    </main>
+    </div>
   );
 };
 

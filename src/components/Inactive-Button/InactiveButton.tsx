@@ -6,7 +6,7 @@ interface InactiveButtonProps {
 }
 const InactiveButton = ({ onClick, text }: InactiveButtonProps) => {
   return (
-    <button className={styles.signUpBtn} onClick={onClick}>
+    <button className={styles.inactiveBtn} onClick={onClick}>
       {text}
     </button>
   );
