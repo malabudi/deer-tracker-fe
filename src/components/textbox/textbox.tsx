@@ -47,8 +47,6 @@ const InputField: React.FC<InputFieldProps> = ({
 
   return (
     <div className={styles.inputWrapper}>
-      {' '}
-      {/* Wrapper for input and button */}
       <div className={styles.inputContainer}>
         <label className={styles.TextBoxLabel}>{label}</label>
         <input
