@@ -85,42 +85,33 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className={styles.loginPageContainer}>
-      <div className={styles.headerconatiner}>
-        <h1 className={styles.welcomeBack}>Welcome Back!</h1>
-      </div>
-      <form onSubmit={handleSubmit} noValidate>
+      <h1 className={styles.welcomeBack}>Welcome Back!</h1>
+      <form onSubmit={handleSubmit} noValidate className={styles.formContainer}>
         {/* hidden field needed for authentication action */}
         <input type="hidden" name="action" value="login" />
-        <div className={styles.EmailContainer}>
-          <InputField
-            type="email"
-            value={email}
-            onChange={handleEmailChange}
-            placeholder="Enter email"
-            label="Email"
-            errorMessage={emailError}
-            shake={shakeEmail}
-          />
-        </div>
+        <InputField
+          type="email"
+          value={email}
+          onChange={handleEmailChange}
+          placeholder="Enter email"
+          label="Email"
+          errorMessage={emailError}
+          shake={shakeEmail}
+        />
 
-        <div className={styles.PasswordContainer}>
-          <InputField
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-            placeholder="Enter password"
-            label="Password"
-            errorMessage={passError}
-            shake={shakePassword}
-          />
-        </div>
+        <InputField
+          type="password"
+          value={password}
+          onChange={handlePasswordChange}
+          placeholder="Enter password"
+          label="Password"
+          errorMessage={passError}
+          shake={shakePassword}
+        />
 
-        <div className={styles.lgnbttncontainer}>
+        <div className={styles.btnContainer}>
           <ActiveButton text="Log in" />
-        </div>
-        <span className={styles.span}>or</span>
-
-        <div className={styles.signbttncontainer}>
+          <span className={styles.span}>or</span>
           <Link href="/signup" passHref>
             <InactiveButton text="Sign up" />
           </Link>

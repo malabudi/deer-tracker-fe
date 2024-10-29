@@ -1,18 +1,19 @@
-.signUpBtn {
+.inactiveBtn {
   padding: 0.6rem 7rem;
   border: 1px solid #b077ff;
   cursor: pointer;
+  border-radius: 5px;
   margin-bottom: 1rem;
   background: #0c0811;
   transition: background-color 0.3s ease;
   white-space: nowrap;
 }
-.signUpBtn:hover {
+.inactiveBtn:hover {
   background-color: #1a1a1a;
 }
 
 @media (min-width: 300px) and (max-width: 1000px) {
-  .signUpBtn {
+  .inactiveBtn {
     padding: 10px 100px;
     text-align: center;
     border-radius: 5px;

@@ -15,12 +15,10 @@ export default function Home() {
         <h1 className={styles.welcomecontainer}>Welcome to Deer Tracker!</h1>
       </div>
 
-      <div className={styles.lgnbttncontainer}>
+      <div className={styles.btnContainer}>
         <Link href="/login" passHref>
           <ActiveButton text={logIn} />
         </Link>
-      </div>
-      <div className={styles.signbttncontainer}>
         <Link href="/signup" passHref>
           <InactiveButton text={signUp} />
         </Link>

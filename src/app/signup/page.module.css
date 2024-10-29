@@ -1,61 +1,43 @@
+.formContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
 .SignUpPageContainer {
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
-}
-
-.EmailContainer {
-  align-items: center;
-  margin-bottom: 2.2rem;
-}
-
-.PasswordContainer {
-  align-items: center;
-  margin-bottom: 2.2rem;
-}
-
-.ConfirmPasswordContainer {
-  align-items: center;
-  margin-bottom: 4rem;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .span {
-  display: flex;
-  justify-content: center;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
+  margin: 1rem 0;
 }
 
 .CreateAccount {
   text-align: center;
   margin: 3rem;
   font-size: 3rem;
-  margin-bottom: 3rem;
-  margin-top: 3rem;
 }
 
-.lgnbttncontainer,
-.signbttncontainer {
+.btnContainer {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
 }
 
-@media (min-width: 300px) and (max-width: 380px) {
-  .CreateAccount {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-    margin-top: 2rem;
-  }
-
-  .span {
-    margin-top: 1px;
-  }
-
-  .lgnbttncontainer {
-    margin-bottom: 3rem;
-  }
+.btnContainer button {
+  width: 25rem;
+  height: 4rem;
+  margin-bottom: 0;
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
@@ -64,39 +46,29 @@
     margin-bottom: 10px;
     margin-top: 2rem;
   }
-
-  .EmailContainer {
-    margin-bottom: 2rem;
-    margin-top: 4rem;
-  }
-
-  .PasswordContainer {
-    margin: 2rem 0;
-  }
-
-  .ConfirmPasswordContainer {
-    margin: 2rem 0;
-  }
-
-  .signbttncontainer {
-    margin-top: 4rem;
-  }
 }
 
 @media (min-width: 390px) and (max-width: 430px) {
   .CreateAccount {
     font-size: 2.5rem;
-    margin-bottom: 10px;
-    margin-top: 2rem;
   }
-  
-  .EmailContainer,
-  .PasswordContainer,
-  .ConfirmPasswordContainer {
+}
+
+@media (min-width: 300px) and (max-width: 380px) {
+  .CreateAccount {
+    font-size: 2rem;
     margin: 2rem 0;
   }
 
-  .signbttncontainer {
-    margin-top: 4rem;
+  .span {
+    font-size: 1.3rem;
+    margin: 0.25rem 0;
+  }
+}
+
+/* for smaller screens in general give buttons a fixed width*/
+@media (max-width: 600px) {
+  .btnContainer button {
+    width: 80vw;
   }
 }
