@@ -50,9 +50,9 @@
   width: 100%;
   height: 100%;
   max-width: 400px;
+  margin-top: 2rem;
   padding: 0.5rem;
   background-color: #b0b0b0;
-  cursor: not-allowed;
 }
 
 .savebttnContainer.active button {
@@ -60,14 +60,16 @@
   color: white;
   cursor: pointer;
 }
-.savebttnContainer.active:hover button {
-  background-color: #c69eff;
+
+.savebttnContainer:hover button {
+  background-color: #b0b0b0 !important; /* this will override the original active button component's css color change on hover */
 }
 
 .backButtonContainer {
   position: absolute;
   top: 0.5rem;
   left: 0.5rem;
+  margin: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,24 +86,33 @@
   transform: scale(1.1);
 }
 
-@media (max-width: 600px) {
-  .backButtonContainer {
-    top: 0.3rem;
-    left: 0.3rem;
-  }
-
-  .backButtonImage {
-    width: 40px;
-  }
-}
-
-@media (max-width: 400px) {
+@media (min-width: 300px) and (max-width: 375px) {
   .backButtonContainer {
     top: 0.2rem;
     left: 0.2rem;
+    margin: 4px;
   }
 
   .backButtonImage {
     width: 30px;
+  }
+  .savebttnContainer button {
+    margin-top: 2rem;
+  }
+}
+
+@media (min-width: 390px) and (max-width: 600px) {
+  .backButtonContainer {
+    margin: 10px;
+  }
+  .backButtonImage {
+    width: 40px;
+    margin: 0.1rem;
+  }
+  .savebttnContainer button {
+    margin-top: 8.5rem;
+  }
+  .editaccountconatiner {
+    margin-top: 4rem;
   }
 }
