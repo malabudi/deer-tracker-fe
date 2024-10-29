@@ -4,9 +4,9 @@ import BottomNav from '@/components/bottom-nav/BottomNav';
 import styles from './page.module.css';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
 import RadioButton from '@/components/Radio-Button/RadioButton';
-import { signOut } from 'next-auth/react';
-
 import Link from 'next/link';
+
+import { signOut } from 'next-auth/react';
 
 export default function Settings() {
   const [selectedTheme, setSelectedTheme] = useState('');
