@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import styles from './page.module.css';
 import InputField from '@/components/textbox/textbox';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
-import { emailRegex } from '@/utils/constants';
 import Image from 'next/image';
 import backIcon from '@/assets/BackArrow.svg';
 
@@ -11,17 +10,15 @@ import Link from 'next/link';
 
 const Editaccount: React.FC = () => {
   const [email, setEmail] = useState('');
-  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [textboxentry, settextboxentry] = useState(false);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
-
-    // Validate email when user types
-    if (emailRegex.test(value)) {
-      setIsEmailValid(true);
+    if (value) {
+      settextboxentry(true);
     } else {
-      setIsEmailValid(false);
+      settextboxentry(false);
     }
   };
   return (
@@ -51,7 +48,7 @@ const Editaccount: React.FC = () => {
       </div>
 
       <div
-        className={`${styles.savebttnContainer} ${isEmailValid ? styles.active : styles.disabled}`}
+        className={`${styles.savebttnContainer} ${textboxentry ? styles.active : styles.disabled}`}
       >
         <ActiveButton text="Save" onClick={() => {}} />
       </div>
