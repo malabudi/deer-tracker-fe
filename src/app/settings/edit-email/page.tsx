@@ -5,52 +5,50 @@ import InputField from '@/components/textbox/textbox';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
 import Image from 'next/image';
 import backIcon from '@/assets/BackArrow.svg';
-
 import Link from 'next/link';
 
 const Editaccount: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [textboxentry, settextboxentry] = useState(false);
+  const userEmail = 'Deerbuttcheeks@gmail.com';
+  const [email, setEmail] = useState(userEmail);
+  const [isEmailMatch, setIsEmailMatch] = useState(false);
+  const [textboxentry, setTextboxEntry] = useState(false);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
-    if (value) {
-      settextboxentry(true);
-    } else {
-      settextboxentry(false);
-    }
+    setIsEmailMatch(value === userEmail);
+    setTextboxEntry(value !== userEmail);
   };
   return (
-    <div className={styles.editaccountconatiner}>
-      <div className={styles.backButtonContainer}>
-        <Link href="/settings">
-          <Image
-            priority
-            src={backIcon}
-            alt="Back"
-            className={styles.backButtonImage}
-          />
-        </Link>
-      </div>
-      <h1 className={styles.editAccounth1}>Edit Account</h1>
-      <div className={styles.inputfieldContainer}>
-        <InputField
-          type="email"
-          value={email}
-          onChange={handleEmailChange}
-          placeholder="Enter email"
-          label="Password"
+    <div>
+      <Link href="/settings">
+        <Image
+          priority
+          src={backIcon}
+          alt="Back"
+          className={styles.backButtonImage}
         />
-      </div>
-      <div className={styles.changeEmailContainer}>
-        <ActiveButton text="Change Email" />
-      </div>
+      </Link>
+      <div className={styles.mainConatiner}>
+        <h1 className={styles.editAccountHeader}>Edit Account</h1>
+        <div className={styles.formContainer}>
+          <div>
+            <label>Email</label>
+            <InputField
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+              placeholder="Enter email"
+            />
 
-      <div
-        className={`${styles.savebttnContainer} ${textboxentry ? styles.active : styles.disabled}`}
-      >
-        <ActiveButton text="Save" onClick={() => {}} />
+            <ActiveButton text="Change Password" />
+          </div>
+          <ActiveButton
+            isdisabled={!textboxentry}
+            text="Save"
+            onClick={() => {}}
+          />
+        </div>
       </div>
     </div>
   );

@@ -1,82 +1,39 @@
-.editaccountconatiner {
+.mainConatiner {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: auto;
-  margin-top: 2rem;
+  height: 90vh;
+  width: 50vw;
   padding: 1rem;
+  margin: auto;
 }
 
-.editAccounth1 {
-  align-items: center;
+.mainConatiner input {
   margin-bottom: 2rem;
 }
 
-.inputfieldContainer {
+.formContainer {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 2rem auto;
-  width: 100%;
-  max-width: 400px;
-}
-
-.inputfieldContainer input {
-  width: 100%;
-  max-width: 400px;
-  padding: 0.8rem;
-}
-
-.savebttnContainer,
-.changeEmailContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 1.2rem auto;
-  width: 100%;
-  max-width: 400px;
-  margin-bottom: 8rem;
-}
-
-.changeEmailContainer button {
-  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
   height: 100%;
-  max-width: 400px;
-  padding: 0.5rem;
 }
 
-.savebttnContainer button {
-  width: 100%;
-  height: 100%;
-  max-width: 400px;
-  margin-top: 2rem;
-  padding: 0.5rem;
-  background-color: #b0b0b0;
-}
-
-.savebttnContainer.active button {
-  background-color: #b077ff;
-  color: white;
-  cursor: pointer;
-}
-
-.savebttnContainer:hover button {
-  background-color: #b0b0b0 !important; /* this will override the original active button component's css color change on hover */
-}
-
-.backButtonContainer {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-  margin: 20px;
+.displayContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.editAccountHeader {
+  align-items: center;
+  margin: 0 0 3rem 0;
 }
 
 .backButtonImage {
   width: 50px;
+  margin: 20px;
   height: auto;
   cursor: pointer;
   transition: transform 0.2s;
@@ -87,32 +44,47 @@
 }
 
 @media (min-width: 300px) and (max-width: 375px) {
-  .backButtonContainer {
-    top: 0.2rem;
-    left: 0.2rem;
-    margin: 4px;
+  .mainConatiner {
+    width: 100%;
+  }
+
+  .formContainer button {
+    font-size: 0.8rem;
+  }
+
+  .displayContainer {
+    width: 100%;
+  }
+
+  .editAccountHeader {
+    font-size: 1.4rem;
   }
 
   .backButtonImage {
-    width: 30px;
-  }
-  .savebttnContainer button {
-    margin-top: 2rem;
+    width: 40px;
+    margin: 10px;
   }
 }
 
-@media (min-width: 390px) and (max-width: 600px) {
-  .backButtonContainer {
-    margin: 10px;
+@media (min-width: 380px) and (max-width: 1000px) {
+  .mainConatiner {
+    width: auto;
   }
+
+  .formContainer button {
+    font-size: 1rem;
+  }
+
+  .displayContainer {
+    width: 100%;
+  }
+
+  .editAccountHeader {
+    font-size: 1.5rem;
+  }
+
   .backButtonImage {
     width: 40px;
-    margin: 0.1rem;
-  }
-  .savebttnContainer button {
-    margin-top: 8.5rem;
-  }
-  .editaccountconatiner {
-    margin-top: 4rem;
+    margin: 10px;
   }
 }

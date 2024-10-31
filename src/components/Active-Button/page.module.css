@@ -9,7 +9,40 @@
   transition: background-color 0.3s ease;
   width: 100%;
 }
+
 .ActiveButton:hover {
+  background-color: #c69eff;
+}
+
+.buttonWrapper {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.ActiveButton:disabled {
+  background-color: #b0b0b0;
+  cursor: default;
+  color: white;
+}
+
+.savebttnContainer {
+  width: auto;
+  height: auto;
+  max-width: 400px;
+  margin-top: 2rem;
+  padding: 0.5rem;
+  background-color: #b0b0b0;
+  pointer-events: auto;
+}
+
+.savebttnContainer.active {
+  background-color: #b077ff;
+}
+
+.savebttnContainer.active:hover {
   background-color: #c69eff;
 }
 
