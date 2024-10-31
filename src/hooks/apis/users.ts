@@ -55,7 +55,6 @@ export const createUser = async (email: string, password: string) => {
 
   return response.json();
 };
-
 export const updateUserEmail = async (
   currentEmail: string,
   newEmail: string
