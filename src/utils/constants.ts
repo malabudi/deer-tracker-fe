@@ -1,6 +1,6 @@
 export const API_PATH = 'http://localhost:5000/api';
 export const logIn = 'Log in';
-export const signUp = 'Sign up';
+export const signUp = 'Register';
 export const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 //new user password validation
 export const minLengthRegex = /.{8,}/;

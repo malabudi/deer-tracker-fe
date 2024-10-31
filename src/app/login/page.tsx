@@ -4,7 +4,7 @@ import ActiveButton from '@/components/Active-Button/ActiveButton';
 import InactiveButton from '@/components/Inactive-Button/InactiveButton';
 import InputField from '@/components/textbox/textbox';
 import styles from './page.module.css';
-import { emailRegex } from '@/utils/constants';
+import { emailRegex, logIn, signUp } from '@/utils/constants';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -110,10 +110,10 @@ const LoginPage: React.FC = () => {
         />
 
         <div className={styles.btnContainer}>
-          <ActiveButton text="Log in" />
+          <ActiveButton text={logIn} />
           <span className={styles.span}>or</span>
           <Link href="/signup" passHref>
-            <InactiveButton text="Sign up" />
+            <InactiveButton text={signUp} />
           </Link>
         </div>
       </form>
