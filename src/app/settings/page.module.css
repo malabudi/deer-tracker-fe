@@ -35,6 +35,11 @@
   margin: 1.3rem auto;
 }
 
+.EditAccountContainer button,
+.LogoutContainer button {
+  width: 100%;
+}
+
 .LogoutContainer button {
   background-color: #f01e2c;
 }

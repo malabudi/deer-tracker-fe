@@ -18,52 +18,30 @@ export const options: NextAuthOptions = {
       },
       async authorize(credentials, req): Promise<any> {
         const { email, password } = credentials;
-        const action = req.body?.action;
 
         try {
-          if (action === 'signup') {
-            const signupRes = await fetch(`${API_PATH}/users`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ email, password }),
-            });
+          const loginRes = await fetch(`${API_PATH}/login`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+          });
 
-            if (!signupRes.ok) {
-              const errorMessage = await signupRes.text();
-              console.error('Signup API error:', errorMessage);
-              throw new Error('Failed to sign up');
-            }
-
-            const newUser = await signupRes.json();
-
-            if (!newUser) {
-              throw new Error('User data is missing');
-            }
-
-            return newUser;
-          } else if (action === 'login') {
-            const loginRes = await fetch(`${API_PATH}/login`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ email, password }),
-            });
-
-            if (!loginRes.ok) {
-              const errorMessage = await loginRes.text();
-              console.error('Signup API error:', errorMessage);
-              throw new Error('Failed to log in');
-            }
-
-            const user = await loginRes.json();
-            return user;
+          if (!loginRes.ok) {
+            const errorMessage = await loginRes.text();
+            console.error('Signup API error:', errorMessage);
+            throw new Error('Failed to log in');
           }
 
-          // neither action specified
-          return null;
+          const user = await loginRes.json();
+
+          // Check if their email is verified before creating a session
+          if (!user.user['email_verified']) {
+            throw new Error('Please verify your email before logging in');
+          }
+
+          return user;
         } catch (error) {
           console.error('Error while authorizing: ', error);
           return null;
@@ -74,6 +52,7 @@ export const options: NextAuthOptions = {
   pages: {
     signIn: '/login',
     newUser: '/signup',
+    verifyRequest: '/verify',
   },
   callbacks: {
     async redirect({ url, baseUrl }) {

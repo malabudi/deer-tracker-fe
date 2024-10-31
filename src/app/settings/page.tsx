@@ -35,14 +35,14 @@ export default function Settings() {
           <h2 className={styles.SectionLabel}>Theme</h2>
           <div className={styles.radiobttnsContainer}>
             <RadioButton
-              label={<span className={styles.labelText}>Dark</span>}
+              label={<span>Dark</span>}
               name="theme"
               value="dark"
               checked={selectedTheme === 'dark'}
               onChange={handleThemeChange}
             />
             <RadioButton
-              label={<span className={styles.labelText}>Light</span>}
+              label={<span>Light</span>}
               name="theme"
               value="light"
               checked={selectedTheme === 'light'}

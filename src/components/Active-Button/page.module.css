@@ -1,12 +1,11 @@
 .ActiveButton {
-  padding: 0.7rem 7.4rem;
+  padding: 1rem 2rem;
   text-align: center;
   border-radius: 5px;
   white-space: nowrap;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width: 100%;
 }
 
 .ActiveButton:hover {
@@ -15,8 +14,6 @@
 
 @media (min-width: 300px) and (max-width: 1000px) {
   .ActiveButton {
-    padding: 10px 100px;
-    text-align: center;
-    border-radius: 5px;
+    font-size: 1.5rem;
   }
 }
