@@ -12,7 +12,7 @@ import styles from './page.module.css';
 export default function Maps() {
   const { userLocation } = useLocationContext();
 
-  const apiKey = '';
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
   const longitude = userLocation?.longitude;
   const latitude = userLocation?.latitude;
@@ -30,11 +30,6 @@ export default function Maps() {
     queryFn: () => getSightingsByLocation(longitude!, latitude!, radius),
     enabled: canFetch,
   });
-
-  // Console log to verify data fetching
-  if (sightings) {
-    console.log('Fetched sightings from hook:', sightings);
-  }
 
   if (error) {
     console.error('Error fetching sightings from hook:', error);

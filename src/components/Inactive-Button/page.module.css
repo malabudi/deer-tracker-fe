@@ -1,5 +1,5 @@
 .inactiveBtn {
-  padding: 0.6rem 7rem;
+  padding: 1rem 2rem;
   border: 1px solid #b077ff;
   cursor: pointer;
   border-radius: 5px;
@@ -8,15 +8,13 @@
   transition: background-color 0.3s ease;
   white-space: nowrap;
 }
+
 .inactiveBtn:hover {
   background-color: #1a1a1a;
 }
 
 @media (min-width: 300px) and (max-width: 1000px) {
   .inactiveBtn {
-    padding: 10px 100px;
-    text-align: center;
-    border-radius: 5px;
-    border: 2px solid #b077ff;
+    font-size: 1.5rem;
   }
 }

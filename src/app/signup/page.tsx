@@ -11,11 +11,16 @@ import {
   containsUpperLetterRegex,
   containsNumberRegex,
   containsSpecialCharRegex,
+  signUp,
+  logIn,
 } from '@/utils/constants';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { Bounce, toast, ToastContainer } from 'react-toastify';
+import useDarkMode from '@/hooks/useDarkMode';
+import 'react-toastify/dist/ReactToastify.css';
 import { useRedirectIfAuthed } from '@/hooks/useRedirect';
+import { createUser } from '@/hooks/apis/users';
+import { generateTokenAndEmail } from '@/lib/generate-verification';
 
 const SignupPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -27,7 +32,7 @@ const SignupPage: React.FC = () => {
   const [shakeEmail, setShakeEmail] = useState(false);
   const [shakePassword, setShakePassword] = useState(false);
   const [shakeConfirmPass, setShakeConfirmPassword] = useState(false);
-  const router = useRouter();
+  const isDarkMode = useDarkMode();
 
   // if user is already authenticated, redirect to settings page
   useRedirectIfAuthed('/settings');
@@ -134,26 +139,70 @@ const SignupPage: React.FC = () => {
       return;
     }
 
-    // Authenticate once valid
+    // Create account once valid and send verification email
     try {
-      const result = await signIn('credentials', {
-        email: email,
-        password: password,
-        action: 'signup',
-        redirect: false,
-      });
+      const signupRes = await createUser(email, password);
 
-      if (result?.error) {
-        console.log(result);
-        confirmPsetError('Unable to create account, please try again later');
-        setShakeConfirmPassword(true);
+      if (signupRes.success) {
+        const verificationToken = await generateTokenAndEmail(email);
+
+        if (!verificationToken.error) {
+          toast.success(
+            'A Verification Email Has Been Sent to your Email Address',
+            {
+              position: 'bottom-right',
+              autoClose: 20000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: isDarkMode ? 'dark' : 'light',
+              transition: Bounce,
+            }
+          );
+        } else {
+          toast.error(
+            'An unexpected error occured while sending the verification email',
+            {
+              position: 'bottom-right',
+              autoClose: 10000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: isDarkMode ? 'dark' : 'light',
+              transition: Bounce,
+            }
+          );
+        }
       } else {
-        router.push('/settings');
+        toast.error('Unable to create account at this time', {
+          position: 'bottom-right',
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: isDarkMode ? 'dark' : 'light',
+          transition: Bounce,
+        });
       }
-    } catch (error) {
-      console.error('An error occurred during signup:', error);
-      confirmPsetError('An unexpected error occurred. Please try again.');
-      setShakeConfirmPassword(true);
+    } catch (err) {
+      const errJson = JSON.parse(err.message);
+      toast.error(errJson.error, {
+        position: 'bottom-right',
+        autoClose: 10000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: isDarkMode ? 'dark' : 'light',
+        transition: Bounce,
+      });
     }
   };
 
@@ -161,8 +210,6 @@ const SignupPage: React.FC = () => {
     <div className={styles.SignUpPageContainer}>
       <h1 className={styles.CreateAccount}>Create Account</h1>
       <form onSubmit={handleSubmit} noValidate className={styles.formContainer}>
-        {/* hidden field needed for authentication action */}
-        <input type="hidden" name="action" value="signup" />
         <InputField
           type="email"
           value={email}
@@ -194,13 +241,14 @@ const SignupPage: React.FC = () => {
         />
 
         <div className={styles.btnContainer}>
-          <ActiveButton text="Sign up" />
+          <ActiveButton text={signUp} />
           <span className={styles.span}>or</span>
           <Link href="/login" passHref>
-            <InactiveButton text="Log in" />
+            <InactiveButton text={logIn} />
           </Link>
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 };
