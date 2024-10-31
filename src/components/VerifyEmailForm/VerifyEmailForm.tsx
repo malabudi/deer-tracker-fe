@@ -24,6 +24,7 @@ const VerifyEmailForm = () => {
 
   const handleRegenerateToken = async () => {
     setIsRegenrating(true);
+    console.log(isRegernating); // temp (removed once moe's pr is done)
 
     try {
       const tokenBody = await getVerificationTokenByToken(token);
