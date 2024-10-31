@@ -11,13 +11,11 @@ const Editaccount: React.FC = () => {
   const userEmail = 'Deerbuttcheeks@gmail.com';
   const [email, setEmail] = useState(userEmail);
   const [isEmailMatch, setIsEmailMatch] = useState(false);
-  const [textboxentry, setTextboxEntry] = useState(false);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
-    setIsEmailMatch(value === userEmail);
-    setTextboxEntry(value !== userEmail);
+    setIsEmailMatch(value !== userEmail);
   };
   return (
     <div>
@@ -44,7 +42,7 @@ const Editaccount: React.FC = () => {
             <ActiveButton text="Change Password" />
           </div>
           <ActiveButton
-            isdisabled={!textboxentry}
+            isdisabled={!isEmailMatch}
             text="Save"
             onClick={() => {}}
           />
