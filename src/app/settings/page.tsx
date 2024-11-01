@@ -7,7 +7,6 @@ import RadioButton from '@/components/Radio-Button/RadioButton';
 import { signOut } from 'next-auth/react';
 
 export default function Settings() {
-
   const [selectedTheme, setSelectedTheme] = useState('');
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
