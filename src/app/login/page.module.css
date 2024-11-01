@@ -10,14 +10,12 @@
   align-items: center;
   margin-bottom: 2rem;
 }
+
 .PasswordContainer {
   align-items: center;
   margin-bottom: 4rem;
 }
-.TextBoxLabel {
-  margin-bottom: 0.2rem;
-  display: flex;
-}
+
 .span {
   margin-top: 20px;
   display: flex;
@@ -31,6 +29,7 @@
   font-size: 3rem;
   margin-bottom: 3rem;
 }
+
 .lgnbttncontainer,
 .signbttncontainer {
   display: flex;
@@ -45,15 +44,18 @@
     flex-direction: column;
     justify-content: center;
   }
+
   .welcomeBack {
     text-align: center;
     font-size: 1.8rem;
     margin-bottom: 3rem;
     margin-top: 1.5rem;
   }
+
   .EmailContainer {
     align-items: center;
   }
+
   .PasswordContainer {
     margin-bottom: 2rem;
   }
@@ -73,6 +75,7 @@
     height: 100%;
     width: 100%;
   }
+
   .welcomeBackcontainer {
     text-align: center;
     font-size: 40px;
@@ -80,12 +83,14 @@
     margin-bottom: 10px;
     margin-top: 150px;
   }
+  
   .EmailContainer {
     width: 324px;
     height: 48px;
     margin-bottom: 4rem;
     margin-top: 4rem;
   }
+  
   .PasswordContainer {
     width: 324px;
     height: 48px;

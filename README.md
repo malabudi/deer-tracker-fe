@@ -63,3 +63,6 @@ However if you want the lint to fix simple issues for you, run this command.
 ```bash
 yarn lint:fix
 ```
+
+## Envrionment Variables
+Please refer to our private chat for what environment variables should be stored.

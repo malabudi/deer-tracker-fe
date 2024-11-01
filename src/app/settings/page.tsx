@@ -1,30 +1,57 @@
 'use client';
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import BottomNav from '@/components/bottom-nav/BottomNav';
+import styles from './page.module.css';
+import ActiveButton from '@/components/Active-Button/ActiveButton';
+import RadioButton from '@/components/Radio-Button/RadioButton';
+import { signOut } from 'next-auth/react';
 
 export default function Settings() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-      document.body.classList.remove('light-mode');
-    } else {
-      document.body.classList.add('light-mode');
-      document.body.classList.remove('dark-mode');
-    }
-  }, [isDarkMode]);
+  const [selectedTheme, setSelectedTheme] = useState('');
 
-  const toggleDarkMode = () => {
-    setIsDarkMode((prevMode) => !prevMode);
+  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedTheme(event.target.value);
+  };
+
+  const handleSignOut = () => {
+    signOut({
+      callbackUrl: '/', // Redirect to homepage after sign out
+    });
   };
 
   return (
     <>
-      <h1>Settings</h1>
-      <button onClick={toggleDarkMode} className="toggle-switch">
-        <span className={`switch ${isDarkMode ? 'dark' : 'light'}`} />
-      </button>
+      <div className={styles.settingpageContainer}>
+        <h1 className={styles.settings}>Settings</h1>
+        <div>
+          <h2 className={styles.SectionLabel}>Account</h2>
+          <div className={styles.EditAccountContainer}>
+            <ActiveButton text="Edit Account" />
+          </div>
+          <div className={styles.LogoutContainer}>
+            <ActiveButton text="Log out" onClick={handleSignOut} />
+          </div>
+          <hr className={styles.lineSpliter}></hr>
+          <h2 className={styles.SectionLabel}>Theme</h2>
+          <div className={styles.radiobttnsContainer}>
+            <RadioButton
+              label={<span className={styles.labelText}>Dark</span>}
+              name="theme"
+              value="dark"
+              checked={selectedTheme === 'dark'}
+              onChange={handleThemeChange}
+            />
+            <RadioButton
+              label={<span className={styles.labelText}>Light</span>}
+              name="theme"
+              value="light"
+              checked={selectedTheme === 'light'}
+              onChange={handleThemeChange}
+            />
+          </div>
+        </div>
+      </div>
       <BottomNav />
     </>
   );

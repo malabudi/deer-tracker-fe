@@ -1,0 +1,59 @@
+.settings {
+  text-align: center;
+  margin: 1.5rem;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.settingpageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  padding: 1rem;
+}
+
+.SectionLabel {
+  align-items: left;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.EditAccountContainer,
+.LogoutContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.3rem auto;
+}
+
+.LogoutContainer button {
+  background-color: #f01e2c;
+}
+
+.LogoutContainer button:hover {
+  background-color: #ff5863;
+}
+
+.lineSpliter {
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.radiobttnsContainer {
+  justify-content: center;
+  margin-top: 0.5rem;
+  margin-left: 0.2rem;
+  width: 90%;
+}
+
+@media (min-width: 375px) and (max-width: 600px) {
+  .EditAccountContainer button,
+  .LogoutContainer button {
+    padding: 0.5rem 3.5rem;
+    font-size: 1.2rem;
+  }
+}

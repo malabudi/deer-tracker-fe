@@ -4,8 +4,11 @@ import { logIn, signUp } from '@/utils/constants';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
 import InactiveButton from '@/components/Inactive-Button/InactiveButton';
 import Link from 'next/link';
+import { useRedirectIfAuthed } from '@/hooks/useRedirect';
 
 export default function Home() {
+  useRedirectIfAuthed('/settings');
+
   return (
     <main className={styles.mainpageContainer}>
       <div className={styles.headerconatiner}>
@@ -13,19 +16,13 @@ export default function Home() {
       </div>
 
       <div className={styles.lgnbttncontainer}>
-        <Link href="/Login" passHref>
-          <ActiveButton
-            text={logIn}
-            onClick={() => console.log('ln Button clicked!')}
-          />
+        <Link href="/login" passHref>
+          <ActiveButton text={logIn} />
         </Link>
       </div>
       <div className={styles.signbttncontainer}>
-        <Link href="/Signup" passHref>
-          <InactiveButton
-            text={signUp}
-            onClick={() => console.log('su Button clicked!')}
-          />
+        <Link href="/signup" passHref>
+          <InactiveButton text={signUp} />
         </Link>
       </div>
     </main>

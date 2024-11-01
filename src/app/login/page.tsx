@@ -6,6 +6,9 @@ import InputField from '@/components/textbox/textbox';
 import styles from './page.module.css';
 import { emailRegex } from '@/utils/constants';
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useRedirectIfAuthed } from '@/hooks/useRedirect';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -14,6 +17,10 @@ const LoginPage: React.FC = () => {
   const [passError, PsetError] = useState(' ');
   const [shakeEmail, setShakeEmail] = useState(false);
   const [shakePassword, setShakePassword] = useState(false);
+  const router = useRouter();
+
+  // if user is already authenticated, redirect to settings page
+  useRedirectIfAuthed('/settings');
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -25,7 +32,7 @@ const LoginPage: React.FC = () => {
     setPassword(value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     EsetError('');
@@ -58,6 +65,22 @@ const LoginPage: React.FC = () => {
       }, 100);
       return;
     }
+
+    // Authenticate once valid
+    const result = await signIn('credentials', {
+      email: email,
+      password: password,
+      action: 'login',
+      redirect: false,
+    });
+
+    if (result?.error) {
+      PsetError('Incorrect email or password');
+      setShakeEmail(true);
+      setShakePassword(true);
+    } else {
+      router.push('/settings');
+    }
   };
 
   return (
@@ -65,23 +88,22 @@ const LoginPage: React.FC = () => {
       <div className={styles.headerconatiner}>
         <h1 className={styles.welcomeBack}>Welcome Back!</h1>
       </div>
-      {/* Email and Password Input Fields */}
       <form onSubmit={handleSubmit} noValidate>
+        {/* hidden field needed for authentication action */}
+        <input type="hidden" name="action" value="login" />
         <div className={styles.EmailContainer}>
-          <label className={styles.TextBoxLabel}>Email</label>
           <InputField
             type="email"
             value={email}
             onChange={handleEmailChange}
             placeholder="Enter email"
-            label="Password"
+            label="Email"
             errorMessage={emailError}
             shake={shakeEmail}
           />
         </div>
 
         <div className={styles.PasswordContainer}>
-          <label className={styles.TextBoxLabel}>Password</label>
           <InputField
             type="password"
             value={password}
@@ -93,14 +115,13 @@ const LoginPage: React.FC = () => {
           />
         </div>
 
-        {/* Buttons for Login and Signup */}
         <div className={styles.lgnbttncontainer}>
           <ActiveButton text="Log in" />
         </div>
         <span className={styles.span}>or</span>
 
         <div className={styles.signbttncontainer}>
-          <Link href="/Signup" passHref>
+          <Link href="/signup" passHref>
             <InactiveButton text="Sign up" />
           </Link>
         </div>
