@@ -1,0 +1,116 @@
+.mainConatiner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 80vh;
+  width: 50vw;
+  padding: 1rem;
+  margin: auto;
+}
+
+.mainConatiner input {
+  margin-bottom: 2rem;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.displayContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.editAccountHeader {
+  align-items: center;
+  margin-bottom: 3rem;
+  font-size: 3rem;
+}
+
+.backButtonImage {
+  width: 50px;
+  margin: 20px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.backButtonImage:hover {
+  transform: scale(1.1);
+}
+
+@media (min-width: 300px) and (max-width: 376px) {
+  .mainConatiner {
+    width: 100vw;
+
+  }
+
+  .formContainer button {
+    font-size: 1rem;
+  }
+
+  .displayContainer {
+    width: 100%;
+  }
+
+  .editAccountHeader {
+    font-size: 1.5rem;
+  }
+
+  .backButtonImage {
+    width: 40px;
+    margin: 10px;
+  }
+}
+
+@media (min-width: 380px) and (max-width: 600px) {
+  .mainConatiner {
+    width: auto;
+  }
+
+  .formContainer button {
+    font-size: 1rem;
+  }
+
+  .displayContainer {
+    width: 100%;
+  }
+
+  .editAccountHeader {
+    font-size: 1.5rem;
+  }
+
+  .backButtonImage {
+    width: 40px;
+    margin: 10px;
+  }
+}
+
+@media (min-width: 1001px) and (max-width: 1300px) {
+  .mainConatiner {
+    width: 100vw;
+
+  }
+
+  .formContainer button {
+    font-size: 2rem;
+  }
+
+  .displayContainer {
+    width: 100%;
+  }
+
+  .editAccountHeader {
+    font-size: 3rem;
+  }
+
+  .backButtonImage {
+    width: 40px;
+    margin: 10px;
+  }
+}

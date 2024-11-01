@@ -4,6 +4,8 @@ import BottomNav from '@/components/bottom-nav/BottomNav';
 import styles from './page.module.css';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
 import RadioButton from '@/components/Radio-Button/RadioButton';
+import Link from 'next/link';
+
 import { signOut } from 'next-auth/react';
 
 export default function Settings() {
@@ -26,7 +28,9 @@ export default function Settings() {
         <div>
           <h2 className={styles.SectionLabel}>Account</h2>
           <div className={styles.EditAccountContainer}>
-            <ActiveButton text="Edit Account" />
+            <Link href="settings/edit-account" passHref>
+              <ActiveButton text="Edit Account" />
+            </Link>
           </div>
           <div className={styles.LogoutContainer}>
             <ActiveButton text="Log out" onClick={handleSignOut} />
