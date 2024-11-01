@@ -7,16 +7,17 @@
 
   --foreground-color: #b077ff;
   --background-color: #eae5f0;
+  --text-color: #1c1c1c;
 }
 
-.dark-mode {
-  --foreground-color: #b077ff;
-  --background-color: #1b1228;
-}
-
-.light-mode {
-  --foreground-color: #b077ff;
-  --background-color: #eae5f0;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #1b1228;
+    --text-color: #ffffff;
+  }
+  html {
+    color-scheme: dark;
+  }
 }
 
 * {
@@ -34,7 +35,7 @@ body {
 }
 
 body {
-  color: var(--foreground-color);
+  color: var(--text-color);
   background: var(--background-color);
   margin: 0;
   padding: 0;
