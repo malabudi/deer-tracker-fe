@@ -26,6 +26,7 @@ export const LocationProvider = ({
         (position) => {
           const { latitude, longitude } = position.coords;
           setUserLocation({ latitude, longitude });
+          console.log('Fetched location from timer:', { latitude, longitude }); // Log the fetched location t o test timer
         },
         (error) => {
           console.error('Error getting user location:', error);
@@ -43,9 +44,11 @@ export const LocationProvider = ({
     }
   }, []);
 
-  // This probably were u wanna make location call more than once big dawg
   useEffect(() => {
     fetchLocation();
+
+    // Set up interval to fetch location every 5 seconds
+    setInterval(fetchLocation, 5000);
   }, [fetchLocation]);
 
   return (
