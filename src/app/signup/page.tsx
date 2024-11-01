@@ -20,7 +20,7 @@ import useDarkMode from '@/hooks/useDarkMode';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRedirectIfAuthed } from '@/hooks/useRedirect';
 import { createUser } from '@/hooks/apis/users';
-import { generateTokenAndEmail } from '@/lib/generate-verification';
+import { generateTokenAndEmail } from '@/lib/generateVerification';
 
 const SignupPage: React.FC = () => {
   const [email, setEmail] = useState('');

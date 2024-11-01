@@ -5,6 +5,8 @@ import React from 'react';
 import { ReactQueryProvider } from './react-query-provider';
 import { LocationProvider } from '@/context/LocationProvider';
 import AuthProvider from '@/context/AuthProvider';
+import { ThemeProvider } from '@/context/ThemeProvider';
+import { ThemeUpdater } from '@/lib/themeUpdater';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -43,7 +45,12 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <LocationProvider>
-            <ReactQueryProvider>{children}</ReactQueryProvider>
+            <ThemeProvider>
+              <ReactQueryProvider>
+                <ThemeUpdater />
+                {children}
+              </ReactQueryProvider>
+            </ThemeProvider>
           </LocationProvider>
         </AuthProvider>
       </body>
