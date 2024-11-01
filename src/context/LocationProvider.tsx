@@ -8,6 +8,7 @@ import {
   useEffect,
 } from 'react';
 import { Location, LocationContextType } from '@/interfaces/Location';
+import { FetchLocation_CoolDown } from '@/utils/constants';
 
 const LocationContext = createContext<LocationContextType | undefined>(
   undefined
@@ -26,7 +27,6 @@ export const LocationProvider = ({
         (position) => {
           const { latitude, longitude } = position.coords;
           setUserLocation({ latitude, longitude });
-          console.log('Fetched location from timer:', { latitude, longitude }); // Log the fetched location t o test timer
         },
         (error) => {
           console.error('Error getting user location:', error);
@@ -46,9 +46,7 @@ export const LocationProvider = ({
 
   useEffect(() => {
     fetchLocation();
-
-    // Set up interval to fetch location every 5 seconds
-    setInterval(fetchLocation, 5000);
+    setInterval(fetchLocation, FetchLocation_CoolDown);
   }, [fetchLocation]);
 
   return (
