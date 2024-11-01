@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import BottomNav from '@/components/bottom-nav/BottomNav';
 import styles from './page.module.css';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
@@ -7,12 +7,16 @@ import RadioButton from '@/components/Radio-Button/RadioButton';
 import Link from 'next/link';
 
 import { signOut } from 'next-auth/react';
+import { useTheme } from '@/context/ThemeProvider';
 
 export default function Settings() {
-  const [selectedTheme, setSelectedTheme] = useState('');
+  const { theme, setTheme } = useTheme();
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedTheme(event.target.value);
+    setTheme(event.target.value);
+
+    // save theme to localstorage to remember the choice for now, may resort to cookies instead if this is not viable
+    localStorage.setItem('theme', theme);
   };
 
   const handleSignOut = () => {
@@ -42,14 +46,14 @@ export default function Settings() {
               label={<span>Dark</span>}
               name="theme"
               value="dark"
-              checked={selectedTheme === 'dark'}
+              checked={theme === 'dark'}
               onChange={handleThemeChange}
             />
             <RadioButton
               label={<span>Light</span>}
               name="theme"
               value="light"
-              checked={selectedTheme === 'light'}
+              checked={theme === 'light'}
               onChange={handleThemeChange}
             />
           </div>
