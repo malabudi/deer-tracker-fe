@@ -16,4 +16,4 @@ export const cooldownTime = 60000;
 export const detectCooldown = 5000;
 
 //cool down for every fetched user location
-export const FetchLocation_CoolDown = 5000;
+export const fetchLocationCooldown = 5000;

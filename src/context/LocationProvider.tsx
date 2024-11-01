@@ -8,7 +8,7 @@ import {
   useEffect,
 } from 'react';
 import { Location, LocationContextType } from '@/interfaces/Location';
-import { FetchLocation_CoolDown } from '@/utils/constants';
+import { fetchLocationCooldown } from '@/utils/constants';
 
 const LocationContext = createContext<LocationContextType | undefined>(
   undefined
@@ -46,7 +46,7 @@ export const LocationProvider = ({
 
   useEffect(() => {
     fetchLocation();
-    setInterval(fetchLocation, FetchLocation_CoolDown);
+    setInterval(fetchLocation, fetchLocationCooldown);
   }, [fetchLocation]);
 
   return (
