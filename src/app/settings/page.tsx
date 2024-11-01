@@ -13,10 +13,11 @@ export default function Settings() {
   const { theme, setTheme } = useTheme();
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTheme(event.target.value);
+    const selectedTheme = event.target.value;
+    setTheme(selectedTheme);
 
     // save theme to localstorage to remember the choice for now, may resort to cookies instead if this is not viable
-    localStorage.setItem('theme', theme);
+    localStorage.setItem('theme', selectedTheme);
   };
 
   const handleSignOut = () => {
@@ -32,7 +33,11 @@ export default function Settings() {
         <div className={styles.settingsWrapper}>
           <h2 className={styles.SectionLabel}>Account</h2>
           <div className={styles.EditAccountContainer}>
-            <Link href="settings/edit-account" passHref>
+            <Link
+              href="settings/edit-account"
+              passHref
+              className={styles.editAccLink}
+            >
               <ActiveButton text="Edit Account" />
             </Link>
           </div>

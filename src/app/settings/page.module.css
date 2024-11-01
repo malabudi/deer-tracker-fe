@@ -35,6 +35,10 @@
   margin: 1.3rem auto;
 }
 
+.editAccLink {
+  width: 100%;
+}
+
 .EditAccountContainer button,
 .LogoutContainer button {
   width: 100%;

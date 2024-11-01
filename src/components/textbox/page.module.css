@@ -6,6 +6,16 @@
   font-size: 1rem;
 }
 
+.inputFieldDark {
+  background-color: #2C2C2C;
+  color: #fff;
+}
+
+.inputFieldLight {
+  background-color: #ffffff;
+  color: #2C2C2C;
+}
+
 .TextBoxLabel {
   margin-bottom: 0.2rem;
 }

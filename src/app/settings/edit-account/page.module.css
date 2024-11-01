@@ -38,6 +38,7 @@
   height: auto;
   cursor: pointer;
   transition: transform 0.2s;
+  filter: var(--image-filter);
 }
 
 .backButtonImage:hover {
