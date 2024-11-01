@@ -5,26 +5,34 @@
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
   --foreground-color: #b077ff;
-  --background-color: #eae5f0;
-  --text-color: #1c1c1c;
+
+  /*Light Mode Vars*/
+  --light-background-color: #eae5f0;
+  --light-text-color: #1c1c1c;
+
+  /* Dark Mode Vars */
+  --dark-background-color: #1b1228;
+  --dark-text-color: #fff;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background-color: #1b1228;
-    --text-color: #fff;
-  }
+body.light {
+  color: var(--light-text-color);
+  background: var(--light-background-color);
+}
+
+body.dark {
+  color: var(--dark-text-color);
+  background: var(--dark-background-color);
 }
 
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  font-family: var(--font-mono);
 }
 
 body {
-  color: var(--text-color);
-  background: var(--background-color);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -37,12 +45,6 @@ a {
 
 h1 {
   font-size: 3em;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }
 
 button {

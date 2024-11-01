@@ -7,7 +7,7 @@ import { newVerification } from '@/actions/new-verification';
 import ActiveButton from '../Active-Button/ActiveButton';
 import Link from 'next/link';
 import styles from './page.module.css';
-import { generateTokenAndEmail } from '@/lib/generate-verification';
+import { generateTokenAndEmail } from '@/lib/generateVerification';
 import { getVerificationTokenByToken } from '@/hooks/apis/verificationToken';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
