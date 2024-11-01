@@ -21,6 +21,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRedirectIfAuthed } from '@/hooks/useRedirect';
 import { createUser } from '@/hooks/apis/users';
 import { generateTokenAndEmail } from '@/lib/generateVerification';
+import { canParseJson } from '@/utils/helpers';
 
 const SignupPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -191,18 +192,24 @@ const SignupPage: React.FC = () => {
         });
       }
     } catch (err) {
-      const errJson = JSON.parse(err.message);
-      toast.error(errJson.error, {
-        position: 'bottom-right',
-        autoClose: 10000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: isDarkMode ? 'dark' : 'light',
-        transition: Bounce,
-      });
+      let errMsg;
+
+      if (canParseJson(err.message)) {
+        errMsg = JSON.parse(err.message);
+      } else {
+        errMsg = err.message;
+        toast.error(errMsg, {
+          position: 'bottom-right',
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: isDarkMode ? 'dark' : 'light',
+          transition: Bounce,
+        });
+      }
     }
   };
 
