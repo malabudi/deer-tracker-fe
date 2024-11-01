@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 90vh;
+  height: 80vh;
   width: 50vw;
   padding: 1rem;
   margin: auto;
@@ -28,7 +28,8 @@
 
 .editAccountHeader {
   align-items: center;
-  margin: 0 0 3rem 0;
+  margin-bottom: 3rem;
+  font-size: 3rem;
 }
 
 .backButtonImage {
@@ -43,13 +44,14 @@
   transform: scale(1.1);
 }
 
-@media (min-width: 300px) and (max-width: 375px) {
+@media (min-width: 300px) and (max-width: 376px) {
   .mainConatiner {
-    width: 100%;
+    width: 100vw;
+
   }
 
   .formContainer button {
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
 
   .displayContainer {
@@ -57,7 +59,7 @@
   }
 
   .editAccountHeader {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
 
   .backButtonImage {
@@ -66,7 +68,7 @@
   }
 }
 
-@media (min-width: 380px) and (max-width: 1000px) {
+@media (min-width: 380px) and (max-width: 600px) {
   .mainConatiner {
     width: auto;
   }
@@ -81,6 +83,30 @@
 
   .editAccountHeader {
     font-size: 1.5rem;
+  }
+
+  .backButtonImage {
+    width: 40px;
+    margin: 10px;
+  }
+}
+
+@media (min-width: 1001px) and (max-width: 1300px) {
+  .mainConatiner {
+    width: 100vw;
+
+  }
+
+  .formContainer button {
+    font-size: 2rem;
+  }
+
+  .displayContainer {
+    width: 100%;
+  }
+
+  .editAccountHeader {
+    font-size: 3rem;
   }
 
   .backButtonImage {

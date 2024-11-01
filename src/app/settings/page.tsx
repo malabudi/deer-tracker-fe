@@ -28,7 +28,7 @@ export default function Settings() {
         <div>
           <h2 className={styles.SectionLabel}>Account</h2>
           <div className={styles.EditAccountContainer}>
-            <Link href="settings/edit-email" passHref>
+            <Link href="settings/edit-account" passHref>
               <ActiveButton text="Edit Account" />
             </Link>
           </div>
