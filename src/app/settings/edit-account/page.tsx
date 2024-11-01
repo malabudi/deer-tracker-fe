@@ -25,6 +25,7 @@ const Editaccount: React.FC = () => {
           src={backIcon}
           alt="Back"
           className={styles.backButtonImage}
+          style={{ filter: 'var(--image-filter)' }}
         />
       </Link>
       <div className={styles.mainConatiner}>

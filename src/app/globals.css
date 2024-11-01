@@ -25,6 +25,10 @@ body.dark {
   background: var(--dark-background-color);
 }
 
+svg {
+  color: var(--icon-color);
+}
+
 html,
 body {
   max-width: 100vw;
