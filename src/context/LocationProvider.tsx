@@ -8,6 +8,7 @@ import {
   useEffect,
 } from 'react';
 import { Location, LocationContextType } from '@/interfaces/Location';
+import { fetchLocationCooldown } from '@/utils/constants';
 
 const LocationContext = createContext<LocationContextType | undefined>(
   undefined
@@ -43,9 +44,9 @@ export const LocationProvider = ({
     }
   }, []);
 
-  // This probably were u wanna make location call more than once big dawg
   useEffect(() => {
     fetchLocation();
+    setInterval(fetchLocation, fetchLocationCooldown);
   }, [fetchLocation]);
 
   return (
