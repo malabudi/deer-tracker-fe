@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useRedirectIfAuthed } from '@/hooks/useRedirect';
+import { Bounce, toast, ToastContainer } from 'react-toastify';
+import useDarkMode from '@/hooks/useDarkMode';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -18,6 +20,7 @@ const LoginPage: React.FC = () => {
   const [shakeEmail, setShakeEmail] = useState(false);
   const [shakePassword, setShakePassword] = useState(false);
   const router = useRouter();
+  const isDarkMode = useDarkMode();
 
   // if user is already authenticated, redirect to settings page
   useRedirectIfAuthed('/settings');
@@ -75,9 +78,20 @@ const LoginPage: React.FC = () => {
     });
 
     if (result?.error) {
-      PsetError('Incorrect email or password');
-      setShakeEmail(true);
-      setShakePassword(true);
+      toast.error(
+        'An unexpected error occured while trying to long in, please try again later',
+        {
+          position: 'bottom-right',
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: isDarkMode ? 'dark' : 'light',
+          transition: Bounce,
+        }
+      );
     } else {
       router.push('/settings');
     }
@@ -117,6 +131,7 @@ const LoginPage: React.FC = () => {
           </Link>
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 };
