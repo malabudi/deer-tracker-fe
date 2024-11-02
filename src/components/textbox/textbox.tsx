@@ -33,6 +33,18 @@ const InputField: React.FC<InputFieldProps> = ({
   // Determine the input type dynamically
   const inputType = type === 'password' && isPasswordVisible ? 'text' : type;
 
+  const handleCopy = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    if (type === 'password') {
+      e.preventDefault();
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    if (type === 'password') {
+      e.preventDefault();
+    }
+  };
+
   return (
     <div className={styles.inputWrapper}>
       {' '}
@@ -46,6 +58,8 @@ const InputField: React.FC<InputFieldProps> = ({
           onChange={onChange}
           placeholder={placeholder}
           disabled={disabled}
+          onCopy={handleCopy}
+          onPaste={handlePaste}
         />
         {type === 'password' && (
           <button
