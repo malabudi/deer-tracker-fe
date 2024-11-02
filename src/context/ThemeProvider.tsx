@@ -1,49 +1,48 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { getCookie } from '@/utils/helpers'; // Ensure you have a function to get cookies
+import Loader from '@/components/loader/Loader';
 
 const ThemeContext = createContext(undefined);
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme');
-    }
-  });
+  const [theme, setTheme] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    document.body.className = theme;
+    const cookieTheme = getCookie('theme');
+    if (cookieTheme) {
+      setTheme(cookieTheme);
+    } else {
+      setTheme('light');
+    }
+    setLoading(false);
+  }, []);
 
-    // "style" basically is used to declare variables in CSS
-    document.body.style.setProperty(
-      '--icon-color',
-      theme === 'dark' ? '#ffffff' : '#000000'
-    );
+  useEffect(() => {
+    if (theme) {
+      // Dark themes
+      document.body.className = theme;
 
-    document.body.style.setProperty(
-      '--image-filter',
-      theme === 'dark' ? 'invert(0)' : 'invert(1)'
-    );
+      document.body.style.setProperty(
+        '--icon-color',
+        theme === 'dark' ? '#ffffff' : '#000000'
+      );
 
-    localStorage.setItem('theme', theme);
+      document.body.style.setProperty(
+        '--image-filter',
+        theme === 'dark' ? 'invert(0)' : 'invert(1)'
+      );
 
-    // Listen for changes in preference
-    const listener = (e) => {
-      const newTheme = e.matches ? 'dark' : 'light';
-      setTheme(newTheme);
-      localStorage.setItem('theme', newTheme); // Save the preference
-    };
-
-    window
-      .matchMedia('(prefers-color-scheme: dark)')
-      .addEventListener('change', listener);
-
-    return () => {
-      window
-        .matchMedia('(prefers-color-scheme: dark)')
-        .removeEventListener('change', listener);
-    };
+      document.cookie = `theme=${theme}; path=/; max-age=${365 * 24 * 60 * 60}`; // Set the cookie
+    }
   }, [theme]);
+
+  // If loading, return null (or a loader component) until theme is determined
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

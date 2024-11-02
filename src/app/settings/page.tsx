@@ -1,11 +1,11 @@
 'use client';
+
 import React from 'react';
 import BottomNav from '@/components/bottom-nav/BottomNav';
 import styles from './page.module.css';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
 import RadioButton from '@/components/Radio-Button/RadioButton';
 import Link from 'next/link';
-
 import { signOut } from 'next-auth/react';
 import { useTheme } from '@/context/ThemeProvider';
 
@@ -15,9 +15,6 @@ export default function Settings() {
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedTheme = event.target.value;
     setTheme(selectedTheme);
-
-    // save theme to localstorage to remember the choice for now, may resort to cookies instead if this is not viable
-    localStorage.setItem('theme', selectedTheme);
   };
 
   const handleSignOut = () => {
