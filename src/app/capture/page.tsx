@@ -179,11 +179,14 @@ export default function Capture() {
       video: { facingMode: 'environment' },
     };
 
+    let videoStream: MediaStream | null = null;
+
     // Check user's browser media capabilities
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
         .getUserMedia(constraints)
         .then((stream) => {
+          videoStream = stream;
           if (videoRef.current) {
             videoRef.current.srcObject = stream;
             videoRef.current.play();
@@ -201,6 +204,13 @@ export default function Capture() {
     }
 
     setLoading(false); // Set loading to false once video starts
+
+    // Cleanup function to stop the video stream
+    return () => {
+      if (videoStream) {
+        videoStream.getTracks().forEach((track) => track.stop());
+      }
+    };
   }, [detectDeer, detectFrame]);
 
   return (
