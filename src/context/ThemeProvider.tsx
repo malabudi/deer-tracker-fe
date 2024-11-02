@@ -5,9 +5,11 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 const ThemeContext = createContext(undefined);
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem('theme') || 'light'
-  );
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme');
+    }
+  });
 
   useEffect(() => {
     document.body.className = theme;
