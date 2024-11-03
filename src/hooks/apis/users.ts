@@ -82,7 +82,7 @@ export const updateUserEmail = async (
 
 export const updateUserPassword = async (
   email: string,
-  oldPasswordHash: string,
+  currentPasswordHash: string,
   newPassword: string
 ) => {
   const response = await fetch(`${API_PATH}/users/updatePassword`, {
@@ -92,7 +92,7 @@ export const updateUserPassword = async (
     },
     body: JSON.stringify({
       email: email,
-      old_password: oldPasswordHash,
+      current_password: currentPasswordHash,
       new_password: newPassword,
     }),
   });
