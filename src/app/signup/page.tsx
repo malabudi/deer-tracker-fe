@@ -193,9 +193,21 @@ const SignupPage: React.FC = () => {
       }
     } catch (err) {
       let errMsg;
+      console.log(canParseJson(err.message));
 
       if (canParseJson(err.message)) {
         errMsg = JSON.parse(err.message);
+        toast.error(errMsg.error, {
+          position: 'bottom-right',
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: isDarkMode ? 'dark' : 'light',
+          transition: Bounce,
+        });
       } else {
         errMsg = err.message;
         toast.error(errMsg, {

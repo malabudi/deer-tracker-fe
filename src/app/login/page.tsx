@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useRedirectIfAuthed } from '@/hooks/useRedirect';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import useDarkMode from '@/hooks/useDarkMode';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -78,20 +79,18 @@ const LoginPage: React.FC = () => {
     });
 
     if (result?.error) {
-      toast.error(
-        'An unexpected error occured while trying to long in, please try again later',
-        {
-          position: 'bottom-right',
-          autoClose: 10000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: isDarkMode ? 'dark' : 'light',
-          transition: Bounce,
-        }
-      );
+      console.log(result.error);
+      toast.error(result.error, {
+        position: 'bottom-right',
+        autoClose: 10000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: isDarkMode ? 'dark' : 'light',
+        transition: Bounce,
+      });
     } else {
       router.push('/settings');
     }
