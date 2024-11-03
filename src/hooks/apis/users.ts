@@ -55,3 +55,27 @@ export const createUser = async (email: string, password: string) => {
 
   return response.json();
 };
+
+export const updateUserEmail = async (
+  currentEmail: string,
+  newEmail: string
+) => {
+  const response = await fetch(`${API_PATH}/users/updateEmail`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      current_email: currentEmail,
+      new_email: newEmail,
+    }),
+  });
+
+  if (!response.ok) {
+    const errMsg = await response.text();
+    console.error(`Update Error ${response.status}: ${errMsg}`);
+    throw new Error(errMsg);
+  }
+
+  return response.json();
+};
