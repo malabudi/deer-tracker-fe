@@ -1,18 +1,20 @@
 'use client';
-import React, { useState } from 'react';
+
+import React from 'react';
 import BottomNav from '@/components/bottom-nav/BottomNav';
 import styles from './page.module.css';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
 import RadioButton from '@/components/Radio-Button/RadioButton';
 import Link from 'next/link';
-
 import { signOut } from 'next-auth/react';
+import { useTheme } from '@/context/ThemeProvider';
 
 export default function Settings() {
-  const [selectedTheme, setSelectedTheme] = useState('');
+  const { theme, setTheme } = useTheme();
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedTheme(event.target.value);
+    const selectedTheme = event.target.value;
+    setTheme(selectedTheme);
   };
 
   const handleSignOut = () => {
@@ -22,13 +24,17 @@ export default function Settings() {
   };
 
   return (
-    <>
+    <div className={styles.pageWrapper}>
       <div className={styles.settingpageContainer}>
         <h1 className={styles.settings}>Settings</h1>
-        <div>
+        <div className={styles.settingsWrapper}>
           <h2 className={styles.SectionLabel}>Account</h2>
           <div className={styles.EditAccountContainer}>
-            <Link href="settings/edit-account" passHref>
+            <Link
+              href="settings/edit-account"
+              passHref
+              className={styles.editAccLink}
+            >
               <ActiveButton text="Edit Account" />
             </Link>
           </div>
@@ -39,23 +45,23 @@ export default function Settings() {
           <h2 className={styles.SectionLabel}>Theme</h2>
           <div className={styles.radiobttnsContainer}>
             <RadioButton
-              label={<span className={styles.labelText}>Dark</span>}
+              label={<span>Dark</span>}
               name="theme"
               value="dark"
-              checked={selectedTheme === 'dark'}
+              checked={theme === 'dark'}
               onChange={handleThemeChange}
             />
             <RadioButton
-              label={<span className={styles.labelText}>Light</span>}
+              label={<span>Light</span>}
               name="theme"
               value="light"
-              checked={selectedTheme === 'light'}
+              checked={theme === 'light'}
               onChange={handleThemeChange}
             />
           </div>
         </div>
       </div>
       <BottomNav />
-    </>
+    </div>
   );
 }

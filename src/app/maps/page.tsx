@@ -7,15 +7,16 @@ import { useQuery } from '@tanstack/react-query';
 import getSightingsByLocation from '@/hooks/getSightingsByLocation';
 import Loader from '@/components/loader/Loader';
 import { useLocationContext } from '@/context/LocationProvider';
+import styles from './page.module.css';
 
 export default function Maps() {
   const { userLocation } = useLocationContext();
 
-  const apiKey = ''; // (grab form discord) a story has been created to find a better approach
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
   const longitude = userLocation?.longitude;
   const latitude = userLocation?.latitude;
-  const radius = 5; // Set desired radius for fetching sigthings here
+  const radius = 5; // Set desired radius for fetching sightings here
 
   const canFetch =
     typeof longitude === 'number' && typeof latitude === 'number';
@@ -30,17 +31,12 @@ export default function Maps() {
     enabled: canFetch,
   });
 
-  // Console log to verify data fetching
-  if (sightings) {
-    console.log('Fetched sightings from hook:', sightings);
-  }
-
   if (error) {
     console.error('Error fetching sightings from hook:', error);
   }
 
   return (
-    <>
+    <div className={styles.pageWrapper}>
       {isLoading && (
         <div>
           <Loader />
@@ -55,6 +51,6 @@ export default function Maps() {
         />
       )}
       <BottomNav />
-    </>
+    </div>
   );
 }

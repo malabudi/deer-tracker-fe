@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from '@/components/textbox/page.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { useTheme } from '@/context/ThemeProvider';
 
 interface InputFieldProps {
   value: string;
@@ -24,6 +25,7 @@ const InputField: React.FC<InputFieldProps> = ({
   errorMessage = [], // Default to empty string
   shake = false, // Default to false
 }) => {
+  const { theme } = useTheme();
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -45,14 +47,16 @@ const InputField: React.FC<InputFieldProps> = ({
     }
   };
 
+  // Define light/dark mode exclusive theme classes
+  const inputTheme =
+    theme === 'dark' ? styles.inputFieldDark : styles.inputFieldLight;
+
   return (
     <div className={styles.inputWrapper}>
-      {' '}
-      {/* Wrapper for input and button */}
       <div className={styles.inputContainer}>
         <label className={styles.TextBoxLabel}>{label}</label>
         <input
-          className={`${styles.InputField} ${shake ? styles.shake : ''}`}
+          className={`${styles.InputField} ${inputTheme} ${shake ? styles.shake : ''}`}
           type={inputType}
           value={value}
           onChange={onChange}

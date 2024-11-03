@@ -1,0 +1,39 @@
+.mainContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 80vw;
+    height: 100vh;
+    text-align: center;
+}
+
+.mainContainer h1 {
+    margin-bottom: 0.2rem;
+}
+
+.messageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+@media (min-width: 300px) and (max-width: 600px) {
+    .mainContainer h1 {
+        font-size: 2rem;
+    }
+
+    .mainContainer h2 {
+        font-size: 1.25rem;
+    }
+
+    .messageContainer {
+        width: 80vw;
+    }
+
+    .messageContainer {
+        width: 80vw;
+    }
+}
