@@ -44,7 +44,7 @@ export const options: NextAuthOptions = {
           return user;
         } catch (error) {
           console.error('Error while authorizing: ', error);
-          return null;
+          throw error;
         }
       },
     }),
