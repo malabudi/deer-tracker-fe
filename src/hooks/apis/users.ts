@@ -79,3 +79,29 @@ export const updateUserEmail = async (
 
   return response.json();
 };
+
+export const updateUserPassword = async (
+  email: string,
+  oldPasswordHash: string,
+  newPassword: string
+) => {
+  const response = await fetch(`${API_PATH}/users/updatePassword`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: email,
+      old_password: oldPasswordHash,
+      new_password: newPassword,
+    }),
+  });
+
+  if (!response.ok) {
+    const errMsg = await response.text();
+    console.error(`Update Password Error ${response.status}: ${errMsg}`);
+    throw new Error(errMsg);
+  }
+
+  return response.json();
+};
