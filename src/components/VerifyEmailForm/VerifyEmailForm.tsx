@@ -102,7 +102,7 @@ const VerifyEmailForm = () => {
         {success && (
           <div className={styles.messageContainer}>
             <h1>Email Verification</h1>
-            <h2>Your email is verified, you can now sign in!</h2>
+            <h2>Your email is verified, you can now log in!</h2>
             <Link href="/login" passHref>
               <ActiveButton text={logIn} />
             </Link>
