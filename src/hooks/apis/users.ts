@@ -1,7 +1,7 @@
 import { API_PATH } from '@/utils/constants';
 
 export const getUserByEmail = async (email: String) => {
-  const response = await fetch(`${API_PATH}/users/email/?email=${email}`, {
+  const response = await fetch(`${API_PATH}/users/?email=${email}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
