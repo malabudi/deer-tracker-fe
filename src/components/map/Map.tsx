@@ -42,7 +42,6 @@ const Map: React.FC<MapComponentProps> = ({
     lat: latitude || 0,
     lng: longitude || 0,
   });
-  const [mapZoom, setMapZoom] = useState(14);
 
   const [selectedSighting, setSelectedSighting] = useState<DeerSighting | null>(
     null
@@ -63,7 +62,7 @@ const Map: React.FC<MapComponentProps> = ({
   const goToLocation = () => {
     if (latitude && longitude) {
       setMapCenter({ lat: latitude, lng: longitude });
-      mapRef.current.setZoom(14);
+      mapRef.current.setZoom(16);
     }
   };
 
@@ -164,7 +163,7 @@ const Map: React.FC<MapComponentProps> = ({
         if (mapRef.current && currentZoom < targetZoom) {
           currentZoom += 1;
           mapRef.current.setZoom(currentZoom);
-          zoomTimeout.current = window.setTimeout(zoomInSteps, 200);
+          zoomTimeout.current = window.setTimeout(zoomInSteps, 100);
         } else if (mapRef.current) {
           mapRef.current.panTo(position); // Center position after zoom
         }
@@ -181,7 +180,7 @@ const Map: React.FC<MapComponentProps> = ({
     );
     setSelectedSighting(sighting);
     setClusterSightings([]);
-    handleSmoothZoomAndCenter(position, 13);
+    handleSmoothZoomAndCenter(position, 15);
   };
 
   const handleClusterClick = (cluster: any) => {
@@ -258,7 +257,6 @@ const Map: React.FC<MapComponentProps> = ({
         onLoad={onLoad}
         mapContainerStyle={containerStyle}
         center={mapCenter}
-        zoom={mapZoom}
         options={mapOptions}
         onClick={handleMapClick}
       >
