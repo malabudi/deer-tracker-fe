@@ -7,7 +7,6 @@ import {
   InfoWindow,
 } from '@react-google-maps/api';
 import { DeerSighting } from '@/interfaces/DeerSighting';
-import singlePin from '@/assets/singlePin-icon.png';
 import deericon from '@/assets/deericon.svg';
 import mylocation from '@/assets/mylocation.svg';
 import CurrentLocation from '@/assets/CurrentLocation.svg';
@@ -91,11 +90,6 @@ const Map: React.FC<MapComponentProps> = ({
   if (!isLoaded) {
     return <div>Loading Google Maps...</div>;
   }
-
-  const mylocationIcon = {
-    url: singlePin.src,
-    scaledSize: new window.google.maps.Size(70, 75),
-  };
 
   const CurrentLocationIcon = {
     url: CurrentLocation.src,
@@ -321,3 +315,9 @@ const Map: React.FC<MapComponentProps> = ({
 };
 
 export default Map;
+
+//view more for multiple sightings on infowindow
+//deer icon markercluster number appearnace
+//remove x from infowindow
+//remove infowindow for unrelated data
+//
