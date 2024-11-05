@@ -11,6 +11,7 @@ import deericon from '@/assets/deericon.svg';
 import mylocation from '@/assets/mylocation.svg';
 import CurrentLocation from '@/assets/CurrentLocation.svg';
 import styles from './page.module.css';
+import Image from 'next/image';
 
 const containerStyle = {
   width: '100%',
@@ -163,7 +164,7 @@ const Map: React.FC<MapComponentProps> = ({
         if (mapRef.current && currentZoom < targetZoom) {
           currentZoom += 1;
           mapRef.current.setZoom(currentZoom);
-          zoomTimeout.current = window.setTimeout(zoomInSteps, 100);
+          zoomTimeout.current = window.setTimeout(zoomInSteps, 200);
         } else if (mapRef.current) {
           mapRef.current.panTo(position); // Center position after zoom
         }
@@ -180,7 +181,7 @@ const Map: React.FC<MapComponentProps> = ({
     );
     setSelectedSighting(sighting);
     setClusterSightings([]);
-    handleSmoothZoomAndCenter(position, 18);
+    handleSmoothZoomAndCenter(position, 13);
   };
 
   const handleClusterClick = (cluster: any) => {
@@ -200,7 +201,7 @@ const Map: React.FC<MapComponentProps> = ({
     setShowFullClusterInfo(false);
     setSelectedSighting(null);
     if (clusterCenter) {
-      handleSmoothZoomAndCenter(clusterCenter, 18);
+      handleSmoothZoomAndCenter(clusterCenter, 15);
     }
   };
 
@@ -308,16 +309,10 @@ const Map: React.FC<MapComponentProps> = ({
       </GoogleMap>
 
       <button onClick={goToLocation} className={styles.mapButton}>
-        <img src={mylocation.src} alt="My Location" />
+        <Image src={mylocation} alt="My Location" />
       </button>
     </>
   );
 };
 
 export default Map;
-
-//view more for multiple sightings on infowindow
-//deer icon markercluster number appearnace
-//remove x from infowindow
-//remove infowindow for unrelated data
-//
