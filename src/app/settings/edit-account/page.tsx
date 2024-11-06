@@ -17,6 +17,7 @@ const Editaccount: React.FC = () => {
     setEmail(value);
     setIsEmailMatch(value !== userEmail);
   };
+
   return (
     <div>
       <Link href="/settings">
@@ -29,7 +30,7 @@ const Editaccount: React.FC = () => {
         />
       </Link>
       <div className={styles.mainConatiner}>
-        <h1 className={styles.editAccountHeader}>Edit Account</h1>
+        <h1>Edit Account</h1>
         <div className={styles.formContainer}>
           <div>
             <label>Email</label>
@@ -40,7 +41,9 @@ const Editaccount: React.FC = () => {
               placeholder="Enter email"
             />
 
-            <ActiveButton text="Change Password" />
+            <Link href="/settings/edit-account/edit-password">
+              <ActiveButton text="Change Password" />
+            </Link>
           </div>
           <ActiveButton
             isdisabled={!isEmailMatch}

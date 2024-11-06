@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '@/components/textbox/page.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -11,8 +11,7 @@ interface InputFieldProps {
   type?: string;
   label?: string;
   disabled?: boolean;
-  errorMessage?: string; // New prop for error message
-  shake?: boolean; // New prop for shake animation
+  errMessage?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -22,15 +21,23 @@ const InputField: React.FC<InputFieldProps> = ({
   type = 'text',
   label,
   disabled = false,
-  errorMessage = [], // Default to empty string
-  shake = false, // Default to false
+  errMessage,
 }) => {
   const { theme } = useTheme();
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
+  const [shake, setShake] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisibility(!isPasswordVisible);
   };
+
+  useEffect(() => {
+    // Trigger shake effect briefly if there is an error
+    if (errMessage) {
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
+    }
+  }, [errMessage]);
 
   // Determine the input type dynamically
   const inputType = type === 'password' && isPasswordVisible ? 'text' : type;
@@ -78,12 +85,12 @@ const InputField: React.FC<InputFieldProps> = ({
           </button>
         )}
       </div>
-      {errorMessage && (
+      {errMessage && (
         <div
           className={`${styles.Err} ${shake ? styles.shake : ''}`}
           style={{ whiteSpace: 'pre-line' }}
         >
-          {errorMessage}
+          {errMessage}
         </div>
       )}
     </div>

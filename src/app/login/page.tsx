@@ -4,7 +4,7 @@ import ActiveButton from '@/components/Active-Button/ActiveButton';
 import InactiveButton from '@/components/Inactive-Button/InactiveButton';
 import InputField from '@/components/textbox/textbox';
 import styles from './page.module.css';
-import { emailRegex, logIn, signUp } from '@/utils/constants';
+import { logIn, signUp } from '@/utils/constants';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -12,14 +12,13 @@ import { useRedirectIfAuthed } from '@/hooks/useRedirect';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import useDarkMode from '@/hooks/useDarkMode';
 import 'react-toastify/dist/ReactToastify.css';
+import { validateEmail, validatePassword } from '@/lib/fieldValidator';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailError, EsetError] = useState(' ');
-  const [passError, PsetError] = useState(' ');
-  const [shakeEmail, setShakeEmail] = useState(false);
-  const [shakePassword, setShakePassword] = useState(false);
+  const [emailError, setEmailError] = useState(' ');
+  const [passwordError, setPasswordError] = useState('');
   const router = useRouter();
   const isDarkMode = useDarkMode();
 
@@ -39,34 +38,14 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    EsetError('');
-    PsetError('');
-    setShakeEmail(false);
-    setShakePassword(false);
+    const emailErr = validateEmail(email);
+    const passwordErr = validatePassword(password);
 
-    let valid = true;
+    setEmailError(emailErr);
+    setPasswordError(passwordErr);
 
-    if (!email) {
-      EsetError('Email cannot be empty.');
-      setShakeEmail(true);
-      valid = false;
-    } else if (!emailRegex.test(email)) {
-      EsetError('Invalid email address.');
-      setShakeEmail(true);
-      valid = false;
-    }
-
-    if (!password) {
-      PsetError('Password cannot be empty.');
-      setShakePassword(true);
-      valid = false;
-    }
-
-    if (!valid) {
-      setTimeout(() => {
-        setShakeEmail(false);
-        setShakePassword(false);
-      }, 100);
+    // Stop submission if there are any errors
+    if (emailErr || passwordErr) {
       return;
     }
 
@@ -108,8 +87,7 @@ const LoginPage: React.FC = () => {
           onChange={handleEmailChange}
           placeholder="Enter email"
           label="Email"
-          errorMessage={emailError}
-          shake={shakeEmail}
+          errMessage={emailError}
         />
 
         <InputField
@@ -118,8 +96,7 @@ const LoginPage: React.FC = () => {
           onChange={handlePasswordChange}
           placeholder="Enter password"
           label="Password"
-          errorMessage={passError}
-          shake={shakePassword}
+          errMessage={passwordError}
         />
 
         <div className={styles.btnContainer}>
