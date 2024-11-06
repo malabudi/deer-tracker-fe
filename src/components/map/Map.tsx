@@ -36,7 +36,7 @@ const Map: React.FC<MapComponentProps> = ({
   });
 
   const mapRef = useRef<google.maps.Map | null>(null);
-  const zoomTimeout = useRef<number | null>(null); // Track active timeout for zoom steps
+  const zoomTimeout = useRef<number | null>(null);
 
   const [mapCenter, setMapCenter] = useState({
     lat: latitude || 0,
@@ -48,9 +48,14 @@ const Map: React.FC<MapComponentProps> = ({
   );
   const [clusterSightings, setClusterSightings] = useState<DeerSighting[]>([]);
   const [showFullClusterInfo, setShowFullClusterInfo] = useState(false);
+  const [isZooming, setIsZooming] = useState(false);
 
   const onLoad = (map: google.maps.Map) => {
     mapRef.current = map;
+    if (latitude && longitude) {
+      map.setCenter({ lat: latitude, lng: longitude });
+      map.setZoom(14);
+    }
   };
 
   const handleMapClick = () => {
@@ -60,8 +65,9 @@ const Map: React.FC<MapComponentProps> = ({
   };
 
   const goToLocation = () => {
-    if (latitude && longitude) {
+    if (latitude && longitude && mapRef.current) {
       setMapCenter({ lat: latitude, lng: longitude });
+      mapRef.current.setCenter({ lat: latitude, lng: longitude });
       mapRef.current.setZoom(16);
     }
   };
@@ -151,21 +157,22 @@ const Map: React.FC<MapComponentProps> = ({
     targetZoom: number
   ) => {
     if (mapRef.current) {
-      // Clear any existing zoom timeout to ensure smooth transition on each click
       if (zoomTimeout.current) {
         clearTimeout(zoomTimeout.current);
       }
 
+      setIsZooming(true);
       mapRef.current.panTo(position);
-      let currentZoom = mapRef.current.getZoom() || 14;
+      let currentZoom = mapRef.current.getZoom() || 16;
 
       const zoomInSteps = () => {
         if (mapRef.current && currentZoom < targetZoom) {
           currentZoom += 1;
           mapRef.current.setZoom(currentZoom);
-          zoomTimeout.current = window.setTimeout(zoomInSteps, 100);
+          zoomTimeout.current = window.setTimeout(zoomInSteps, 200);
         } else if (mapRef.current) {
-          mapRef.current.panTo(position); // Center position after zoom
+          mapRef.current.panTo(position);
+          setIsZooming(false);
         }
       };
 
@@ -180,7 +187,9 @@ const Map: React.FC<MapComponentProps> = ({
     );
     setSelectedSighting(sighting);
     setClusterSightings([]);
-    handleSmoothZoomAndCenter(position, 15);
+    if (!isZooming) {
+      handleSmoothZoomAndCenter(position, 15);
+    }
   };
 
   const handleClusterClick = (cluster: any) => {
@@ -199,8 +208,9 @@ const Map: React.FC<MapComponentProps> = ({
     setClusterSightings(clusterSightings);
     setShowFullClusterInfo(false);
     setSelectedSighting(null);
-    if (clusterCenter) {
-      handleSmoothZoomAndCenter(clusterCenter, 15);
+
+    if (!isZooming) {
+      handleSmoothZoomAndCenter(clusterCenter, 19);
     }
   };
 
@@ -260,7 +270,7 @@ const Map: React.FC<MapComponentProps> = ({
         options={mapOptions}
         onClick={handleMapClick}
       >
-        {latitude && longitude && (
+        {latitude && longitude && mapRef.current && (
           <Marker
             position={{ lat: latitude, lng: longitude }}
             icon={CurrentLocationIcon}
