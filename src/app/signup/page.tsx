@@ -4,16 +4,7 @@ import ActiveButton from '@/components/Active-Button/ActiveButton';
 import InactiveButton from '@/components/Inactive-Button/InactiveButton';
 import InputField from '@/components/textbox/textbox';
 import styles from './page.module.css';
-import {
-  emailRegex,
-  minLengthRegex,
-  containsLowerLetterRegex,
-  containsUpperLetterRegex,
-  containsNumberRegex,
-  containsSpecialCharRegex,
-  signUp,
-  logIn,
-} from '@/utils/constants';
+import { signUp, logIn } from '@/utils/constants';
 import Link from 'next/link';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import useDarkMode from '@/hooks/useDarkMode';
@@ -22,17 +13,19 @@ import { useRedirectIfAuthed } from '@/hooks/useRedirect';
 import { createUser } from '@/hooks/apis/users';
 import { generateTokenAndEmail } from '@/lib/generateVerification';
 import { canParseJson } from '@/utils/helpers';
+import {
+  validateConfirmPassword,
+  validateEmail,
+  validatePassword,
+} from '@/lib/fieldValidator';
 
 const SignupPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmpassword, setconfirmPassword] = useState('');
-  const [emailError, EsetError] = useState(' ');
-  const [passError, PsetError] = useState(' ');
-  const [ConfirmpassError, confirmPsetError] = useState(' ');
-  const [shakeEmail, setShakeEmail] = useState(false);
-  const [shakePassword, setShakePassword] = useState(false);
-  const [shakeConfirmPass, setShakeConfirmPassword] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const isDarkMode = useDarkMode();
 
   // if user is already authenticated, redirect to settings page
@@ -47,6 +40,7 @@ const SignupPage: React.FC = () => {
     const value = e.target.value;
     setPassword(value);
   };
+
   const handleConfirmPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -54,89 +48,22 @@ const SignupPage: React.FC = () => {
     setconfirmPassword(value);
   };
 
-  const validateFields = () => {
-    let isValid = true;
-
-    // Validate email
-    if (!email) {
-      EsetError('Email cannot be empty.');
-      setShakeEmail(true);
-      isValid = false;
-    } else if (!emailRegex.test(email)) {
-      EsetError('Invalid email address.');
-      setShakeEmail(true);
-      isValid = false;
-    }
-
-    // Validate password
-    if (!password) {
-      PsetError('Password cannot be empty.');
-      setShakePassword(true);
-      isValid = false;
-    }
-
-    // Validate confirm password
-    if (!confirmpassword) {
-      confirmPsetError('Please re-enter your password.');
-      setShakeConfirmPassword(true);
-      isValid = false;
-    } else if (password !== confirmpassword) {
-      confirmPsetError('Passwords does not match.');
-      setShakeConfirmPassword(true);
-      isValid = false;
-    }
-
-    return isValid;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Clear errors
-    EsetError('');
-    PsetError('');
-    confirmPsetError('');
-    setShakeEmail(false);
-    setShakePassword(false);
-    setShakeConfirmPassword(false);
+    const emailErr = validateEmail(email);
+    const passwordErr = validatePassword(password);
+    const confirmPasswordErr = validateConfirmPassword(
+      password,
+      confirmpassword
+    );
 
-    // Password errors
-    let errors = [];
+    setEmailError(emailErr);
+    setPasswordError(passwordErr);
+    setConfirmPasswordError(confirmPasswordErr);
 
-    if (!minLengthRegex.test(password)) {
-      errors.push('* must contain min. 8 characters');
-    }
-
-    if (!containsUpperLetterRegex.test(password)) {
-      errors.push('* must contain min. 1 upper case');
-    }
-
-    if (!containsLowerLetterRegex.test(password)) {
-      errors.push('* must contain min. 1 lower case');
-    }
-
-    if (!containsNumberRegex.test(password)) {
-      errors.push('* must contain min. 1 number');
-    }
-
-    if (!containsSpecialCharRegex.test(password)) {
-      errors.push('* must contain min. 1 special character');
-    }
-
-    if (errors.length > 0) {
-      PsetError(errors.join('\n'));
-      setShakePassword(true);
-    } else {
-      PsetError('');
-      setShakePassword(false);
-    }
-
-    if (!validateFields()) {
-      setTimeout(() => {
-        setShakeEmail(false);
-        setShakePassword(false);
-        setShakeConfirmPassword(false);
-      }, 100);
+    // Stop submission if there are any errors
+    if (emailErr || passwordErr || confirmPasswordErr) {
       return;
     }
 
@@ -235,8 +162,7 @@ const SignupPage: React.FC = () => {
           onChange={handleEmailChange}
           placeholder="Enter email"
           label="Email"
-          errorMessage={emailError}
-          shake={shakeEmail}
+          errMessage={emailError}
         />
 
         <InputField
@@ -245,8 +171,7 @@ const SignupPage: React.FC = () => {
           onChange={handlePasswordChange}
           placeholder="Enter password"
           label="Password"
-          errorMessage={passError}
-          shake={shakePassword}
+          errMessage={passwordError}
         />
 
         <InputField
@@ -255,8 +180,7 @@ const SignupPage: React.FC = () => {
           onChange={handleConfirmPasswordChange}
           placeholder="Re-Enter password"
           label="Confirm Password"
-          errorMessage={ConfirmpassError}
-          shake={shakeConfirmPass}
+          errMessage={confirmPasswordError}
         />
 
         <div className={styles.btnContainer}>

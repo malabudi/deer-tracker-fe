@@ -1,0 +1,32 @@
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 20vw;
+  }
+  
+  .inputContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  @media (min-width: 800px) and (max-width: 900px) {
+    .formContainer {
+      width: 50vw;
+    }
+  }
+
+  @media (min-width: 380px) and (max-width: 440px) {
+    .formContainer {
+      width: 90vw;
+    }
+  }
+
+  @media (min-width: 300px) and (max-width: 376px) {
+    .formContainer {
+      width: 80vw;
+    }
+  }
