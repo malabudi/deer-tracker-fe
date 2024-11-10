@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation';
 const Editaccount: React.FC = () => {
   const userEmail = 'new@example.com'; // Replace with actual user email from authentication state or context
   const [email, setEmail] = useState(userEmail);
-  const [isEmailChanged, setIsEmailChanged] = useState(false);
+  const [isEmailMatch, setIsEmailChanged] = useState(false);
   const [emailError, setEmailError] = useState('');
   const isDarkMode = useDarkMode();
   const router = useRouter();
@@ -152,7 +152,7 @@ const Editaccount: React.FC = () => {
             </Link>
           </div>
           <ActiveButton
-            isdisabled={!isEmailChanged}
+            isdisabled={!isEmailMatch}
             text="Save"
             onClick={handleSave}
           />
