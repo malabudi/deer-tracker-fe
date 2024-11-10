@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 import ActiveButton from '../Active-Button/ActiveButton';
 import InputField from '../textbox/textbox';
@@ -6,33 +7,44 @@ import {
   validateConfirmPassword,
   validatePassword,
 } from '@/lib/fieldValidator';
+import { updateUserPassword } from '@/hooks/apis/users';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import useDarkMode from '@/hooks/useDarkMode';
+import { canParseJson } from '@/utils/helpers';
+import { Bounce } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 export default function ChangePasswordForm() {
-  const [oldPassword, setOldPassword] = useState<string | null>('');
-  const [newPassword, setNewPassword] = useState<string | null>('');
-  const [confirmPassword, setConfirmPassword] = useState<string | null>('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
-  const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
+  const [isSaveEnabled, setIsSaveEnabled] = useState(false);
 
-  const handleOldPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setOldPassword(value);
+  const isDarkMode = useDarkMode();
+  const router = useRouter();
+  // Replace with actual user email from authentication state or context
+  const userEmail = 'ihatedeers@deer.mail';
+
+  const handleCurrentPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setCurrentPassword(e.target.value);
   };
 
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setNewPassword(value);
+    setNewPassword(e.target.value);
   };
 
   const handleConfirmPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const value = e.target.value;
-    setConfirmPassword(value);
+    setConfirmPassword(e.target.value);
   };
 
-  const onSave = () => {
+  const onSave = async () => {
     const passwordErr = validatePassword(newPassword);
     const confirmPasswordErr = validateConfirmPassword(
       newPassword,
@@ -41,23 +53,92 @@ export default function ChangePasswordForm() {
 
     setPasswordError(passwordErr);
     setConfirmPasswordError(confirmPasswordErr);
+
+    // Stop submission if there are any errors
+    if (passwordErr || confirmPasswordErr) {
+      return;
+    }
+
+    try {
+      const response = await updateUserPassword(
+        userEmail,
+        currentPassword,
+        newPassword
+      );
+
+      if (response.success) {
+        console.log(1);
+
+        toast.success('Password updated successfully', {
+          position: 'bottom-right',
+          autoClose: 10000,
+          hideProgressBar: false,
+          theme: isDarkMode ? 'dark' : 'light',
+          transition: Bounce,
+        });
+
+        // Navigate back to the previous page after a short delay
+        setTimeout(() => {
+          router.back();
+        }, 10000);
+      } else {
+        console.log(2);
+        const errorMessage = response.error || 'An unexpected error occurred';
+        toast.error(errorMessage, {
+          position: 'bottom-right',
+          autoClose: 10000,
+          hideProgressBar: false,
+          theme: isDarkMode ? 'dark' : 'light',
+          transition: Bounce,
+        });
+      }
+    } catch (err: any) {
+      let errMsg;
+      if (canParseJson(err.message)) {
+        console.log(3);
+        errMsg = JSON.parse(err.message);
+        toast.error(errMsg.error, {
+          position: 'bottom-right',
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: isDarkMode ? 'dark' : 'light',
+          transition: Bounce,
+        });
+      } else {
+        console.log(4);
+        errMsg = err.message;
+        toast.error(errMsg, {
+          position: 'bottom-right',
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: isDarkMode ? 'dark' : 'light',
+          transition: Bounce,
+        });
+      }
+    }
   };
 
   useEffect(() => {
     setIsSaveEnabled(
-      newPassword !== '' && confirmPassword !== '' && oldPassword !== ''
+      currentPassword !== '' && newPassword !== '' && confirmPassword !== ''
     );
-  }, [newPassword, confirmPassword, oldPassword]);
+  }, [currentPassword, newPassword, confirmPassword]);
 
   return (
     <div className={styles.formContainer}>
       <div className={styles.inputContainer}>
         <InputField
-          label="Old Password"
+          label="Current Password"
           type="password"
-          value={oldPassword}
-          onChange={handleOldPasswordChange}
-          placeholder="Enter old password"
+          value={currentPassword}
+          onChange={handleCurrentPasswordChange}
+          placeholder="Enter Current password"
         />
 
         <InputField
@@ -79,6 +160,7 @@ export default function ChangePasswordForm() {
         />
       </div>
       <ActiveButton isdisabled={!isSaveEnabled} text="Save" onClick={onSave} />
+      <ToastContainer />
     </div>
   );
 }
