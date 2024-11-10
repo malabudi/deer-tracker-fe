@@ -8,10 +8,6 @@
   margin: auto;
 }
 
-.mainConatiner input {
-  margin-bottom: 2rem;
-}
-
 .formContainer {
   display: flex;
   flex-direction: column;
@@ -42,7 +38,6 @@
 @media (min-width: 300px) and (max-width: 376px) {
   .mainConatiner {
     width: 100vw;
-
   }
 
   .formContainer button {
@@ -89,7 +84,6 @@
 @media (min-width: 1001px) and (max-width: 1300px) {
   .mainConatiner {
     width: 100vw;
-
   }
 
   .formContainer button {
