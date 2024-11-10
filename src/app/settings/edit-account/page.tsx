@@ -16,8 +16,8 @@ import { generateTokenAndEmail } from '@/lib/generateVerification';
 import { useRouter } from 'next/navigation';
 
 const Editaccount: React.FC = () => {
-  const userEmail = 'new@example.com'; // Replace with actual user email from authentication state or context
-  const [email, setEmail] = useState(userEmail);
+  const currentUserEmail = 'hishamkhwhb@gmail.com'; // Replace with actual user email from authentication state or context
+  const [newEmail, setEmail] = useState(currentUserEmail);
   const [isEmailMatch, setIsEmailChanged] = useState(false);
   const [emailError, setEmailError] = useState('');
   const isDarkMode = useDarkMode();
@@ -26,23 +26,23 @@ const Editaccount: React.FC = () => {
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
-    setIsEmailChanged(value !== userEmail);
+    setIsEmailChanged(value !== currentUserEmail);
     setEmailError('');
   };
 
   const handleSave = async () => {
-    const emailErr = validateEmail(email);
+    const emailErr = validateEmail(newEmail);
     if (emailErr) {
       setEmailError(emailErr);
       return;
     }
 
     try {
-      const response = await updateUserEmail(userEmail, email);
+      const response = await updateUserEmail(currentUserEmail, newEmail);
 
       if (response.success) {
         // Send verification email
-        const verificationToken = await generateTokenAndEmail(email);
+        const verificationToken = await generateTokenAndEmail(newEmail);
 
         if (!verificationToken.error) {
           toast.success(
@@ -141,7 +141,7 @@ const Editaccount: React.FC = () => {
             <label>Email</label>
             <InputField
               type="email"
-              value={email}
+              value={newEmail}
               onChange={handleEmailChange}
               placeholder="Enter email"
               errMessage={emailError}
