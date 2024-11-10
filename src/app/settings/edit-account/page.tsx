@@ -85,7 +85,7 @@ const Editaccount: React.FC = () => {
         const errorMessage = data.error || 'An unexpected error occurred';
         toast.error(errorMessage, {
           position: 'bottom-right',
-          autoClose: 5000,
+          autoClose: 10000,
           hideProgressBar: false,
           theme: isDarkMode ? 'dark' : 'light',
           transition: Bounce,
