@@ -31,7 +31,6 @@ const Editaccount: React.FC = () => {
   };
 
   const handleSave = async () => {
-    // Validate the new email
     const emailErr = validateEmail(email);
     if (emailErr) {
       setEmailError(emailErr);
@@ -60,11 +59,10 @@ const Editaccount: React.FC = () => {
               transition: Bounce,
             }
           );
-          // Navigate back to the previous page
-          // After showing the success toast
+          // Navigate back to the previous page after showing the success toast
           setTimeout(() => {
             router.back();
-          }, 10000); // Delay toast notification closes, 10 seconds
+          }, 10000);
         } else {
           toast.error(
             'An unexpected error occurred while sending the verification email',
@@ -81,11 +79,8 @@ const Editaccount: React.FC = () => {
             }
           );
         }
-
-        // Update the current email state
         setIsEmailChanged(false);
       } else {
-        // Display the exact error message from the API
         const data = await response.json();
         const errorMessage = data.error || 'An unexpected error occurred';
         toast.error(errorMessage, {
