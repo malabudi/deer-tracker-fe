@@ -67,9 +67,7 @@ export default function ChangePasswordForm() {
       );
 
       if (response.success) {
-        console.log(1);
-
-        toast.success('Password updated successfully', {
+        toast.success('Password successfully updated', {
           position: 'bottom-right',
           autoClose: 10000,
           hideProgressBar: false,
@@ -82,7 +80,6 @@ export default function ChangePasswordForm() {
           router.back();
         }, 10000);
       } else {
-        console.log(2);
         const errorMessage = response.error || 'An unexpected error occurred';
         toast.error(errorMessage, {
           position: 'bottom-right',
@@ -95,7 +92,6 @@ export default function ChangePasswordForm() {
     } catch (err: any) {
       let errMsg;
       if (canParseJson(err.message)) {
-        console.log(3);
         errMsg = JSON.parse(err.message);
         toast.error(errMsg.error, {
           position: 'bottom-right',
@@ -108,7 +104,6 @@ export default function ChangePasswordForm() {
           transition: Bounce,
         });
       } else {
-        console.log(4);
         errMsg = err.message;
         toast.error(errMsg, {
           position: 'bottom-right',
