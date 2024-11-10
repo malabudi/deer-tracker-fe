@@ -49,7 +49,7 @@ const Editaccount: React.FC = () => {
             'A Verification Email Has Been Sent to your Email Address',
             {
               position: 'bottom-right',
-              autoClose: 20000,
+              autoClose: 10000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
