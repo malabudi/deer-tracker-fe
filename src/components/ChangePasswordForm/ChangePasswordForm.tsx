@@ -14,6 +14,7 @@ import useDarkMode from '@/hooks/useDarkMode';
 import { canParseJson } from '@/utils/helpers';
 import { Bounce } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import { getCookie } from '@/utils/helpers';
 
 export default function ChangePasswordForm() {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -25,8 +26,7 @@ export default function ChangePasswordForm() {
 
   const isDarkMode = useDarkMode();
   const router = useRouter();
-  // Replace with actual user email from authentication state or context
-  const userEmail = 'ihatedeers@deer.mail';
+  const userEmail = getCookie('userEmail'); // Get email from cookie
 
   const handleCurrentPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>
