@@ -14,9 +14,11 @@ import { updateUserEmail } from '@/hooks/apis/users';
 import { canParseJson } from '@/utils/helpers';
 import { generateTokenAndEmail } from '@/lib/generateVerification';
 import { useRouter } from 'next/navigation';
+import { getCookie } from '@/utils/helpers';
 
 const Editaccount: React.FC = () => {
-  const currentUserEmail = 'hishamkhwhb@gmail.com'; // Replace with actual user email from authentication state or context
+  const currentUserEmail = getCookie('userEmail'); // Get email from cookie
+
   const [newEmail, setEmail] = useState(currentUserEmail);
   const [isEmailMatch, setIsEmailChanged] = useState(false);
   const [emailError, setEmailError] = useState('');
