@@ -6,16 +6,123 @@ import ActiveButton from '@/components/Active-Button/ActiveButton';
 import Image from 'next/image';
 import backIcon from '@/assets/BackArrow.svg';
 import Link from 'next/link';
+import { Bounce, toast, ToastContainer } from 'react-toastify';
+import useDarkMode from '@/hooks/useDarkMode';
+import 'react-toastify/dist/ReactToastify.css';
+import { validateEmail } from '@/lib/fieldValidator';
+import { updateUserEmail } from '@/hooks/apis/users';
+import { canParseJson } from '@/utils/helpers';
+import { generateTokenAndEmail } from '@/lib/generateVerification';
+import { useRouter } from 'next/navigation';
+import { getCookie } from '@/utils/helpers';
 
 const Editaccount: React.FC = () => {
-  const userEmail = 'Deerbuttcheeks@gmail.com';
-  const [email, setEmail] = useState(userEmail);
-  const [isEmailMatch, setIsEmailMatch] = useState(false);
+  const currentUserEmail = getCookie('userEmail'); // Get email from cookie
+
+  const [newEmail, setEmail] = useState(currentUserEmail);
+  const [isEmailMatch, setIsEmailChanged] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const isDarkMode = useDarkMode();
+  const router = useRouter();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
-    setIsEmailMatch(value !== userEmail);
+    setIsEmailChanged(value !== currentUserEmail);
+    setEmailError('');
+  };
+
+  const handleSave = async () => {
+    const emailErr = validateEmail(newEmail);
+    if (emailErr) {
+      setEmailError(emailErr);
+      return;
+    }
+
+    try {
+      const response = await updateUserEmail(currentUserEmail, newEmail);
+
+      if (response.success) {
+        // Send verification email
+        const verificationToken = await generateTokenAndEmail(newEmail);
+
+        if (!verificationToken.error) {
+          toast.success(
+            'A Verification Email Has Been Sent to your Email Address',
+            {
+              position: 'bottom-right',
+              autoClose: 10000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: isDarkMode ? 'dark' : 'light',
+              transition: Bounce,
+            }
+          );
+          // Navigate back to the previous page after showing the success toast
+          setTimeout(() => {
+            router.back();
+          }, 10000);
+        } else {
+          toast.error(
+            'An unexpected error occurred while sending the verification email',
+            {
+              position: 'bottom-right',
+              autoClose: 10000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: isDarkMode ? 'dark' : 'light',
+              transition: Bounce,
+            }
+          );
+        }
+        setIsEmailChanged(false);
+      } else {
+        const data = await response.json();
+        const errorMessage = data.error || 'An unexpected error occurred';
+        toast.error(errorMessage, {
+          position: 'bottom-right',
+          autoClose: 10000,
+          hideProgressBar: false,
+          theme: isDarkMode ? 'dark' : 'light',
+          transition: Bounce,
+        });
+      }
+    } catch (err) {
+      let errMsg;
+      if (canParseJson(err.message)) {
+        errMsg = JSON.parse(err.message);
+        toast.error(errMsg.error, {
+          position: 'bottom-right',
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: isDarkMode ? 'dark' : 'light',
+          transition: Bounce,
+        });
+      } else {
+        errMsg = err.message;
+        toast.error(errMsg, {
+          position: 'bottom-right',
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: isDarkMode ? 'dark' : 'light',
+          transition: Bounce,
+        });
+      }
+    }
   };
 
   return (
@@ -36,9 +143,10 @@ const Editaccount: React.FC = () => {
             <label>Email</label>
             <InputField
               type="email"
-              value={email}
+              value={newEmail}
               onChange={handleEmailChange}
               placeholder="Enter email"
+              errMessage={emailError}
             />
 
             <Link href="/settings/edit-account/edit-password">
@@ -48,11 +156,13 @@ const Editaccount: React.FC = () => {
           <ActiveButton
             isdisabled={!isEmailMatch}
             text="Save"
-            onClick={() => {}}
+            onClick={handleSave}
           />
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
+
 export default Editaccount;

@@ -55,6 +55,7 @@ export const createUser = async (email: string, password: string) => {
 
   return response.json();
 };
+
 export const updateUserEmail = async (
   currentEmail: string,
   newEmail: string
@@ -102,5 +103,19 @@ export const updateUserPassword = async (
     throw new Error(errMsg);
   }
 
+  return response.json();
+};
+
+export const getUserById = async (userId: string) => {
+  const response = await fetch(`${API_PATH}/users/${userId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) {
+    console.error(`Get Error ${response.status}: ${await response.text()}`);
+    throw new Error('User not found');
+  }
   return response.json();
 };
