@@ -13,6 +13,7 @@ import { Bounce, toast, ToastContainer } from 'react-toastify';
 import useDarkMode from '@/hooks/useDarkMode';
 import 'react-toastify/dist/ReactToastify.css';
 import { validateEmail, validatePassword } from '@/lib/fieldValidator';
+import { setCookie } from '@/utils/helpers';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -71,6 +72,7 @@ const LoginPage: React.FC = () => {
         transition: Bounce,
       });
     } else {
+      setCookie('userEmail', email, 365); // Save email in a cookie for a year
       router.push('/settings');
     }
   };
