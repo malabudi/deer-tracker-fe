@@ -9,6 +9,7 @@ const nextConfig = {
       process.env.NODE_ENV === 'beta' || process.env.NODE_ENV === 'prod', // Remove console.log in production
   },
   env: {
+    NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
