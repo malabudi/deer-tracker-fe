@@ -47,12 +47,17 @@ const Map: React.FC<MapComponentProps> = ({
   );
   const [clusterSightings, setClusterSightings] = useState<DeerSighting[]>([]);
   const [showFullClusterInfo, setShowFullClusterInfo] = useState(false);
+  const bouncingClusterRef = useRef<Element | null>(null);
+  const [bouncingMarker, setBouncingMarker] = useState<number | null>(null);
+  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<number | null>(
+    null
+  );
 
   const onLoad = (map: google.maps.Map) => {
     mapRef.current = map;
     if (latitude && longitude) {
       map.setCenter({ lat: latitude, lng: longitude });
-      map.setZoom(14);
+      map.setZoom(16);
     }
   };
 
@@ -60,8 +65,10 @@ const Map: React.FC<MapComponentProps> = ({
     setSelectedSighting(null);
     setClusterSightings([]);
     setShowFullClusterInfo(false);
+    setSelectedMarkerIndex(null);
+    removeBounceEffect();
+    setBouncingMarker(null); // Stop bouncing when map is clicked
   };
-
   const goToLocation = () => {
     if (latitude && longitude && mapRef.current) {
       setMapCenter({ lat: latitude, lng: longitude });
@@ -78,23 +85,28 @@ const Map: React.FC<MapComponentProps> = ({
       }
       .custom-cluster-marker div {
         position: relative;
-        margin-top: 3px;  /* Adjust this value to move the text down */
+        margin-top: 3px;
+      }
+      .bounce {
+        animation: googleBounce 0.7s ease-in-out infinite;
+      }
+      @keyframes googleBounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+      }
+      .marker-icon {
+        position: relative;
+        width: 60px;
+        height: 75px;
+        cursor: pointer;
+      }
+      .marker-icon.bouncing {
+        animation: googleBounce 0.7s ease-in-out infinite;
       }
     `;
     document.head.appendChild(style);
-
-    const interval = setInterval(() => {
-      // Find cluster text elements and modify their position
-      const clusterTextElements =
-        document.querySelectorAll('.gm-style-iw span');
-      clusterTextElements.forEach((element) => {
-        (element as HTMLElement).style.transform = 'translateY(5px)'; // Adjust this value to move the text
-      });
-    }, 100);
-
     return () => {
       document.head.removeChild(style);
-      clearInterval(interval);
     };
   }, []);
 
@@ -105,6 +117,7 @@ const Map: React.FC<MapComponentProps> = ({
   if (!isLoaded) {
     return <Loader />;
   }
+
   const CurrentLocationIcon = {
     url: CurrentLocation.src,
     scaledSize: new window.google.maps.Size(55, 35),
@@ -128,7 +141,6 @@ const Map: React.FC<MapComponentProps> = ({
       height: 60,
       textColor: '#FFFFFF',
       textSize: 22,
-      className: 'custom-cluster-marker',
     },
   ];
 
@@ -161,79 +173,138 @@ const Map: React.FC<MapComponentProps> = ({
     ],
   };
 
-  const handleMarkerClick = (sighting: DeerSighting) => {
+  const handleMarkerClick = (sighting: DeerSighting, index: number) => {
     const position = new window.google.maps.LatLng(
       sighting.latitude,
       sighting.longitude
     );
     setClusterSightings([]);
+    removeBounceEffect();
 
     if (mapRef.current) {
-      mapRef.current.panTo(position);
-      setSelectedSighting(sighting);
-
-      // Smooth zoom effect
-      const targetZoom = 15;
-      const currentZoom = mapRef.current.getZoom();
-      const zoomSteps = Math.abs(targetZoom - currentZoom);
-      const zoomInterval = 100;
-
-      for (let i = 1; i <= zoomSteps; i++) {
-        setTimeout(() => {
-          if (mapRef.current) {
-            mapRef.current.setZoom(currentZoom + i);
-          }
-        }, zoomInterval * i);
+      if (selectedMarkerIndex !== index) {
+        // First click: zoom in and center on the marker
+        setSelectedMarkerIndex(index);
+        mapRef.current.panTo(position);
+        mapRef.current.setZoom(16); // Adjust zoom level as desired
+      } else {
+        // Second click: open info window and start bounce
+        setSelectedSighting(sighting);
+        setBouncingMarker(index);
+        // Remove the setTimeout to keep the bounce active
       }
     }
   };
 
   const handleClusterClick = (cluster) => {
     const clusterCenter = cluster.getCenter();
-    const targetZoom = 15; // Desired zoom level for clusters
-    const clusterMarkers = cluster.getMarkers();
-    const clusterSightings = clusterMarkers
-      .map((marker) =>
-        validSightings.find(
-          (sighting) =>
-            sighting.latitude === marker.getPosition().lat() &&
-            sighting.longitude === marker.getPosition().lng()
-        )
-      )
-      .filter(Boolean);
+    const targetZoom = 18; // Set target zoom level to ensure the cluster splits
 
     if (clusterCenter && mapRef.current) {
-      mapRef.current.panTo(clusterCenter);
-      mapRef.current.setZoom(targetZoom);
-      setTimeout(() => {
-        setClusterSightings(clusterSightings);
+      setClusterSightings([]);
+      removeBounceEffect();
+
+      // Only zoom if the current zoom level is less than the target zoom
+      const currentZoom = mapRef.current.getZoom();
+      if (currentZoom < targetZoom) {
+        const zoomSteps = Math.abs(targetZoom - currentZoom);
+        const zoomInterval = 100;
+
+        for (let i = 1; i <= zoomSteps; i++) {
+          setTimeout(() => {
+            if (mapRef.current) {
+              mapRef.current.setZoom(currentZoom + i);
+              mapRef.current.panTo(clusterCenter);
+            }
+          }, zoomInterval * i);
+        }
+
+        // Populate cluster sightings after reaching target zoom
+        setTimeout(() => {
+          const clusterMarkers = cluster.getMarkers();
+          const clusterSightings = (clusterMarkers || [])
+            .map((marker) =>
+              validSightings.find(
+                (sighting) =>
+                  sighting.latitude === marker.getPosition().lat() &&
+                  sighting.longitude === marker.getPosition().lng()
+              )
+            )
+            .filter(Boolean);
+
+          setClusterSightings(clusterSightings || []);
+          setShowFullClusterInfo(false);
+          setSelectedSighting(null);
+          addBounceEffect();
+        }, zoomInterval * zoomSteps);
+      } else {
+        // If already zoomed in, directly populate the cluster sightings
+        const clusterMarkers = cluster.getMarkers();
+        const clusterSightings = (clusterMarkers || [])
+          .map((marker) =>
+            validSightings.find(
+              (sighting) =>
+                sighting.latitude === marker.getPosition().lat() &&
+                sighting.longitude === marker.getPosition().lng()
+            )
+          )
+          .filter(Boolean);
+
+        setClusterSightings(clusterSightings || []);
         setShowFullClusterInfo(false);
         setSelectedSighting(null);
-      }, 300);
+        addBounceEffect();
+      }
+    }
+  };
+
+  const removeBounceEffect = () => {
+    if (bouncingClusterRef.current) {
+      bouncingClusterRef.current.classList.remove('bounce');
+      bouncingClusterRef.current = null;
+    }
+  };
+
+  const addBounceEffect = () => {
+    const clusterElement = document.querySelector('.custom-cluster-marker');
+    if (clusterElement) {
+      clusterElement.classList.add('bounce');
+      bouncingClusterRef.current = clusterElement;
     }
   };
 
   const renderClusterInfoWindow = () => {
-    if (!clusterSightings.length) return null;
-    const recentSighting = clusterSightings.reduce((latest, current) => {
+    const sightingsArray = Array.isArray(clusterSightings)
+      ? clusterSightings
+      : [];
+    if (sightingsArray.length === 0) return null;
+
+    const recentSighting = sightingsArray.reduce((latest, current) => {
       return new Date(current.timestamp) > new Date(latest.timestamp)
         ? current
         : latest;
-    }, clusterSightings[0]);
+    }, sightingsArray[0]);
+
     return (
       <InfoWindow
         position={{
           lat: recentSighting.latitude,
           lng: recentSighting.longitude,
         }}
-        options={{ disableAutoPan: true }}
+        options={{
+          disableAutoPan: true,
+          pixelOffset: new window.google.maps.Size(0, -30),
+        }}
+        onCloseClick={() => {
+          removeBounceEffect();
+        }}
       >
         <div style={{ maxHeight: '150px', overflowY: 'auto', color: 'black' }}>
           {showFullClusterInfo ? (
             <>
               <h3>All Timestamps:</h3>
               <ul>
-                {clusterSightings
+                {sightingsArray
                   .sort(
                     (a, b) =>
                       new Date(b.timestamp).getTime() -
@@ -279,7 +350,8 @@ const Map: React.FC<MapComponentProps> = ({
         onLoad={onLoad}
         mapContainerStyle={containerStyle}
         center={mapCenter}
-        options={mapOptions}
+        options={{ ...mapOptions, gestureHandling: 'greedy' }}
+        onIdle={() => mapRef.current?.setOptions({ gestureHandling: 'auto' })}
         onClick={handleMapClick}
       >
         {latitude && longitude && mapRef.current && (
@@ -289,7 +361,18 @@ const Map: React.FC<MapComponentProps> = ({
           />
         )}
 
-        <MarkerClusterer styles={clusterStyles} onClick={handleClusterClick}>
+        <MarkerClusterer
+          styles={clusterStyles}
+          onClick={handleClusterClick}
+          options={{
+            gridSize: 100,
+            maxZoom: 18,
+            zoomOnClick: false,
+            averageCenter: false,
+            clusterClass: 'custom-cluster-marker', // Add this line
+            styles: clusterStyles, // Move styles into options
+          }}
+        >
           {(clusterer) => (
             <>
               {validSightings.map((sighting, index) => (
@@ -301,7 +384,13 @@ const Map: React.FC<MapComponentProps> = ({
                   }}
                   clusterer={clusterer}
                   icon={customDeerIcon}
-                  onClick={() => handleMarkerClick(sighting)}
+                  onClick={() => handleMarkerClick(sighting, index)}
+                  animation={
+                    bouncingMarker === index
+                      ? window.google.maps.Animation.BOUNCE
+                      : undefined
+                  }
+                  visible={true}
                 />
               ))}
             </>
@@ -314,7 +403,14 @@ const Map: React.FC<MapComponentProps> = ({
               lat: selectedSighting.latitude,
               lng: selectedSighting.longitude,
             }}
-            options={{ disableAutoPan: true }}
+            options={{
+              disableAutoPan: false,
+              pixelOffset: new window.google.maps.Size(0, -70),
+            }}
+            onCloseClick={() => {
+              setSelectedSighting(null);
+              setBouncingMarker(null); // Stop bouncing when InfoWindow is closed
+            }}
           >
             <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
               <h3>Most Recent:</h3>
@@ -327,7 +423,7 @@ const Map: React.FC<MapComponentProps> = ({
       </GoogleMap>
 
       <button onClick={goToLocation} className={styles.mapButton}>
-        <Image src={mylocation} alt="My Location" />
+        <Image src={mylocation} alt="My Location" width={50} height={50} />
       </button>
     </>
   );

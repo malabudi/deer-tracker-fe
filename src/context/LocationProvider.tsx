@@ -41,13 +41,17 @@ export const LocationProvider = ({
           }
         },
         (error) => {
-          console.error('Error getting user location:', error);
+          console.error(
+            'Error getting user location:',
+            error.code,
+            error.message
+          );
           setUserLocation({ latitude: null, longitude: null });
         },
         {
-          enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 0,
+          enableHighAccuracy: false,
+          timeout: 10000,
+          maximumAge: 60000,
         }
       );
     } else {
