@@ -7,6 +7,13 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.PUBLIC_NEXT_NODE_ENV === 'prod', // Remove console.log in production
   },
+  env: {
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY,
+    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+  },
 };
 
 // Configuration object tells the next-pwa plugin
