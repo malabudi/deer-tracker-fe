@@ -10,7 +10,7 @@ const nextConfig = {
   env: {
     PUBLIC_NEXT_NODE_ENV: process.env.PUBLIC_NEXT_NODE_ENV,
     NEXT_PUBLIC_GOOGLE_MAPS_API_KEY:
-      process.enc.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+      process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
