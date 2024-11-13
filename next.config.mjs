@@ -5,7 +5,7 @@ const nextConfig = {
   reactStrictMode: true, // Enable React strict mode for improved error handling
   swcMinify: true, // Enable SWC minification for improved performance
   compiler: {
-    removeConsole: false, // Remove console.log in production
+    removeConsole: process.env.PUBLIC_NEXT_NODE_ENV === 'prod', // Remove console.log in production
   },
   env: {
     PUBLIC_NEXT_NODE_ENV: process.env.PUBLIC_NEXT_NODE_ENV,
@@ -22,7 +22,7 @@ const nextConfig = {
 // Configuration object tells the next-pwa plugin
 const pwaConfig = {
   dest: 'public', // Destination directory for the PWA files
-  disable: true, // Disable PWA in development mode
+  disable: process.env.PUBLIC_NEXT_NODE_ENV !== 'prod', // Disable PWA in development mode
   register: true, // Register the PWA service worker
   skipWaiting: true, // Skip waiting for service worker activation
 };
