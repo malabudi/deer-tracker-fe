@@ -49,18 +49,35 @@ const LoginPage: React.FC = () => {
     if (emailErr || passwordErr) {
       return;
     }
+    try {
+      // Authenticate once valid
+      const result = await signIn('credentials', {
+        email: email,
+        password: password,
+        action: 'login',
+        redirect: false,
+      });
 
-    // Authenticate once valid
-    const result = await signIn('credentials', {
-      email: email,
-      password: password,
-      action: 'login',
-      redirect: false,
-    });
-
-    if (result?.error) {
-      console.log(result.error);
-      toast.error(result.error, {
+      if (result?.error) {
+        console.log(result.error);
+        toast.error(result.error, {
+          position: 'bottom-right',
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: isDarkMode ? 'dark' : 'light',
+          transition: Bounce,
+        });
+      } else {
+        setCookie('userEmail', email, 365);
+        router.push('/settings');
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error('Server is unavailable. Please try again later.', {
         position: 'bottom-right',
         autoClose: 10000,
         hideProgressBar: false,
@@ -71,9 +88,6 @@ const LoginPage: React.FC = () => {
         theme: isDarkMode ? 'dark' : 'light',
         transition: Bounce,
       });
-    } else {
-      setCookie('userEmail', email, 365); // Save email in a cookie for a year
-      router.push('/settings');
     }
   };
 
