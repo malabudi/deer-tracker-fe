@@ -59,6 +59,15 @@ const Map: React.FC<MapComponentProps> = ({
       map.setCenter({ lat: latitude, lng: longitude });
       map.setZoom(16);
     }
+
+    // Add listener for zoom changes to close InfoWindow
+    map.addListener('zoom_changed', () => {
+      setSelectedSighting(null);
+      setClusterSightings([]);
+      setShowFullClusterInfo(false);
+      setSelectedMarkerIndex(null);
+      setBouncingMarker(null);
+    });
   };
 
   const handleMapClick = () => {
@@ -182,17 +191,15 @@ const Map: React.FC<MapComponentProps> = ({
     removeBounceEffect();
 
     if (mapRef.current) {
-      if (selectedMarkerIndex !== index) {
-        // First click: zoom in and center on the marker
-        setSelectedMarkerIndex(index);
-        mapRef.current.panTo(position);
-        mapRef.current.setZoom(16); // Adjust zoom level as desired
-      } else {
-        // Second click: open info window and start bounce
-        setSelectedSighting(sighting);
-        setBouncingMarker(index);
-        // Remove the setTimeout to keep the bounce active
+      // Pan to the marker and zoom in
+      mapRef.current.panTo(position);
+      if (mapRef.current.getZoom() < 19) {
+        mapRef.current.setZoom(18); // Adjust zoom level as desired
       }
+
+      // Open the InfoWindow and set the bouncing marker
+      setSelectedSighting(sighting);
+      setBouncingMarker(index);
     }
   };
 
@@ -266,11 +273,12 @@ const Map: React.FC<MapComponentProps> = ({
   };
 
   const addBounceEffect = () => {
-    const clusterElement = document.querySelector('.custom-cluster-marker');
-    if (clusterElement) {
+    // Apply bounce effect to all visible cluster elements
+    const clusterElements = document.querySelectorAll('.custom-cluster-marker');
+    clusterElements.forEach((clusterElement) => {
       clusterElement.classList.add('bounce');
       bouncingClusterRef.current = clusterElement;
-    }
+    });
   };
 
   const renderClusterInfoWindow = () => {
@@ -313,7 +321,11 @@ const Map: React.FC<MapComponentProps> = ({
                   .map((sighting, index) => (
                     <li
                       key={index}
-                      style={{ marginLeft: '-12px', marginRight: '12px' }}
+                      style={{
+                        marginLeft: '-12px',
+                        marginRight: '12px',
+                        color: 'black',
+                      }}
                     >
                       {new Date(sighting.timestamp).toLocaleString()}
                     </li>
@@ -385,39 +397,48 @@ const Map: React.FC<MapComponentProps> = ({
                   clusterer={clusterer}
                   icon={customDeerIcon}
                   onClick={() => handleMarkerClick(sighting, index)}
+                  clickable={true} // Ensure the marker is clickable
                   animation={
                     bouncingMarker === index
                       ? window.google.maps.Animation.BOUNCE
                       : undefined
                   }
-                  visible={true}
                 />
               ))}
             </>
           )}
         </MarkerClusterer>
 
-        {selectedSighting && (
-          <InfoWindow
-            position={{
-              lat: selectedSighting.latitude,
-              lng: selectedSighting.longitude,
-            }}
-            options={{
-              disableAutoPan: false,
-              pixelOffset: new window.google.maps.Size(0, -70),
-            }}
-            onCloseClick={() => {
-              setSelectedSighting(null);
-              setBouncingMarker(null); // Stop bouncing when InfoWindow is closed
-            }}
-          >
-            <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
-              <h3>Most Recent:</h3>
-              <p>{new Date(selectedSighting.timestamp).toLocaleString()}</p>
-            </div>
-          </InfoWindow>
-        )}
+        {selectedSighting &&
+          selectedSighting.latitude &&
+          selectedSighting.longitude && (
+            <InfoWindow
+              position={{
+                lat: selectedSighting.latitude,
+                lng: selectedSighting.longitude,
+              }}
+              options={{
+                disableAutoPan: false,
+                pixelOffset: new window.google.maps.Size(0, -70),
+              }}
+              onCloseClick={() => {
+                setSelectedSighting(null);
+                setBouncingMarker(null);
+                setSelectedMarkerIndex(null);
+              }}
+            >
+              <div
+                style={{
+                  maxHeight: '150px',
+                  overflowY: 'auto',
+                  color: 'black',
+                }}
+              >
+                <h3>Most Recent:</h3>
+                <p>{new Date(selectedSighting.timestamp).toLocaleString()}</p>
+              </div>
+            </InfoWindow>
+          )}
 
         {renderClusterInfoWindow()}
       </GoogleMap>
