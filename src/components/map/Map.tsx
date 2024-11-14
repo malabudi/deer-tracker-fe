@@ -49,9 +49,6 @@ const Map: React.FC<MapComponentProps> = ({
   const [showFullClusterInfo, setShowFullClusterInfo] = useState(false);
   const bouncingClusterRef = useRef<Element | null>(null);
   const [bouncingMarker, setBouncingMarker] = useState<number | null>(null);
-  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<number | null>(
-    null
-  );
 
   const onLoad = (map: google.maps.Map) => {
     mapRef.current = map;
@@ -65,7 +62,6 @@ const Map: React.FC<MapComponentProps> = ({
       setSelectedSighting(null);
       setClusterSightings([]);
       setShowFullClusterInfo(false);
-      setSelectedMarkerIndex(null);
       setBouncingMarker(null);
     });
   };
@@ -74,7 +70,6 @@ const Map: React.FC<MapComponentProps> = ({
     setSelectedSighting(null);
     setClusterSightings([]);
     setShowFullClusterInfo(false);
-    setSelectedMarkerIndex(null);
     removeBounceEffect();
     setBouncingMarker(null); // Stop bouncing when map is clicked
   };
@@ -424,7 +419,6 @@ const Map: React.FC<MapComponentProps> = ({
               onCloseClick={() => {
                 setSelectedSighting(null);
                 setBouncingMarker(null);
-                setSelectedMarkerIndex(null);
               }}
             >
               <div
