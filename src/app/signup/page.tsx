@@ -12,7 +12,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRedirectIfAuthed } from '@/hooks/useRedirect';
 import { createUser } from '@/hooks/apis/users';
 import { generateTokenAndEmail } from '@/lib/generateVerification';
-import { canParseJson } from '@/utils/helpers';
 import {
   validateConfirmPassword,
   validateEmail,
@@ -118,37 +117,19 @@ const SignupPage: React.FC = () => {
           transition: Bounce,
         });
       }
-    } catch (err) {
-      let errMsg;
-      console.log(canParseJson(err.message));
-
-      if (canParseJson(err.message)) {
-        errMsg = JSON.parse(err.message);
-        toast.error(errMsg.error, {
-          position: 'bottom-right',
-          autoClose: 10000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: isDarkMode ? 'dark' : 'light',
-          transition: Bounce,
-        });
-      } else {
-        errMsg = err.message;
-        toast.error(errMsg, {
-          position: 'bottom-right',
-          autoClose: 10000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: isDarkMode ? 'dark' : 'light',
-          transition: Bounce,
-        });
-      }
+    } catch (error) {
+      console.error(error);
+      toast.error('Server is unavailable', {
+        position: 'bottom-right',
+        autoClose: 10000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: isDarkMode ? 'dark' : 'light',
+        transition: Bounce,
+      });
     }
   };
 

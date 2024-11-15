@@ -11,6 +11,7 @@ import { createDeerSighting } from '@/hooks/apis/useDeerSighting';
 import { useLocationContext } from '@/context/LocationProvider';
 import axios from 'axios';
 import { throttle } from 'lodash';
+import { usePathname } from 'next/navigation';
 
 export default function Capture() {
   const [loading, setLoading] = useState(true);
@@ -20,6 +21,7 @@ export default function Capture() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const pathname = usePathname();
 
   // Cooldowns
   const saveCooldownRef = useRef(false);
@@ -167,6 +169,12 @@ export default function Capture() {
   }, [detectDeer]);
 
   useEffect(() => {
+    if (pathname !== '/capture') {
+      const stream = videoRef.current.srcObject as MediaStream;
+      stream.getTracks().forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
+      return;
+    }
     if (!videoRef.current || !canvasRef.current) return;
 
     audioRef.current = new Audio(
@@ -201,7 +209,7 @@ export default function Capture() {
     }
 
     setLoading(false); // Set loading to false once video starts
-  }, [detectDeer, detectFrame]);
+  }, [pathname, detectDeer, detectFrame]);
 
   return (
     <div className={styles.pageWrapper}>
