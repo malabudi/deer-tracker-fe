@@ -26,27 +26,44 @@ export const LocationProvider = ({
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setUserLocation({ latitude, longitude });
+
+          // Only update userLocation if it's different than the recently fetched location
+          if (
+            !userLocation ||
+            userLocation.latitude !== latitude ||
+            userLocation.longitude !== longitude
+          ) {
+            setUserLocation({ latitude, longitude });
+            console.log('Fetched location from timer:', {
+              latitude,
+              longitude,
+            });
+          }
         },
         (error) => {
-          console.error('Error getting user location:', error);
+          console.error(
+            'Error getting user location:',
+            error.code,
+            error.message
+          );
           setUserLocation({ latitude: null, longitude: null });
         },
         {
-          enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 0,
+          enableHighAccuracy: false,
+          timeout: 10000,
+          maximumAge: 60000,
         }
       );
     } else {
       console.log('Geolocation not supported on this device/browser.');
       setUserLocation({ latitude: null, longitude: null });
     }
-  }, []);
+  }, [userLocation]);
 
   useEffect(() => {
     fetchLocation();
-    setInterval(fetchLocation, fetchLocationCooldown);
+    const interval = setInterval(fetchLocation, fetchLocationCooldown);
+    return () => clearInterval(interval); // Cleanup on unmount
   }, [fetchLocation]);
 
   return (

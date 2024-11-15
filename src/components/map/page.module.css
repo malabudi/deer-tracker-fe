@@ -1,0 +1,63 @@
+.mapButton {
+    position: absolute;
+    right: 10px;
+    top: 76%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.mapButton img {
+    width: 40px;
+    height: 40px;
+}
+
+.infoWindow {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+
+    .infoWindowContent {
+        max-width: 200px;
+        max-height: 150px;
+        overflow-y: auto;
+        color: black;
+    }
+
+}
+
+@media (prefers-color-scheme: light) {
+
+    .infoWindowContent {
+        max-width: 200px;
+        max-height: 150px;
+        color: black;
+    }
+}
+
+@media (min-width: 430px) and (max-width: 500px) {
+
+    .mapButton {
+        width: 40px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 428px) {
+
+    .mapButton {
+        width: 40px;
+        height: 40px;
+        top: 73%;
+    }
+}
