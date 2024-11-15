@@ -1,21 +1,20 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
 import InactiveButton from '@/components/Inactive-Button/InactiveButton';
 import InputField from '@/components/textbox/textbox';
 import styles from './page.module.css';
 import { logIn, signUp } from '@/utils/constants';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useRedirectIfAuthed } from '@/hooks/useRedirect';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import useDarkMode from '@/hooks/useDarkMode';
 import 'react-toastify/dist/ReactToastify.css';
 import { validateEmail, validatePassword } from '@/lib/fieldValidator';
-import { setCookie } from '@/utils/helpers';
 
 const LoginPage: React.FC = () => {
+  const { data: session, status } = useSession();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState(' ');
@@ -23,8 +22,11 @@ const LoginPage: React.FC = () => {
   const router = useRouter();
   const isDarkMode = useDarkMode();
 
-  // if user is already authenticated, redirect to settings page
-  useRedirectIfAuthed('/settings');
+  useEffect(() => {
+    if (status === 'authenticated' && session?.user) {
+      router.push(`/settings`);
+    }
+  }, [session, status, router]);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -72,8 +74,7 @@ const LoginPage: React.FC = () => {
         transition: Bounce,
       });
     } else {
-      setCookie('userEmail', email, 365); // Save email in a cookie for a year
-      router.push('/settings');
+      console.log('Login successful');
     }
   };
 

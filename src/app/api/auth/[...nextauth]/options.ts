@@ -1,8 +1,7 @@
 import { API_PATH } from '@/utils/constants';
-import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-export const options: NextAuthOptions = {
+export const options = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -55,6 +54,16 @@ export const options: NextAuthOptions = {
     verifyRequest: '/verify',
   },
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user['user']['user_id'];
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.id = token.id;
+      return session;
+    },
     async redirect({ url, baseUrl }) {
       if (url.startsWith(baseUrl)) return url;
       return baseUrl;
