@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ActiveButton from '../Active-Button/ActiveButton';
 import InputField from '../textbox/textbox';
 import styles from './page.module.css';
@@ -7,14 +7,15 @@ import {
   validateConfirmPassword,
   validatePassword,
 } from '@/lib/fieldValidator';
-import { updateUserPassword } from '@/hooks/apis/users';
+import { getUserById, updateUserPassword } from '@/hooks/apis/users';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useDarkMode from '@/hooks/useDarkMode';
 import { canParseJson } from '@/utils/helpers';
 import { Bounce } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { getCookie } from '@/utils/helpers';
+import { useSession } from 'next-auth/react';
+import Loader from '../loader/Loader';
 
 export default function ChangePasswordForm() {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -23,10 +24,36 @@ export default function ChangePasswordForm() {
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [isSaveEnabled, setIsSaveEnabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  let originalEmail = useRef<string>('');
 
   const isDarkMode = useDarkMode();
   const router = useRouter();
-  const userEmail = getCookie('userEmail'); // Get email from cookie
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session?.user) {
+      const fetchEmail = async () => {
+        setIsLoading(true);
+        try {
+          const res = await getUserById(session['user']['id']);
+          originalEmail.current = res.email;
+        } catch (err) {
+          console.error("Error fetching user's email:", err);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchEmail();
+    }
+  }, [session]);
+
+  useEffect(() => {
+    setIsSaveEnabled(
+      currentPassword !== '' && newPassword !== '' && confirmPassword !== ''
+    );
+  }, [currentPassword, newPassword, confirmPassword]);
 
   const handleCurrentPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -61,7 +88,7 @@ export default function ChangePasswordForm() {
 
     try {
       const response = await updateUserPassword(
-        userEmail,
+        originalEmail.current,
         currentPassword,
         newPassword
       );
@@ -78,7 +105,7 @@ export default function ChangePasswordForm() {
         // Navigate back to the previous page after a short delay
         setTimeout(() => {
           router.back();
-        }, 10000);
+        }, 1000);
       } else {
         const errorMessage = response.error || 'An unexpected error occurred';
         toast.error(errorMessage, {
@@ -119,43 +146,47 @@ export default function ChangePasswordForm() {
     }
   };
 
-  useEffect(() => {
-    setIsSaveEnabled(
-      currentPassword !== '' && newPassword !== '' && confirmPassword !== ''
-    );
-  }, [currentPassword, newPassword, confirmPassword]);
-
   return (
-    <div className={styles.formContainer}>
-      <div className={styles.inputContainer}>
-        <InputField
-          label="Current Password"
-          type="password"
-          value={currentPassword}
-          onChange={handleCurrentPasswordChange}
-          placeholder="Enter Current password"
-        />
+    <>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className={styles.formContainer}>
+          <div className={styles.inputContainer}>
+            <InputField
+              label="Current Password"
+              type="password"
+              value={currentPassword}
+              onChange={handleCurrentPasswordChange}
+              placeholder="Enter Current password"
+            />
 
-        <InputField
-          label="New Password"
-          type="password"
-          value={newPassword}
-          onChange={handleNewPasswordChange}
-          placeholder="Enter new password"
-          errMessage={passwordError}
-        />
+            <InputField
+              label="New Password"
+              type="password"
+              value={newPassword}
+              onChange={handleNewPasswordChange}
+              placeholder="Enter new password"
+              errMessage={passwordError}
+            />
 
-        <InputField
-          label="Confirm Password"
-          type="password"
-          value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
-          placeholder="Re-Enter new password"
-          errMessage={confirmPasswordError}
-        />
-      </div>
-      <ActiveButton isdisabled={!isSaveEnabled} text="Save" onClick={onSave} />
-      <ToastContainer />
-    </div>
+            <InputField
+              label="Confirm Password"
+              type="password"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+              placeholder="Re-Enter new password"
+              errMessage={confirmPasswordError}
+            />
+          </div>
+          <ActiveButton
+            isdisabled={!isSaveEnabled}
+            text="Save"
+            onClick={onSave}
+          />
+          <ToastContainer />
+        </div>
+      )}
+    </>
   );
 }

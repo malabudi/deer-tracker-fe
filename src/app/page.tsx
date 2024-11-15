@@ -4,10 +4,19 @@ import { logIn, signUp } from '@/utils/constants';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
 import InactiveButton from '@/components/Inactive-Button/InactiveButton';
 import Link from 'next/link';
-import { useRedirectIfAuthed } from '@/hooks/useRedirect';
+import { useSession } from 'next-auth/react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  useRedirectIfAuthed('/settings');
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === 'authenticated' && session?.user) {
+      router.push(`/settings`);
+    }
+  }, [session, status, router]);
 
   return (
     <main className={styles.mainpageContainer}>

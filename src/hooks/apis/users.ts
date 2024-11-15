@@ -60,7 +60,7 @@ export const updateUserEmail = async (
   currentEmail: string,
   newEmail: string
 ) => {
-  const response = await fetch(`${API_PATH}/users/updateEmail`, {
+  const response = await fetch(`${API_PATH}/users/update-email`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export const updateUserPassword = async (
   currentPassword: string,
   newPassword: string
 ) => {
-  const response = await fetch(`${API_PATH}/users/updatePassword`, {
+  const response = await fetch(`${API_PATH}/users/update-password`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
