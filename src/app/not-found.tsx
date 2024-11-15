@@ -9,7 +9,7 @@ export default function NotFound() {
         <h1>Oops!</h1>
         <h2>404 - Page Not Found</h2>
         <p>Sorry, the page you requested could not be found</p>
-        <Link href="/signup" passHref>
+        <Link href="/" passHref>
           <ActiveButton text="Let's take you back" />
         </Link>
       </div>

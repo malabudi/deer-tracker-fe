@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './page.module.css';
 import InputField from '@/components/textbox/textbox';
 import ActiveButton from '@/components/Active-Button/ActiveButton';
@@ -10,25 +11,46 @@ import { Bounce, toast, ToastContainer } from 'react-toastify';
 import useDarkMode from '@/hooks/useDarkMode';
 import 'react-toastify/dist/ReactToastify.css';
 import { validateEmail } from '@/lib/fieldValidator';
-import { updateUserEmail } from '@/hooks/apis/users';
+import { getUserById, updateUserEmail } from '@/hooks/apis/users';
 import { canParseJson } from '@/utils/helpers';
 import { generateTokenAndEmail } from '@/lib/generateVerification';
 import { useRouter } from 'next/navigation';
-import { getCookie } from '@/utils/helpers';
+import { useSession } from 'next-auth/react';
+import Loader from '@/components/loader/Loader';
 
 const Editaccount: React.FC = () => {
-  const currentUserEmail = getCookie('userEmail'); // Get email from cookie
-
-  const [newEmail, setEmail] = useState(currentUserEmail);
+  const { data: session } = useSession();
+  const [newEmail, setEmail] = useState('');
   const [isEmailMatch, setIsEmailChanged] = useState(false);
   const [emailError, setEmailError] = useState('');
   const isDarkMode = useDarkMode();
   const router = useRouter();
+  let originalEmail = useRef<string>('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (session?.user) {
+      const fetchEmail = async () => {
+        setIsLoading(true);
+        try {
+          const res = await getUserById(session['user']['id']);
+          setEmail(res.email);
+          originalEmail.current = res.email;
+        } catch (err) {
+          console.error("Error fetching user's email:", err);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchEmail();
+    }
+  }, [session]);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
-    setIsEmailChanged(value !== currentUserEmail);
+    setIsEmailChanged(value !== originalEmail.current);
     setEmailError('');
   };
 
@@ -40,7 +62,7 @@ const Editaccount: React.FC = () => {
     }
 
     try {
-      const response = await updateUserEmail(currentUserEmail, newEmail);
+      const response = await updateUserEmail(originalEmail.current, newEmail);
 
       if (response.success) {
         // Send verification email
@@ -127,40 +149,46 @@ const Editaccount: React.FC = () => {
 
   return (
     <div>
-      <Link href="/settings">
-        <Image
-          priority
-          src={backIcon}
-          alt="Back"
-          className={styles.backButtonImage}
-          style={{ filter: 'var(--image-filter)' }}
-        />
-      </Link>
-      <div className={styles.mainConatiner}>
-        <h1>Edit Account</h1>
-        <div className={styles.formContainer}>
-          <div>
-            <label>Email</label>
-            <InputField
-              type="email"
-              value={newEmail}
-              onChange={handleEmailChange}
-              placeholder="Enter email"
-              errMessage={emailError}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div>
+          <Link href="/settings">
+            <Image
+              priority
+              src={backIcon}
+              alt="Back"
+              className={styles.backButtonImage}
+              style={{ filter: 'var(--image-filter)' }}
             />
+          </Link>
+          <div className={styles.mainConatiner}>
+            <h1>Edit Account</h1>
+            <div className={styles.formContainer}>
+              <div>
+                <label>Email</label>
+                <InputField
+                  type="email"
+                  value={newEmail}
+                  onChange={handleEmailChange}
+                  placeholder="Enter email"
+                  errMessage={emailError}
+                />
 
-            <Link href="/settings/edit-account/edit-password">
-              <ActiveButton text="Change Password" />
-            </Link>
+                <Link href="/settings/edit-account/edit-password">
+                  <ActiveButton text="Change Password" />
+                </Link>
+              </div>
+              <ActiveButton
+                isdisabled={!isEmailMatch}
+                text="Save"
+                onClick={handleSave}
+              />
+            </div>
           </div>
-          <ActiveButton
-            isdisabled={!isEmailMatch}
-            text="Save"
-            onClick={handleSave}
-          />
+          <ToastContainer />
         </div>
-      </div>
-      <ToastContainer />
+      )}
     </div>
   );
 };
