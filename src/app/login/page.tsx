@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import useDarkMode from '@/hooks/useDarkMode';
 import 'react-toastify/dist/ReactToastify.css';
-import { validateEmail, validatePassword } from '@/lib/fieldValidator';
+import { validateEmail } from '@/lib/fieldValidator';
 
 const LoginPage: React.FC = () => {
   const { data: session, status } = useSession();
@@ -21,6 +21,7 @@ const LoginPage: React.FC = () => {
   const [passwordError, setPasswordError] = useState('');
   const router = useRouter();
   const isDarkMode = useDarkMode();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (status === 'authenticated' && session?.user) {
@@ -42,7 +43,7 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
 
     const emailErr = validateEmail(email);
-    const passwordErr = validatePassword(password);
+    const passwordErr = password ? '' : 'Please enter your password';
 
     setEmailError(emailErr);
     setPasswordError(passwordErr);
@@ -52,6 +53,8 @@ const LoginPage: React.FC = () => {
       return;
     }
 
+    setIsLoading(true);
+
     // Authenticate once valid
     const result = await signIn('credentials', {
       email: email,
@@ -59,6 +62,8 @@ const LoginPage: React.FC = () => {
       action: 'login',
       redirect: false,
     });
+
+    setIsLoading(false);
 
     if (result?.error) {
       console.log(result.error);
@@ -103,9 +108,9 @@ const LoginPage: React.FC = () => {
         />
 
         <div className={styles.btnContainer}>
-          <ActiveButton text={logIn} />
+          <ActiveButton text={logIn} isDisabled={isLoading} />
           <span className={styles.span}>or</span>
-          <Link href="/signup" passHref>
+          <Link href="/register" passHref>
             <InactiveButton text={signUp} />
           </Link>
         </div>

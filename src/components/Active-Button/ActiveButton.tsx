@@ -5,19 +5,19 @@ import styles from '@/components/Active-Button/page.module.css';
 interface ActiveButtonProps {
   onClick?: () => void;
   text: string;
-  isdisabled?: boolean;
+  isDisabled?: boolean;
 }
 
 const ActiveButton: React.FC<ActiveButtonProps> = ({
   onClick,
   text,
-  isdisabled = false,
+  isDisabled = false,
 }) => {
   return (
     <button
-      className={`${styles.ActiveButton} ${isdisabled ? styles.disabledButton : ''}`}
+      className={`${styles.ActiveButton} ${isDisabled ? styles.disabledButton : ''}`}
       onClick={onClick}
-      disabled={isdisabled}
+      disabled={isDisabled}
     >
       {text}
     </button>

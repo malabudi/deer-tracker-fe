@@ -24,8 +24,7 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background-color: black;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease-out;
 }
 
 input[type='radio']:checked + .RadioButton::before {

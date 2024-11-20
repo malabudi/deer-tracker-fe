@@ -10,8 +10,8 @@ import {
 // All validator functions return strings for the error message
 
 export const validateEmail = (value: string) => {
-  if (!value) return 'Email cannot be empty.';
-  if (!emailRegex.test(value)) return 'Invalid email address.';
+  if (!value) return 'Email cannot be empty';
+  if (!emailRegex.test(value)) return 'Invalid email address';
   return '';
 };
 
@@ -34,7 +34,7 @@ export const validateConfirmPassword = (
   password: string,
   confirmPassword: string
 ) => {
-  if (!password) return 'Please re-enter your password.';
-  if (confirmPassword !== password) return 'Passwords do not match.';
+  if (!confirmPassword) return 'This field is required';
+  if (confirmPassword !== password) return 'Passwors do not match';
   return '';
 };

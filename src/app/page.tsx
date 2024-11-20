@@ -28,7 +28,7 @@ export default function Home() {
         <Link href="/login" passHref>
           <ActiveButton text={logIn} />
         </Link>
-        <Link href="/signup" passHref>
+        <Link href="/register" passHref>
           <InactiveButton text={signUp} />
         </Link>
       </div>
