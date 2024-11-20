@@ -180,7 +180,7 @@ const Editaccount: React.FC = () => {
                 </Link>
               </div>
               <ActiveButton
-                isdisabled={!isEmailMatch}
+                isDisabled={!isEmailMatch}
                 text="Save"
                 onClick={handleSave}
               />
