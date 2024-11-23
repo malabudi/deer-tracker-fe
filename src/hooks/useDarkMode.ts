@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 export default function useDarkMode() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
     // Check system preference for dark mode with media query

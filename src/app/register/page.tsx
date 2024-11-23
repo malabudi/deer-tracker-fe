@@ -20,7 +20,7 @@ import {
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-const SignupPage: React.FC = () => {
+const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmpassword, setconfirmPassword] = useState('');
@@ -28,6 +28,7 @@ const SignupPage: React.FC = () => {
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const isDarkMode = useDarkMode();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -76,10 +77,13 @@ const SignupPage: React.FC = () => {
 
     // Create account once valid and send verification email
     try {
+      setIsLoading(true);
+
       const signupRes = await createUser(email, password);
 
       if (signupRes.success) {
         const verificationToken = await generateTokenAndEmail(email);
+        setIsLoading(false);
 
         if (!verificationToken.error) {
           toast.success(
@@ -113,6 +117,7 @@ const SignupPage: React.FC = () => {
           );
         }
       } else {
+        setIsLoading(false);
         toast.error('Unable to create account at this time', {
           position: 'bottom-right',
           autoClose: 10000,
@@ -126,6 +131,7 @@ const SignupPage: React.FC = () => {
         });
       }
     } catch (err) {
+      setIsLoading(false);
       let errMsg;
       console.log(canParseJson(err.message));
 
@@ -191,7 +197,7 @@ const SignupPage: React.FC = () => {
         />
 
         <div className={styles.btnContainer}>
-          <ActiveButton text={signUp} />
+          <ActiveButton text={signUp} isDisabled={isLoading} />
           <span className={styles.span}>or</span>
           <Link href="/login" passHref>
             <InactiveButton text={logIn} />
@@ -203,4 +209,4 @@ const SignupPage: React.FC = () => {
   );
 };
 
-export default SignupPage;
+export default RegisterPage;

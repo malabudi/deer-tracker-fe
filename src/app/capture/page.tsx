@@ -15,6 +15,7 @@ import { throttle } from 'lodash';
 export default function Capture() {
   const [loading, setLoading] = useState(true);
   const { userLocation } = useLocationContext();
+  const confidenceThreshold = 0.75; // As a decimal which automatically is read as a percentage
 
   // Define references to be used later
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -58,42 +59,73 @@ export default function Capture() {
 
   const drawPredictions = (predictions: any) => {
     const ctx = canvasRef.current?.getContext('2d') ?? null;
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
 
-    if (ctx) {
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    if (!ctx || !video || !canvas) {
+      console.error('Canvas or video context not available.');
+      return;
+    }
 
-      // Grab the scale of x and y depending on viewport
-      const videoWidth = videoRef.current?.videoWidth ?? 0;
-      const videoHeight = videoRef.current?.videoHeight ?? 0;
-      const scaleX = (canvasRef.current?.width ?? 0) / videoWidth;
-      const scaleY = (canvasRef.current?.height ?? 0) / videoHeight;
+    // Debug: (do not remove)
+    console.log({
+      canvasWidth: canvas.width,
+      canvasHeight: canvas.height,
+      videoWidth: video.videoWidth,
+      videoHeight: video.videoHeight,
+    });
 
-      ctx.strokeStyle = 'red';
-      ctx.lineWidth = 2;
-      ctx.textBaseline = 'bottom';
-      ctx.font = '12px sans-serif';
+    // Clear all boxes
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      predictions.predictions.forEach((prediction: any) => {
-        // parse each prediction element for the box dimensions
-        const {
-          class: className,
-          confidence,
-          x,
-          y,
-          width,
-          height,
-        } = prediction;
+    // Use video and canvas dimensions to calculate X and Y scales
+    const videoWidth = video?.videoWidth ?? 0;
+    const videoHeight = video?.videoHeight ?? 0;
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
 
-        // Scale position and dimension of the box
-        const scaledX = x * scaleX;
-        const scaledY = y * scaleY;
-        const scaledWidth = width * scaleX;
-        const scaledHeight = height * scaleY;
+    // Calculate scale
+    const scaleX = canvasWidth / videoWidth;
+    const scaleY = canvasHeight / videoHeight;
+    const scale = Math.min(scaleX, scaleY);
+    const offsetX = (canvasWidth - videoWidth * scale) / 2;
+    const offsetY = (canvasHeight - videoHeight * scale) / 2;
+
+    // Define box styling
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = 2;
+    ctx.textBaseline = 'bottom';
+    ctx.font = '12px sans-serif';
+
+    predictions.forEach((prediction: any) => {
+      // parse each prediction element for the box dimensions
+      const { class: className, confidence, x, y, width, height } = prediction;
+
+      console.log(prediction);
+
+      if (confidence >= confidenceThreshold) {
+        // Scale and position the bounding box, applying offsets
+        const scaledX = x * scale + offsetX;
+        const scaledY = y * scale + offsetY;
+        const scaledWidth = width * scale;
+        const scaledHeight = height * scale;
 
         // Prediction text/accuracy mainly used for debuggging, this will be hidden in prod
         const predText = `${className} ${(confidence * 100).toFixed(2)}%`;
         const textWidth = ctx.measureText(predText).width;
         const textHeight = parseInt(ctx.font, 10);
+
+        // Debug: (do not remove)
+        console.log({
+          x,
+          y,
+          width,
+          height,
+          scaledX,
+          scaledY,
+          scaledWidth,
+          scaledHeight,
+        });
 
         // Draw bounding box and label
         ctx.strokeRect(scaledX, scaledY, scaledWidth, scaledHeight);
@@ -106,10 +138,8 @@ export default function Capture() {
         );
         ctx.fillStyle = '#FFF';
         ctx.fillText(predText, scaledX, scaledY);
-      });
-    } else {
-      console.error('Canvas context is not available.');
-    }
+      }
+    });
   };
 
   const detectDeer = throttle(async (base64Image: any) => {
@@ -119,9 +149,16 @@ export default function Capture() {
       });
 
       const predictions = response.data;
+      console.log('Predictions:', predictions);
+
+      // Filter predictions based on confidence
+      const highConfidencePredictions = predictions.predictions.filter(
+        (prediction: any) => prediction.confidence >= confidenceThreshold
+      );
+      console.log('Filtered Predictions:', highConfidencePredictions);
 
       // Process predictions
-      if (predictions && predictions.predictions.length > 0) {
+      if (highConfidencePredictions && highConfidencePredictions.length > 0) {
         playDetectionSound();
 
         // Save deer sighting
@@ -136,7 +173,7 @@ export default function Capture() {
         }
 
         // Draw box based on predictions
-        drawPredictions(predictions);
+        drawPredictions(highConfidencePredictions);
       }
     } catch (err: any) {
       console.error(
@@ -168,6 +205,19 @@ export default function Capture() {
 
   useEffect(() => {
     if (!videoRef.current || !canvasRef.current) return;
+
+    // handle resizing for video and canvas (highlighting box)
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+
+    const handleResize = () => {
+      if (video.videoWidth && video.videoHeight) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+      }
+    };
+
+    video.addEventListener('loadedmetadata', handleResize);
 
     audioRef.current = new Audio(
       'https://66e37eaa4d733664b5abd9ad--boisterous-crisp-b60fea.netlify.app/Detected.mp3'
@@ -201,6 +251,10 @@ export default function Capture() {
     }
 
     setLoading(false); // Set loading to false once video starts
+
+    return () => {
+      video.removeEventListener('loadedmetadata', handleResize);
+    };
   }, [detectDeer, detectFrame]);
 
   return (

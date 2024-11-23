@@ -180,7 +180,7 @@ export default function ChangePasswordForm() {
             />
           </div>
           <ActiveButton
-            isdisabled={!isSaveEnabled}
+            isDisabled={!isSaveEnabled}
             text="Save"
             onClick={onSave}
           />

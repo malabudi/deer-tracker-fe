@@ -30,14 +30,16 @@ export const options = {
           if (!loginRes.ok) {
             const errorMessage = await loginRes.text();
             console.error('Signup API error:', errorMessage);
-            throw new Error('Failed to log in');
+            throw new Error('Incorrect email address or password');
           }
 
           const user = await loginRes.json();
 
           // Check if their email is verified before creating a session
           if (!user.user['email_verified']) {
-            throw new Error('Please verify your email before logging in');
+            throw new Error(
+              'Please check your inbox for an email and verify your email address before logging in'
+            );
           }
 
           return user;
@@ -50,8 +52,7 @@ export const options = {
   ],
   pages: {
     signIn: '/login',
-    newUser: '/signup',
-    verifyRequest: '/verify',
+    newUser: '/register',
   },
   callbacks: {
     async jwt({ token, user }) {
