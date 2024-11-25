@@ -2,7 +2,7 @@
 export { default } from 'next-auth/middleware';
 
 // Pages that the user cannot visit unless they login (protected pages)
-export const config = {
+/*export const config = {
   matcher: [
     '/capture',
     '/maps',
@@ -10,4 +10,4 @@ export const config = {
     '/settings/edit-account',
     '/settings/edit-password',
   ],
-};
+};*/
