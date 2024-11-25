@@ -6,7 +6,7 @@ export const config = {
   matcher: [
     '/capture',
     //'/maps',
-    //'/settings',
+    '/settings',
     '/settings/edit-account',
     '/settings/edit-password',
   ],
