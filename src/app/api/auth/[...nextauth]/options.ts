@@ -1,4 +1,3 @@
-import { API_PATH } from '@/utils/constants';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const options = {
@@ -17,6 +16,7 @@ export const options = {
       },
       async authorize(credentials): Promise<any> {
         const { email, password } = credentials;
+        const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
 
         try {
           const loginRes = await fetch(`${API_PATH}/login`, {

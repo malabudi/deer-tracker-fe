@@ -1,4 +1,3 @@
-import { API_PATH } from '@/utils/constants';
 import { DeerSighting } from '@/interfaces/DeerSighting';
 
 const getSightingsByLocation = async (
@@ -7,6 +6,7 @@ const getSightingsByLocation = async (
   radius: number
 ): Promise<DeerSighting[]> => {
   try {
+    const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
     const response = await fetch(
       `${API_PATH}/get_sightings_by_locationAndRadius?longitude=${longitude}&latitude=${latitude}&radius=${radius}`,
       {
