@@ -16,7 +16,7 @@ export const options = {
       },
       async authorize(credentials): Promise<any> {
         const { email, password } = credentials;
-        const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
+        const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
 
         try {
           const loginRes = await fetch(`${API_PATH}/login`, {

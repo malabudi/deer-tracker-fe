@@ -1,5 +1,5 @@
 export const getUserByEmail = async (email: String) => {
-  const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
+  const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
   const response = await fetch(`${API_PATH}/users/?email=${email}`, {
     method: 'GET',
     headers: {
@@ -19,7 +19,7 @@ export const updateUserEmailVerified = async (
   email: String,
   emailVerified: Date
 ) => {
-  const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
+  const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
   const response = await fetch(
     `${API_PATH}/users?email=${email}&email_verified=${emailVerified}`,
     {
@@ -39,7 +39,7 @@ export const updateUserEmailVerified = async (
 };
 
 export const createUser = async (email: string, password: string) => {
-  const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
+  const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
   const response = await fetch(`${API_PATH}/users`, {
     method: 'POST',
     headers: {
@@ -61,7 +61,7 @@ export const updateUserEmail = async (
   currentEmail: string,
   newEmail: string
 ) => {
-  const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
+  const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
   const response = await fetch(`${API_PATH}/users/update-email`, {
     method: 'PUT',
     headers: {
@@ -87,7 +87,7 @@ export const updateUserPassword = async (
   currentPassword: string,
   newPassword: string
 ) => {
-  const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
+  const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
   const response = await fetch(`${API_PATH}/users/update-password`, {
     method: 'PUT',
     headers: {
@@ -110,7 +110,7 @@ export const updateUserPassword = async (
 };
 
 export const getUserById = async (userId: string) => {
-  const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
+  const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
   const response = await fetch(`${API_PATH}/users/${userId}`, {
     method: 'GET',
     headers: {

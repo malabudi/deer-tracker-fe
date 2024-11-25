@@ -13,7 +13,7 @@ import axios from 'axios';
 import { throttle } from 'lodash';
 
 export default function Capture() {
-  const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
+  const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
   const [loading, setLoading] = useState(true);
   const { userLocation } = useLocationContext();
   const confidenceThreshold = 0.75; // As a decimal which automatically is read as a percentage

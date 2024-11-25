@@ -1,7 +1,7 @@
 import { VerificationToken } from '@/interfaces/VerificationToken';
 
 export const getVerificationTokenByEmail = async (email: String) => {
-  const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
+  const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
   const response = await fetch(
     `${API_PATH}/verification_token/email?email=${email}`,
     {
@@ -21,7 +21,7 @@ export const getVerificationTokenByEmail = async (email: String) => {
 };
 
 export const getVerificationTokenByToken = async (token: String) => {
-  const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
+  const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
   const response = await fetch(
     `${API_PATH}/verification_token/token?token=${token}`,
     {
@@ -41,7 +41,7 @@ export const getVerificationTokenByToken = async (token: String) => {
 };
 
 export const deleteVerificationToken = async (email: String) => {
-  const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
+  const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
   const response = await fetch(
     `${API_PATH}/verification_token?email=${email}`,
     {
@@ -63,7 +63,7 @@ export const deleteVerificationToken = async (email: String) => {
 export const createVerificationToken = async (
   verificationToken: VerificationToken
 ) => {
-  const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
+  const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
   const response = await fetch(`${API_PATH}/verification_token`, {
     method: 'POST',
     headers: {
