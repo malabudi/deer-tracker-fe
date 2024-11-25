@@ -5,7 +5,7 @@ export { default } from 'next-auth/middleware';
 export const config = {
   matcher: [
     '/capture',
-    //'/maps',
+    '/maps',
     '/settings',
     '/settings/edit-account',
     '/settings/edit-password',
