@@ -1,4 +1,4 @@
-export const API_PATH = process.env.PUBLIC_NEXT_API_PATH;
+export const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
 export const logIn = 'Log in';
 export const signUp = 'Register';
 export const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
