@@ -1,6 +1,7 @@
 .InputField {
-  padding: 1rem 0;
-  padding-left: 15px;
+  width: 100%;
+  padding: 1rem;
+  padding-right: 40px;
   border-radius: 5px;
   border: 2px solid #a19494;
   font-size: 1rem;
@@ -39,14 +40,25 @@
   max-width: 420px;
 }
 
+.inputWithIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 .toggleVisibilityButton {
   position: absolute;
+  right: 2px;
   background: transparent;
   border: none;
   cursor: pointer;
   outline: none;
-  margin-left: 89%;
-  margin-top: 9%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  padding: 0 8px;
 }
 
 .Err {
@@ -82,18 +94,4 @@
 
 .Err.shake {
   animation: shake 0.2s ease;
-}
-
-@media (max-width: 600px) {
-  .toggleVisibilityButton {
-    margin-left: 87%;
-    margin-top: 10%;
-  }
-}
-
-@media (max-width: 400px) {
-  .toggleVisibilityButton {
-    margin-left: 86%;
-    margin-top: 12%;
-  }
 }
