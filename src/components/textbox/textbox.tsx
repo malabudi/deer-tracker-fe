@@ -62,7 +62,7 @@ const InputField: React.FC<InputFieldProps> = ({
     <div className={styles.inputWrapper}>
       <div className={styles.inputContainer}>
         <label className={styles.TextBoxLabel}>{label}</label>
-        <div className={styles.inputWithIcon}>
+        <div className={styles.inputWithTextBox}>
           <input
             className={`${styles.InputField} ${inputTheme} ${shake ? styles.shake : ''}`}
             type={inputType}

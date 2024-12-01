@@ -1,7 +1,7 @@
 .InputField {
   width: 100%;
   padding: 1rem;
-  padding-right: 40px;
+  padding-right: 45px;
   border-radius: 5px;
   border: 2px solid #a19494;
   font-size: 1rem;
@@ -40,7 +40,7 @@
   max-width: 420px;
 }
 
-.inputWithIcon {
+.inputWithTextBox {
   position: relative;
   display: flex;
   align-items: center;
@@ -59,6 +59,10 @@
   justify-content: flex-end;
   height: 100%;
   padding: 0 8px;
+}
+
+.toggleVisibilityButton svg {
+  width: 27.5px;
 }
 
 .Err {
