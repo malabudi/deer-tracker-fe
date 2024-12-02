@@ -62,28 +62,30 @@ const InputField: React.FC<InputFieldProps> = ({
     <div className={styles.inputWrapper}>
       <div className={styles.inputContainer}>
         <label className={styles.TextBoxLabel}>{label}</label>
-        <input
-          className={`${styles.InputField} ${inputTheme} ${shake ? styles.shake : ''}`}
-          type={inputType}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          disabled={disabled}
-          onCopy={handleCopy}
-          onPaste={handlePaste}
-        />
-        {type === 'password' && (
-          <button
-            type="button"
-            className={styles.toggleVisibilityButton}
-            onClick={togglePasswordVisibility}
-          >
-            <FontAwesomeIcon
-              icon={!isPasswordVisible ? faEyeSlash : faEye}
-              size="sm"
-            />
-          </button>
-        )}
+        <div className={styles.inputWithTextBox}>
+          <input
+            className={`${styles.InputField} ${inputTheme} ${shake ? styles.shake : ''}`}
+            type={inputType}
+            value={value}
+            onChange={onChange}
+            placeholder={placeholder}
+            disabled={disabled}
+            onCopy={handleCopy}
+            onPaste={handlePaste}
+          />
+          {type === 'password' && (
+            <button
+              type="button"
+              className={styles.toggleVisibilityButton}
+              onClick={togglePasswordVisibility}
+            >
+              <FontAwesomeIcon
+                icon={!isPasswordVisible ? faEyeSlash : faEye}
+                size="sm"
+              />
+            </button>
+          )}
+        </div>
       </div>
       {errMessage && (
         <div
