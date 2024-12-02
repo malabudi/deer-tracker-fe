@@ -1,10 +1,13 @@
 .InputField {
   width: 100%;
   padding: 1rem;
-  padding-right: 45px;
   border-radius: 5px;
   border: 2px solid #a19494;
   font-size: 1rem;
+}
+
+.inputWithTextBox:has(.toggleVisibilityButton) .InputField {
+  padding-right: 45px;
 }
 
 .inputFieldDark {
