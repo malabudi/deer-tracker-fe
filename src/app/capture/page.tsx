@@ -14,6 +14,7 @@ import { throttle } from 'lodash';
 
 export default function Capture() {
   const [loading, setLoading] = useState(true);
+  const [isCameraDisabled, setIsCameraDisabled] = useState(false);
   const { userLocation } = useLocationContext();
   const confidenceThreshold = 0.75; // As a decimal which automatically is read as a percentage
 
@@ -244,10 +245,12 @@ export default function Capture() {
         })
         .catch((err) => {
           console.error('Error accessing camera:', err);
-          alert('Error accessing camera: You need to allow camera access.');
+          setIsCameraDisabled(true);
+          //alert('Error accessing camera: You need to allow camera access.');
         });
     } else {
-      alert("Your browser doesn't support camera access.");
+      setIsCameraDisabled(true);
+      //alert("Your browser doesn't support camera access.");
     }
 
     setLoading(false); // Set loading to false once video starts
@@ -260,6 +263,11 @@ export default function Capture() {
   return (
     <div className={styles.pageWrapper}>
       {loading && <Loader />}
+      {isCameraDisabled && (
+        <div className={styles.cameraDisabledContainer}>
+          <h1>Camera disabled, please enable your camera</h1>
+        </div>
+      )}
       <DeerCamera videoRef={videoRef} canvasRef={canvasRef} />
       <BottomNav />
     </div>
