@@ -38,7 +38,7 @@ export const options = {
           // Check if their email is verified before creating a session
           if (!user.user['email_verified']) {
             throw new Error(
-              'Please check your inbox for an email and verify your email address before logging in'
+              'Please check your inbox and verify your email address before logging in'
             );
           }
 

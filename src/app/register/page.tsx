@@ -118,17 +118,20 @@ const RegisterPage: React.FC = () => {
         }
       } else {
         setIsLoading(false);
-        toast.error('Unable to create account at this time', {
-          position: 'bottom-right',
-          autoClose: 10000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: isDarkMode ? 'dark' : 'light',
-          transition: Bounce,
-        });
+        toast.error(
+          'An unexpected error occured while creating your account, please try again later',
+          {
+            position: 'bottom-right',
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: isDarkMode ? 'dark' : 'light',
+            transition: Bounce,
+          }
+        );
       }
     } catch (err) {
       setIsLoading(false);
